@@ -22,5 +22,17 @@
             android:layout_height="wrap_content"
             android:text="@{viewModel.accessToken}"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.text}"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="@{viewModel.next.canExecute}"
+            android:onClick="@{viewModel.next.command}"
+            android:text="@string/next"
+            />
     </LinearLayout>
 </layout>
