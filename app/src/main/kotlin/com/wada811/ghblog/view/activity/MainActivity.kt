@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     class NextAction {
         fun invoke(context: Context) {
-            context.startActivity(RepositorySettingActivity.createIntent(context))
+            context.startActivity(RepositoryListActivity.createIntent(context))
         }
     }
 }
