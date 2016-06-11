@@ -7,13 +7,14 @@ import android.widget.AdapterView
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxProperty
 import com.wada811.rxviewmodel.RxViewModel
+import com.wada811.rxviewmodel.SynchronizedObservableArrayList
 import com.wada811.rxviewmodel.extensions.toRxCommand
 import rx.Observable
 import rx.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 class RepositoryListViewModel : RxViewModel() {
-    var repositoryViewModelList = ObservableArrayList<RepositoryListItemViewModel>()
+    var repositoryViewModelList = SynchronizedObservableArrayList(ObservableArrayList<RepositoryListItemViewModel>())
     var selectedRepositoryName = RxProperty<String?>().asManaged()
     var select = RxCommand(AdapterView.OnItemClickListener {
         parent: AdapterView<*>, view: View, position: Int, id: Long ->
