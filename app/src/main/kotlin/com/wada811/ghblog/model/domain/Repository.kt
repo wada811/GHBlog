@@ -1,6 +1,8 @@
 package com.wada811.ghblog.model.domain
 
+import com.wada811.ghblog.data.repository.GitHubDataRepository
 import org.threeten.bp.ZonedDateTime
+import rx.Observable
 
 class Repository(
         var id: Long,
@@ -72,4 +74,7 @@ class Repository(
         var watchers: Int,
         var defaultBranch: String,
         var permissions: Permission
-)
+){
+    fun tree(user: User): Observable<GitTree> = GitHubDataRepository.getTree(user, this)
+
+}

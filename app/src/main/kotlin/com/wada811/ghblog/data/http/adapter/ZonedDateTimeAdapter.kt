@@ -1,4 +1,4 @@
-package com.wada811.ghblog.data.net.adapter
+package com.wada811.ghblog.data.http.adapter
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
