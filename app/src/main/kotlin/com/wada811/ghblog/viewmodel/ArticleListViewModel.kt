@@ -8,6 +8,8 @@ import com.wada811.ghblog.App
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxViewModel
 import com.wada811.rxviewmodel.SynchronizedObservableArrayList
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 class ArticleListViewModel : RxViewModel() {
     val articleViewModelList = SynchronizedObservableArrayList(ObservableArrayList<ArticleListItemViewModel>())
@@ -21,10 +23,13 @@ class ArticleListViewModel : RxViewModel() {
     init {
         App.user.subscribe {
             user ->
-            App.currentRepository!!.tree(user).subscribe {
-                tree ->
-                articleViewModelList.addAll(tree.tree.map { tree -> ArticleListItemViewModel(tree) })
-            }
+            App.currentRepository!!.getContents(user, "content/blog")
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        Log.e("wada", "currentRepository.getContents.onNext")
+                        articleViewModelList.addAll(it.map { ArticleListItemViewModel(it) })
+                    }, { Log.e("wada", "currentRepository.getContents.onError", it) }, { Log.e("wada", "currentRepository.getContents.onComplete") })
         }
 
     }

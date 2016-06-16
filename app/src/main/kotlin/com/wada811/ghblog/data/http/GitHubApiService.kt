@@ -1,5 +1,6 @@
 package com.wada811.ghblog.data.http
 
+import com.wada811.ghblog.data.entity.ContentEntity
 import com.wada811.ghblog.data.entity.GitTreeEntity
 import com.wada811.ghblog.data.entity.ReferenceEntity
 import com.wada811.ghblog.data.entity.RepositoryEntity
@@ -17,6 +18,9 @@ interface GitHubApiService {
     fun getRepositoryList(): Observable<Response<List<RepositoryEntity>>>
     @GET
     fun getRepositoryList(@Url url: String): Observable<Response<List<RepositoryEntity>>>
+
+    @GET("/repos/{owner}/{repo}/contents/{path}")
+    fun getContents(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String): Observable<Response<List<ContentEntity>>>
 
     @GET("/repos/{owner}/{repo}/git/refs/{ref}")
     fun getReference(@Path("owner") owner: String, @Path("repo") repo: String, @Path("ref") ref: String): Observable<Response<ReferenceEntity>>

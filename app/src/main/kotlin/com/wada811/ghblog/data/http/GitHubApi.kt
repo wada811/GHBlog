@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.okhttp.Interceptor
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.ResponseBody
+import com.wada811.ghblog.data.entity.ContentEntity
 import com.wada811.ghblog.data.entity.GitTreeEntity
 import com.wada811.ghblog.data.entity.ReferenceEntity
 import com.wada811.ghblog.data.entity.RepositoryEntity
@@ -46,6 +47,8 @@ class GitHubApi(var user: User) : GitHubApiService {
 
     override fun getRepositoryList(): Observable<Response<List<RepositoryEntity>>> = client.getRepositoryList()
     override fun getRepositoryList(url: String): Observable<Response<List<RepositoryEntity>>> = client.getRepositoryList(url)
+
+    override fun getContents(owner: String, repo: String, path: String): Observable<Response<List<ContentEntity>>> = client.getContents(owner, repo, path)
 
     override fun getReference(owner: String, repo: String, ref: String): Observable<Response<ReferenceEntity>> = client.getReference(owner, repo, ref)
 
