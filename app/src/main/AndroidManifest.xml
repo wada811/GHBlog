@@ -18,5 +18,7 @@
         </activity>
         <activity android:name=".view.activity.RepositoryListActivity" />
         <activity android:name=".view.activity.ArticleListActivity" />
+        <activity android:name=".view.activity.ArticleCreateActivity" />
+        <activity android:name=".view.activity.ArticleEditActivity" />
     </application>
 </manifest>
