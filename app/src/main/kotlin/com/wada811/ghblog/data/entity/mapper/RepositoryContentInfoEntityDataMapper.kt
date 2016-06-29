@@ -1,12 +1,12 @@
 package com.wada811.ghblog.data.entity.mapper
 
-import com.wada811.ghblog.data.entity.ContentEntity
-import com.wada811.ghblog.data.entity.ContentEntity.ContentLinkEntity
-import com.wada811.ghblog.model.domain.Content
-import com.wada811.ghblog.model.domain.Content.ContentLink
+import com.wada811.ghblog.data.entity.RepositoryContentInfoEntity
+import com.wada811.ghblog.data.entity.RepositoryContentInfoEntity.ContentLinkEntity
+import com.wada811.ghblog.model.domain.RepositoryContentInfo
+import com.wada811.ghblog.model.domain.RepositoryContentInfo.ContentLink
 
-object ContentEntityDataMapper {
-    fun transform(entity: ContentEntity): Content = Content(
+object RepositoryContentInfoEntityDataMapper {
+    fun transform(entity: RepositoryContentInfoEntity): RepositoryContentInfo = RepositoryContentInfo(
             entity.name,
             entity.path,
             entity.sha,

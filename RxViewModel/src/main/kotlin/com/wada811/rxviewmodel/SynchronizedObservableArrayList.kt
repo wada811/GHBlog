@@ -5,3 +5,7 @@ import java.util.*
 
 class SynchronizedObservableArrayList<T>(var list: ObservableArrayList<T>) : MutableList<T> by Collections.synchronizedList(list) {
 }
+
+fun <T> ObservableArrayList<T>.toSynchronizedObservableArrayList(): SynchronizedObservableArrayList<T> {
+    return SynchronizedObservableArrayList(this)
+}

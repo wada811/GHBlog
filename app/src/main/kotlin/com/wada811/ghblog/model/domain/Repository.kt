@@ -75,6 +75,6 @@ class Repository(
         var defaultBranch: String,
         var permissions: Permission
 ){
-    fun getContents(user: User, path: String): Observable<List<Content>> = GitHubDataRepository.getContents(user, this, path)
+    fun getContents(user: User, path: String): Observable<List<RepositoryContentInfo>> = GitHubDataRepository.getContents(user, this, path)
     fun getTree(user: User): Observable<GitTree> = GitHubDataRepository.getTree(user, this)
 }

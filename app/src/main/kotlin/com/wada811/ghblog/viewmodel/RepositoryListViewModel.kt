@@ -13,7 +13,7 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 class RepositoryListViewModel : RxViewModel() {
-    var repositoryViewModelList = SynchronizedObservableArrayList(ObservableArrayList<RepositoryListItemViewModel>())
+    var repositoryViewModelList = ObservableArrayList<RepositoryListItemViewModel>().toSynchronizedObservableArrayList()
     var selectedRepository = RxProperty<Repository?>().asManaged()
     var select = RxCommand(AdapterView.OnItemClickListener {
         parent: AdapterView<*>, view: View, position: Int, id: Long ->

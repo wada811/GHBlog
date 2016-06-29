@@ -2,14 +2,12 @@ package com.wada811.ghblog.data.datasource
 
 import com.wada811.ghblog.data.entity.RepositoryEntity
 import com.wada811.ghblog.data.entity.RepositoryEntityDataMapper
-import com.wada811.ghblog.data.entity.mapper.ContentEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.GitTreeEntityDataMapper
+import com.wada811.ghblog.data.entity.mapper.RepositoryContentEntityDataMapper
+import com.wada811.ghblog.data.entity.mapper.RepositoryContentInfoEntityDataMapper
 import com.wada811.ghblog.data.http.ApiInfoParser
 import com.wada811.ghblog.data.http.GitHubApi
-import com.wada811.ghblog.model.domain.Content
-import com.wada811.ghblog.model.domain.GitTree
-import com.wada811.ghblog.model.domain.Repository
-import com.wada811.ghblog.model.domain.User
+import com.wada811.ghblog.model.domain.*
 import retrofit.Response
 import rx.Observable
 import java.util.*
@@ -44,13 +42,22 @@ class CloudGitHubDataStore(var user: User) {
         }
     }
 
-    fun getContents(repository: Repository, path: String): Observable<List<Content>> {
+    fun getContents(repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
         return Observable.defer {
             GitHubApi(user).getContents(repository.owner.login, repository.name, path)
                     .map {
                         it.body().map {
-                            ContentEntityDataMapper.transform(it)
+                            RepositoryContentInfoEntityDataMapper.transform(it)
                         }
+                    }
+        }
+    }
+
+    fun getContent(repository: Repository, path: String): Observable<RepositoryContent> {
+        return Observable.defer {
+            GitHubApi(user).getContent(repository.owner.login, repository.name, path)
+                    .map {
+                        RepositoryContentEntityDataMapper.transform(it.body())
                     }
         }
     }

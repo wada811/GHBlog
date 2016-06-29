@@ -1,6 +1,8 @@
 package com.wada811.ghblog.data.entity
 
-data class ContentEntity(
+import com.wada811.ghblog.data.entity.RepositoryContentInfoEntity.ContentLinkEntity
+
+data class RepositoryContentEntity(
         var name: String,
         var path: String,
         var sha: String,
@@ -10,11 +12,9 @@ data class ContentEntity(
         var git_url: String,
         var download_url: String,
         var type: String,
-        var _links: ContentLinkEntity
+        var _links: ContentLinkEntity,
+        var encoding: String,
+        var content: String
+
 ) {
-    data class ContentLinkEntity(
-            var self: String,
-            var git: String,
-            var html: String
-    )
 }

@@ -1,18 +1,18 @@
-package com.wada811.ghblog.model.domain
+package com.wada811.ghblog.data.entity
 
-class Content(
+data class RepositoryContentInfoEntity(
         var name: String,
         var path: String,
         var sha: String,
         var size: Int,
         var url: String,
-        var htmlUrl: String,
-        var gitUrl: String,
-        var downloadUrl: String,
+        var html_url: String,
+        var git_url: String,
+        var download_url: String,
         var type: String,
-        var contentLink: ContentLink
+        var _links: ContentLinkEntity
 ) {
-    class ContentLink(
+    data class ContentLinkEntity(
             var self: String,
             var git: String,
             var html: String
