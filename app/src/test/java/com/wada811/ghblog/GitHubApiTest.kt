@@ -1,10 +1,12 @@
 package com.wada811.ghblog
 
 import com.wada811.ghblog.data.repository.UserDataRepository
-import com.wada811.ghblog.model.domain.GitTree
+import com.wada811.ghblog.model.domain.GitCommit
+import com.wada811.ghblog.model.domain.GitHubTree
 import com.wada811.ghblog.model.domain.RepositoryContent
 import com.wada811.ghblog.model.domain.RepositoryContentInfo
 import junit.framework.Assert.assertEquals
+import org.apache.commons.codec.binary.Base64
 import org.junit.Test
 
 class GitHubApiTest {
@@ -61,6 +63,23 @@ class GitHubApiTest {
     }
 
     @Test
+    fun createContent() {
+        UserDataRepository.user().subscribe({ user ->
+            user.repositoryList.subscribe({ repositoryList ->
+                val repository = repositoryList.first { repository ->
+                    System.out.println("repository.name: ${repository.name}")
+                    repository.name.equals("blogtest")
+                }
+                repository.createContent(user, GitCommit("content/blog/test.md", "test message", Base64.encodeBase64String("content body".toByteArray())))
+                .subscribe({ gitHubCommit ->
+                    System.out.println("gitHubCommit: $gitHubCommit")
+                    assertEquals("onNext", gitHubCommit)
+                }, { System.out.println("error: $it") }, {})
+            }, { System.out.println("error: $it") }, {})
+        }, { System.out.println("error: $it") }, {})
+    }
+
+    @Test
     fun getTree() {
         UserDataRepository.user().subscribe({ user ->
             user.repositoryList.subscribe { repositoryList ->
@@ -68,7 +87,7 @@ class GitHubApiTest {
                     System.out.println("repository.name: ${repository.name}")
                     repository.name.equals("wada811.com")
                 }
-                repository.getTree(user).subscribe({ tree: GitTree ->
+                repository.getTree(user).subscribe({ tree: GitHubTree ->
                     assertEquals("tree", tree.toString())
                 }, { System.out.println("error: $it") }, {})
             }

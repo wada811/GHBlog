@@ -18,6 +18,7 @@ object RepositoryContentInfoEntityDataMapper {
             entity.type,
             ContentLinkEntityDataMapper.transform(entity._links)
     )
+
     object ContentLinkEntityDataMapper {
         fun transform(entity: ContentLinkEntity): ContentLink = ContentLink(
                 entity.self,

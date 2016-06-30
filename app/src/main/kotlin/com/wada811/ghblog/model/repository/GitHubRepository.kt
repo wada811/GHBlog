@@ -7,5 +7,6 @@ interface GitHubRepository {
     fun getRepositoryList(user: User): Observable<List<Repository>>
     fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContentInfo>>
     fun getContent(user: User, repository: Repository, path: String): Observable<RepositoryContent>
-    fun getTree(user: User, repository: Repository): Observable<GitTree>
+    fun createContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit>
+    fun getTree(user: User, repository: Repository): Observable<GitHubTree>
 }

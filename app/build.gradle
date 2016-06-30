@@ -31,7 +31,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    kapt 'com.android.databinding:compiler:1.0-rc5'
     compile 'io.reactivex:rxjava:1.1.5'
     compile 'io.reactivex:rxandroid:1.2.0'
     compile "com.jakewharton.rxbinding:rxbinding-kotlin:$rx_android_kotlin_version"
@@ -45,9 +44,7 @@ dependencies {
     compile project(':RxViewModel')
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.3'
 }
-repositories {
-    mavenCentral()
-}
+
 kapt {
     generateStubs = true
 }

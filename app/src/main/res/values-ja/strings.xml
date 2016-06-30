@@ -4,4 +4,6 @@
     <string name="save">保存</string>
     <string name="new_article">新規作成</string>
     <string name="save_article">記事を保存する</string>
+    <string name="article_path">ファイル名: </string>
+    <string name="article_name">タイトル: </string>
 </resources>

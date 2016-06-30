@@ -86,7 +86,7 @@ class RxProperty<T>(source: Observable<T>?, initialValue: T? = null, mode: EnumS
 
     private fun emitValue(value: T?) {
         if (isDistinctUntilChanged && compare(value, this.value)) {
-            return;
+            return
         }
         subject.onNext(value);
     }

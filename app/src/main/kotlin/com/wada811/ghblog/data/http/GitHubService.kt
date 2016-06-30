@@ -1,25 +1,33 @@
 package com.wada811.ghblog.data.http
 
 import com.wada811.ghblog.data.entity.*
+import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
+import com.wada811.ghblog.data.entity.response.github.repos.contents.CreateContentResponse
 import retrofit.Response
-import retrofit.http.GET
-import retrofit.http.Path
-import retrofit.http.Url
+import retrofit.http.*
 import rx.Observable
 
-interface GitHubApiService {
-    val ApiBaseUrl: String
-        get() = "https://api.github.com"
+interface GitHubService {
+    companion object {
+        val ApiBaseUrl: String
+            get() = "https://api.github.com"
+    }
 
     @GET("user/repos")
     fun getRepositoryList(): Observable<Response<List<RepositoryEntity>>>
+
     @GET
     fun getRepositoryList(@Url url: String): Observable<Response<List<RepositoryEntity>>>
 
     @GET("/repos/{owner}/{repo}/contents/{path}")
     fun getContents(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String): Observable<Response<List<RepositoryContentInfoEntity>>>
+
     @GET("/repos/{owner}/{repo}/contents/{path}")
     fun getContent(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String): Observable<Response<RepositoryContentEntity>>
+
+    @PUT("/repos/{owner}/{repo}/contents/{path}")
+    fun createContent(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String,
+                      @Body commit: CreateContentRequest.CreateContentCommitRequest): Observable<Response<CreateContentResponse>>
 
     @GET("/repos/{owner}/{repo}/git/refs/{ref}")
     fun getReference(@Path("owner") owner: String, @Path("repo") repo: String, @Path("ref") ref: String): Observable<Response<ReferenceEntity>>

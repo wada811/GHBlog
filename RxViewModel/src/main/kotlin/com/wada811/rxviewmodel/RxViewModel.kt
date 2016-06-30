@@ -16,6 +16,7 @@ open class RxViewModel : Subscription {
         subscriptions.add(this)
         return this
     }
+
     protected fun <T> RxProperty<T>.asManaged(): RxProperty<T> {
         subscriptions.add(this)
         return this

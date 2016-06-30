@@ -5,6 +5,7 @@ import com.wada811.ghblog.data.entity.RepositoryEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.GitTreeEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.RepositoryContentEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.RepositoryContentInfoEntityDataMapper
+import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
 import com.wada811.ghblog.data.http.ApiInfoParser
 import com.wada811.ghblog.data.http.GitHubApi
 import com.wada811.ghblog.model.domain.*
@@ -62,7 +63,64 @@ class CloudGitHubDataStore(var user: User) {
         }
     }
 
-    fun getTree(repository: Repository): Observable<GitTree> {
+    fun createContent(repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
+        return Observable.defer {
+            val request = CreateContentRequest(repository.owner.login, repository.name, commit.path,
+                    CreateContentRequest.CreateContentCommitRequest(commit.path, commit.message, commit.encodedContent)
+            )
+            GitHubApi(user).createContent(request)
+                    .map {
+                        val response = it.body()
+                        GitHubCommit(
+                                RepositoryContentInfo(
+                                        response.content.name,
+                                        response.content.path,
+                                        response.content.sha,
+                                        response.content.size,
+                                        response.content.url,
+                                        response.content.html_url,
+                                        response.content.git_url,
+                                        response.content.download_url,
+                                        response.content.type,
+                                        RepositoryContentInfo.ContentLink(
+                                                response.content._links.self,
+                                                response.content._links.git,
+                                                response.content._links.html
+                                        )
+                                ),
+                                GitHubCommit.Commit(
+                                        response.commit.sha,
+                                        response.commit.url,
+                                        response.commit.html_url,
+                                        GitHubCommit.Commit.Author(
+                                                response.commit.author.date,
+                                                response.commit.author.name,
+                                                response.commit.author.email
+                                        ),
+                                        GitHubCommit.Commit.Author(
+                                                response.commit.committer.date,
+                                                response.commit.committer.name,
+                                                response.commit.committer.email
+                                        ),
+                                        response.commit.message,
+                                        GitHubTree(
+                                                response.commit.tree.sha,
+                                                response.commit.tree.url
+                                        ),
+                                        response.commit.parents.map {
+                                            GitHubReference(
+                                                    it.sha,
+                                                    it.url,
+                                                    it.html_url
+                                            )
+                                        }
+                                )
+                        )
+                    }
+        }
+    }
+
+    fun getTree(repository: Repository): Observable<GitHubTree> {
         return Observable.defer {
 //            GitHubApi(user).getReference(repository.owner.login, repository.name, "heads/" + repository.defaultBranch)
 //                    .map { ReferenceEntityDataMapper.transform(it) }

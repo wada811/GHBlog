@@ -1,10 +1,10 @@
 package com.wada811.ghblog.model.domain
 
-class GitTree(
+class GitHubTree(
         var sha: String,
         var url: String,
-        var tree: List<Node>,
-        var truncated: Boolean
+        var tree: List<Node>? = null,
+        var truncated: Boolean? = null
 ){
     class Node(
             var path: String,

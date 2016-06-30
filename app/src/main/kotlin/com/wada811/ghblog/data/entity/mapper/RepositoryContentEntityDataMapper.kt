@@ -20,6 +20,7 @@ object RepositoryContentEntityDataMapper {
             entity.encoding,
             entity.content
     )
+
     object ContentLinkEntityDataMapper {
         fun transform(entity: RepositoryContentInfoEntity.ContentLinkEntity): RepositoryContentInfo.ContentLink = RepositoryContentInfo.ContentLink(
                 entity.self,
