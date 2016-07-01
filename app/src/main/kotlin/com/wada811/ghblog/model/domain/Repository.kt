@@ -78,5 +78,6 @@ class Repository(
     fun getContents(user: User, path: String): Observable<List<RepositoryContentInfo>> = GitHubDataRepository.getContents(user, this, path)
     fun getContent(user: User, path: String): Observable<RepositoryContent> = GitHubDataRepository.getContent(user, this, path)
     fun createContent(user: User, commit: GitCommit): Observable<GitHubCommit> = GitHubDataRepository.createContent(user, this, commit)
+    fun updateContent(user: User, commit: GitCommit): Observable<GitHubCommit> = GitHubDataRepository.updateContent(user, this, commit)
     fun getTree(user: User): Observable<GitHubTree> = GitHubDataRepository.getTree(user, this)
 }

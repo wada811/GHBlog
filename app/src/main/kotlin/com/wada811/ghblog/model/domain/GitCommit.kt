@@ -5,7 +5,8 @@ import org.apache.commons.codec.binary.Base64
 class GitCommit(
         var path: String,
         var message: String,
-        var content: String
+        var content: String,
+        var sha: String? = null
 ) {
     var encodedContent: String = Base64.encodeBase64String(content.toByteArray())
 }

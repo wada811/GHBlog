@@ -11,7 +11,7 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 class ArticleCreateViewModel : RxViewModel() {
-    var path: RxProperty<String> = RxProperty("").asManaged()
+    var path = RxProperty("").asManaged()
     var name = RxProperty("name").asManaged()
     var content = RxProperty("content").asManaged()
     var save = RxCommand(View.OnClickListener {

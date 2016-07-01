@@ -22,6 +22,10 @@ object GitHubDataRepository : GitHubRepository {
         return CloudGitHubDataStore(user).createContent(repository, commit)
     }
 
+    override fun updateContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
+        return CloudGitHubDataStore(user).updateContent(repository, commit)
+    }
+
     override fun getTree(user: User, repository: Repository): Observable<GitHubTree> {
         return CloudGitHubDataStore(user).getTree(repository)
     }
