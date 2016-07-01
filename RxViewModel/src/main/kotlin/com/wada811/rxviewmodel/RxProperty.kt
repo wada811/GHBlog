@@ -88,7 +88,7 @@ class RxProperty<T>(source: Observable<T>?, initialValue: T? = null, mode: EnumS
         if (isDistinctUntilChanged && compare(value, this.value)) {
             return
         }
-        subject.onNext(value);
+        subject.onNext(value)
     }
 
     private companion object {
