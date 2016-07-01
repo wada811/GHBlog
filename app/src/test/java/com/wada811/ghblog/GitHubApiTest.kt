@@ -6,7 +6,6 @@ import com.wada811.ghblog.model.domain.GitHubTree
 import com.wada811.ghblog.model.domain.RepositoryContent
 import com.wada811.ghblog.model.domain.RepositoryContentInfo
 import junit.framework.Assert.assertEquals
-import org.apache.commons.codec.binary.Base64
 import org.junit.Test
 
 class GitHubApiTest {
@@ -70,7 +69,7 @@ class GitHubApiTest {
                     System.out.println("repository.name: ${repository.name}")
                     repository.name.equals("blogtest")
                 }
-                repository.createContent(user, GitCommit("content/blog/test.md", "test message", Base64.encodeBase64String("content body".toByteArray())))
+                repository.createContent(user, GitCommit("content/blog/test.md", "test message", "content body"))
                 .subscribe({ gitHubCommit ->
                     System.out.println("gitHubCommit: $gitHubCommit")
                     assertEquals("onNext", gitHubCommit)
