@@ -13,18 +13,18 @@ class GitHubApiTest {
     @Test
     fun getRepositoryList() {
         UserDataRepository.user().subscribe { user ->
-            user.repositoryList.subscribe { repositoryList ->
+            user.repositoryList.subscribe({ repositoryList ->
                 repositoryList.forEach { repository ->
                     assertEquals("repository", repository.toString())
                 }
-            }
+            }, { System.out.println("error: $it") }, {})
         }
     }
 
     @Test
     fun getContents() {
         UserDataRepository.user().subscribe({ user ->
-            user.repositoryList.subscribe { repositoryList ->
+            user.repositoryList.subscribe({ repositoryList ->
                 val repository = repositoryList.first { repository ->
                     System.out.println("repository.name: ${repository.name}")
                     repository.name.equals("blogtest")
@@ -35,7 +35,7 @@ class GitHubApiTest {
                     }
                     assertEquals("onNext", "onNext")
                 }, { System.out.println("error: $it") }, {})
-            }
+            }, { System.out.println("error: $it") }, {})
         }, { System.out.println("error: $it") }, {})
     }
 
@@ -43,7 +43,7 @@ class GitHubApiTest {
     @Test
     fun getContent() {
         UserDataRepository.user().subscribe({ user ->
-            user.repositoryList.subscribe { repositoryList ->
+            user.repositoryList.subscribe({ repositoryList ->
                 val repository = repositoryList.first { repository ->
                     System.out.println("repository.name: ${repository.name}")
                     repository.name.equals("blogtest")
@@ -57,7 +57,7 @@ class GitHubApiTest {
                                 assertEquals("onNext", content.content)
                             }, { System.out.println("error: $it") }, {})
                 }, { System.out.println("error: $it") }, {})
-            }
+            }, { System.out.println("error: $it") }, {})
         }, { System.out.println("error: $it") }, {})
     }
 
@@ -101,7 +101,7 @@ class GitHubApiTest {
     @Test
     fun getTree() {
         UserDataRepository.user().subscribe({ user ->
-            user.repositoryList.subscribe { repositoryList ->
+            user.repositoryList.subscribe({ repositoryList ->
                 val repository = repositoryList.first { repository ->
                     System.out.println("repository.name: ${repository.name}")
                     repository.name.equals("wada811.com")
@@ -109,7 +109,7 @@ class GitHubApiTest {
                 repository.getTree(user).subscribe({ tree: GitHubTree ->
                     assertEquals("tree", tree.toString())
                 }, { System.out.println("error: $it") }, {})
-            }
+            }, { System.out.println("error: $it") }, {})
         }, { System.out.println("error: $it") }, {})
     }
 }
