@@ -9,13 +9,20 @@ import rx.subjects.SerializedSubject
 import java.util.*
 
 class RxProperty<T>(source: Observable<T>?, initialValue: T? = null, mode: EnumSet<RxProperty.Mode> = RxProperty.DEFAULT_MODE) : ObservableField<T>(initialValue), Subscription {
+
+    private companion object {
+        private val DEFAULT_MODE = EnumSet.of(Mode.DISTINCT_UNTIL_CHANGED, Mode.RAISE_LATEST_VALUE_ON_SUBSCRIBE)
+    }
+
     var value: T? = initialValue
         get() = super.get()
         set(value) {
-            emitValue(value)
-            if (!compare(value, field)) {
+            if (field != value) {
                 field = value
                 super.set(value)
+                subject.onNext(value)
+            } else if (!isDistinctUntilChanged) {
+                subject.onNext(value)
             }
         }
 
@@ -82,20 +89,6 @@ class RxProperty<T>(source: Observable<T>?, initialValue: T? = null, mode: EnumS
             sourceSubscription!!.unsubscribe()
         }
         sourceSubscription = null
-    }
-
-    private fun emitValue(value: T?) {
-        if (isDistinctUntilChanged && compare(value, this.value)) {
-            return
-        }
-        subject.onNext(value)
-    }
-
-    private companion object {
-        private val DEFAULT_MODE = EnumSet.of(Mode.DISTINCT_UNTIL_CHANGED, Mode.RAISE_LATEST_VALUE_ON_SUBSCRIBE)
-        private fun <T> compare(value1: T?, value2: T?): Boolean {
-            return (value1 == null && value2 == null) || (value1 != null && value1 == value2)
-        }
     }
 
 }

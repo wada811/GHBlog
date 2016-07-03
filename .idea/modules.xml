@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GHBlog.iml" filepath="$PROJECT_DIR$/GHBlog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/INotifyPropertyChanged/INotifyPropertyChanged.iml" filepath="$PROJECT_DIR$/INotifyPropertyChanged/INotifyPropertyChanged.iml" />
       <module fileurl="file://$PROJECT_DIR$/RxViewModel/RxViewModel.iml" filepath="$PROJECT_DIR$/RxViewModel/RxViewModel.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
