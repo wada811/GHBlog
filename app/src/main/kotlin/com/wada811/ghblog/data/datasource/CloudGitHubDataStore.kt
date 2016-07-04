@@ -1,5 +1,6 @@
 package com.wada811.ghblog.data.datasource
 
+import android.util.Log
 import com.wada811.ghblog.data.entity.RepositoryEntity
 import com.wada811.ghblog.data.entity.RepositoryEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.GitTreeEntityDataMapper
@@ -67,7 +68,7 @@ class CloudGitHubDataStore(var user: User) {
     fun createContent(repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
         return Observable.defer {
             val request = CreateContentRequest(repository.owner.login, repository.name, commit.path,
-                    CreateContentRequest.CreateContentCommitRequest(commit.path, commit.message, commit.encodedContent)
+                    CreateContentRequest.CreateContentCommitRequest(commit.path, commit.message, commit.encodedContent())
             )
             GitHubApi(user).createContent(request)
                     .map {
@@ -124,7 +125,7 @@ class CloudGitHubDataStore(var user: User) {
     fun updateContent(repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
         return Observable.defer {
             val request = UpdateContentRequest(repository.owner.login, repository.name, commit.path,
-                    UpdateContentRequest.UpdateContentCommitRequest(commit.path, commit.message, commit.encodedContent, commit.sha!!)
+                    UpdateContentRequest.UpdateContentCommitRequest(commit.path, commit.message, commit.encodedContent(), commit.sha!!)
             )
             GitHubApi(user).updateContent(request)
                     .map {

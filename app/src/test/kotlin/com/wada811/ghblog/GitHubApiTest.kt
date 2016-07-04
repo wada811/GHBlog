@@ -49,7 +49,7 @@ class GitHubApiTest {
                     repository.name.equals("blogtest")
                 }
                 repository.getContents(user, "content/blog").subscribe({ repositoryContentInfoList: List<RepositoryContentInfo> ->
-                    repositoryContentInfoList.first { it.name.equals("undo-git-reset.md") }
+                    repositoryContentInfoList.first { it.name.equals("test.md") }
                             .getContent(user, repository)
                             .subscribe({ content: RepositoryContent ->
                                 System.out.println("content.encoding: ${content.encoding}")

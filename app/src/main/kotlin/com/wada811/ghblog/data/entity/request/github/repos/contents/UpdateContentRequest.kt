@@ -6,7 +6,7 @@ data class UpdateContentRequest(
         val path: String,
         val commit: UpdateContentCommitRequest
 ) {
-    class UpdateContentCommitRequest(
+    data class UpdateContentCommitRequest(
             val path: String,
             val message: String,
             val content: String,

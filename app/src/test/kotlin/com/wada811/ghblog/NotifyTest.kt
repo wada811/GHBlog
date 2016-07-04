@@ -31,7 +31,7 @@ class NotifyTest {
         commit.path = "path4"
         subscribe.unsubscribe()
         commit.path = "path5"
-        val subscribe2 = commit.ObserveProperty { it.path }.subscribe{ it: String? ->
+        val subscribe2 = commit.ObserveProperty("path", { it.path }).subscribe { it ->
             System.out.println("ObserveProperty: it: " + it)
             System.out.println("ObserveProperty: commit.path: " + commit.path)
             Assert.assertEquals("path6", it)
@@ -39,7 +39,7 @@ class NotifyTest {
         commit.path = "path6"
         subscribe2.unsubscribe()
         commit.path = "path7"
-        val rxPath = commit.ObserveProperty { it.path }.toRxProperty(commit.path, EnumSet.of(RxProperty.Mode.DISTINCT_UNTIL_CHANGED))
+        val rxPath = commit.ObserveProperty("path", { it.path }).toRxProperty(commit.path, EnumSet.of(RxProperty.Mode.DISTINCT_UNTIL_CHANGED))
         val subscribe3 = rxPath.asObservable().subscribe {
             System.out.println("RxProperty: it: " + it)
             System.out.println("RxProperty: commit.path: " + commit.path)
@@ -48,5 +48,14 @@ class NotifyTest {
         commit.path = "path8"
         subscribe3.unsubscribe()
         commit.path = "path9"
+        val rxPath2 = commit.ObserveProperty("path", { it.path }).map { it.toUpperCase() }.toRxProperty(commit.path.toUpperCase(), EnumSet.of(RxProperty.Mode.DISTINCT_UNTIL_CHANGED))
+        val subscribe4 = rxPath2.asObservable().subscribe {
+            System.out.println("RxProperty: it: " + it)
+            System.out.println("RxProperty: commit.path: " + commit.path)
+            Assert.assertEquals("PATH10", it)
+        }
+        commit.path = "path10"
+        subscribe4.unsubscribe()
+        commit.path = "path11"
     }
 }

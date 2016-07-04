@@ -22,10 +22,11 @@ class ArticleCreateViewModel : RxViewModel() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         Log.e("wada", "currentRepository.createContent.onNext")
-                    },
-                            { Log.e("wada", "currentRepository.createContent.onError", it) },
-                            { Log.e("wada", "currentRepository.createContent.onComplete") }
-                    )
+                    }, {
+                        Log.e("wada", "currentRepository.createContent.onError", it)
+                    }, {
+                        Log.e("wada", "currentRepository.createContent.onComplete")
+                    })
         }
     }).asManaged()
 }

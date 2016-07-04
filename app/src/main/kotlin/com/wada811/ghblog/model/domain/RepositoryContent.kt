@@ -1,6 +1,6 @@
 package com.wada811.ghblog.model.domain
 
-import org.apache.commons.codec.binary.Base64
+import com.wada811.ghblog.util.Base64
 
 class RepositoryContent(
         name: String,
@@ -30,6 +30,6 @@ class RepositoryContent(
     lateinit var content: String
 
     init {
-        content = String(Base64.decodeBase64(encodedContent))
+        content = String(Base64.decode(encodedContent, Base64.NO_WRAP))
     }
 }
