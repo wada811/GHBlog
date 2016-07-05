@@ -1,17 +1,32 @@
 package com.wada811.ghblog.domain.model
 
+import com.wada811.notifypropertychanged.INotifyPropertyChanged
+import com.wada811.notifypropertychanged.PropertyChangedDelegate
+
 class GitHubTree(
-        var sha: String,
-        var url: String,
-        var tree: List<Node>? = null,
-        var truncated: Boolean? = null
-){
+        sha: String,
+        url: String,
+        tree: List<Node>? = null,
+        truncated: Boolean? = null
+) : INotifyPropertyChanged {
+    var sha: String by PropertyChangedDelegate(sha)
+    var url: String by PropertyChangedDelegate(url)
+    var tree: List<Node>? by PropertyChangedDelegate(tree)
+    var truncated: Boolean? by PropertyChangedDelegate(truncated)
+
     class Node(
-            var path: String,
-            var mode: String,
-            var type: String,
-            var size: Int,
-            var sha: String,
-            var url: String
-    )
+            path: String,
+            mode: String,
+            type: String,
+            size: Int,
+            sha: String,
+            url: String
+    ) : INotifyPropertyChanged {
+        var path: String  by PropertyChangedDelegate(path)
+        var mode: String  by PropertyChangedDelegate(mode)
+        var type: String  by PropertyChangedDelegate(type)
+        var size: Int  by PropertyChangedDelegate(size)
+        var sha: String  by PropertyChangedDelegate(sha)
+        var url: String by PropertyChangedDelegate(url)
+    }
 }
