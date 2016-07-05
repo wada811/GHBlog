@@ -1,6 +1,6 @@
 package com.wada811.ghblog
 
-import com.wada811.ghblog.model.domain.GitCommit
+import com.wada811.ghblog.domain.model.GitCommit
 import com.wada811.notifypropertychanged.PropertyChangedEventArgs
 import com.wada811.rxviewmodel.RxProperty
 import com.wada811.rxviewmodel.extensions.ObserveProperty

@@ -1,18 +1,27 @@
 package com.wada811.ghblog
 
+import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
-import com.wada811.ghblog.model.domain.GitCommit
-import com.wada811.ghblog.model.domain.GitHubTree
-import com.wada811.ghblog.model.domain.RepositoryContent
-import com.wada811.ghblog.model.domain.RepositoryContentInfo
+import com.wada811.ghblog.domain.GHBlogContext
+import com.wada811.ghblog.domain.model.GitCommit
+import com.wada811.ghblog.domain.model.GitHubTree
+import com.wada811.ghblog.domain.model.RepositoryContent
+import com.wada811.ghblog.domain.model.RepositoryContentInfo
 import junit.framework.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 
 class GitHubApiTest {
 
+    @Before
+    fun init() {
+        GHBlogContext.userRepository = UserDataRepository()
+        GHBlogContext.gitHubRepository = GitHubDataRepository()
+    }
+
     @Test
     fun getRepositoryList() {
-        UserDataRepository.user().subscribe { user ->
+        GHBlogContext.userRepository.user().subscribe { user ->
             user.repositoryList.subscribe({ repositoryList ->
                 repositoryList.forEach { repository ->
                     assertEquals("repository", repository.toString())
@@ -23,7 +32,7 @@ class GitHubApiTest {
 
     @Test
     fun getContents() {
-        UserDataRepository.user().subscribe({ user ->
+        GHBlogContext.userRepository.user().subscribe({ user ->
             user.repositoryList.subscribe({ repositoryList ->
                 val repository = repositoryList.first { repository ->
                     System.out.println("repository.name: ${repository.name}")
@@ -42,7 +51,7 @@ class GitHubApiTest {
 
     @Test
     fun getContent() {
-        UserDataRepository.user().subscribe({ user ->
+        GHBlogContext.userRepository.user().subscribe({ user ->
             user.repositoryList.subscribe({ repositoryList ->
                 val repository = repositoryList.first { repository ->
                     System.out.println("repository.name: ${repository.name}")
@@ -63,7 +72,7 @@ class GitHubApiTest {
 
     @Test
     fun createContent() {
-        UserDataRepository.user().subscribe({ user ->
+        GHBlogContext.userRepository.user().subscribe({ user ->
             user.repositoryList.subscribe({ repositoryList ->
                 val repository = repositoryList.first { repository ->
                     System.out.println("repository.name: ${repository.name}")
@@ -80,7 +89,7 @@ class GitHubApiTest {
 
     @Test
     fun updateContent() {
-        UserDataRepository.user().subscribe({ user ->
+        GHBlogContext.userRepository.user().subscribe({ user ->
             user.repositoryList.subscribe({ repositoryList ->
                 val repository = repositoryList.first { repository ->
                     System.out.println("repository.name: ${repository.name}")
@@ -100,7 +109,7 @@ class GitHubApiTest {
 
     @Test
     fun getTree() {
-        UserDataRepository.user().subscribe({ user ->
+        GHBlogContext.userRepository.user().subscribe({ user ->
             user.repositoryList.subscribe({ repositoryList ->
                 val repository = repositoryList.first { repository ->
                     System.out.println("repository.name: ${repository.name}")

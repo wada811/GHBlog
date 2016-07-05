@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+    compileSdkVersion globalConfiguration.getAt("compileSdkVersion")
+    buildToolsVersion globalConfiguration.getAt("buildToolsVersion")
+
+    defaultConfig {
+        minSdkVersion globalConfiguration.getAt("minSdkVersion")
+        targetSdkVersion globalConfiguration.getAt("targetSdkVersion")
+        versionCode globalConfiguration.getAt("versionCode")
+        versionName globalConfiguration.getAt("versionName")
+        testInstrumentationRunner globalConfiguration.getAt("testInstrumentationRunner")
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    def dependencies = rootProject.ext.dataDependencies
+    def testDependencies = rootProject.ext.dataTestDependencies
+    compile dependencies.kotlin
+    testCompile testDependencies.junit
+    compile dependencies.appcompat
+    compile dependencies.rxjava
+    compile dependencies.okhttp
+    compile dependencies.okhttpUrlconnection
+    compile dependencies.retrofit
+    compile dependencies.retrofitRxJavaAdapter
+    compile dependencies.retrofitMoshiConverter
+    compile project(":domain")
+    compile dependencies.threetenabp
+}

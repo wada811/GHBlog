@@ -3,8 +3,8 @@ package com.wada811.ghblog.viewmodel
 import android.util.Log
 import android.view.View
 import com.wada811.ghblog.App
-import com.wada811.ghblog.model.domain.GitCommit
-import com.wada811.ghblog.model.domain.RepositoryContent
+import com.wada811.ghblog.domain.model.GitCommit
+import com.wada811.ghblog.domain.model.RepositoryContent
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxViewModel
 import com.wada811.rxviewmodel.extensions.ObserveProperty

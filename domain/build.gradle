@@ -1,0 +1,20 @@
+apply plugin: 'kotlin'
+
+//noinspection GroovyUnusedAssignment
+sourceCompatibility = 1.7
+//noinspection GroovyUnusedAssignment
+targetCompatibility = 1.7
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
+
+dependencies {
+    def dependencies = rootProject.ext.domainDependencies
+    def testDependencies = rootProject.ext.domainTestDependencies
+    compile dependencies.kotlin
+    testCompile testDependencies.junit
+    compile dependencies.rxjava
+    compile project(':INotifyPropertyChanged')
+    compile dependencies.threetenbp
+}

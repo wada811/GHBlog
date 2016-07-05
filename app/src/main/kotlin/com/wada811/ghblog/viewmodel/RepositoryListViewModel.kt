@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import com.wada811.ghblog.App
-import com.wada811.ghblog.model.domain.Repository
+import com.wada811.ghblog.domain.model.Repository
 import com.wada811.ghblog.view.activity.RepositoryListActivity
 import com.wada811.rxviewmodel.*
 import com.wada811.rxviewmodel.extensions.toRxCommand

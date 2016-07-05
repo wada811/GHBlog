@@ -11,6 +11,8 @@
             <option value="$PROJECT_DIR$/INotifyPropertyChanged" />
             <option value="$PROJECT_DIR$/RxViewModel" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/data" />
+            <option value="$PROJECT_DIR$/domain" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

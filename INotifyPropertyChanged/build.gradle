@@ -1,10 +1,17 @@
 apply plugin: 'kotlin'
 
+//noinspection GroovyUnusedAssignment
+sourceCompatibility = 1.7
+//noinspection GroovyUnusedAssignment
+targetCompatibility = 1.7
+
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    def dependencies = rootProject.ext.INotifyPropertyChnagedDependencies
+    def testDependencies = rootProject.ext.INotifyPropertyChnagedTestDependencies
+    compile dependencies.kotlin
+    testCompile testDependencies.junit
 }

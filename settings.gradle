@@ -1,1 +1,1 @@
-include ':app', ':RxViewModel', ':INotifyPropertyChanged'
+include ':app', ':data', ':domain', ':RxViewModel', ':INotifyPropertyChanged'

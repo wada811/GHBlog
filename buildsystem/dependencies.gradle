@@ -1,0 +1,84 @@
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+ext {
+    // Android
+    compileSdkVersion = 24
+    buildToolsVersion = "24.0.0"
+    minSdkVersion = 16
+    targetSdkVersion = 24
+
+    // GHBlog
+    applicationId = "com.wada811.ghblog"
+    versionCode = 1
+    versionName = "1.0"
+    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+
+    // Library
+    androidSupportVersion = "24.0.0"
+    rxjavaVersion = "1.1.5"
+    rxandroidVersion = "1.2.0"
+    okhttpVersion = "2.0.0"
+    retrofitVersion = "2.0.0-beta2"
+    threetenabpVersion = "1.0.3"
+    threetenbpVersion = "1.3.1"
+
+    // Development
+    leakCanaryVersion = "1.4-beta2"
+
+    // Testing
+    junitVersion = '4.12'
+
+    appDependencies = [
+            kotlin     : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            appcompat  : "com.android.support:appcompat-v7:$androidSupportVersion",
+            rxjava     : "io.reactivex:rxjava:$rxjavaVersion",
+            rxandroid  : "io.reactivex:rxandroid:$rxandroidVersion",
+            threetenabp: "com.jakewharton.threetenabp:threetenabp:$threetenabpVersion",
+            debugLeakCanary: "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion",
+            releaseLeakCanary: "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion",
+            testLeakCanary: "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion",
+    ]
+    appTestDependencies = [
+            junit: "junit:junit:$junitVersion"
+    ]
+    dataDependencies = [
+            kotlin                : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            appcompat             : "com.android.support:appcompat-v7:$androidSupportVersion",
+            rxjava                : "io.reactivex:rxjava:$rxjavaVersion",
+            okhttp                : "com.squareup.okhttp:okhttp:$okhttpVersion",
+            okhttpUrlconnection   : "com.squareup.okhttp:okhttp-urlconnection:$okhttpVersion",
+            retrofit              : "com.squareup.retrofit:retrofit:$retrofitVersion",
+            retrofitRxJavaAdapter : "com.squareup.retrofit:adapter-rxjava:$retrofitVersion",
+            retrofitMoshiConverter: "com.squareup.retrofit:converter-moshi:$retrofitVersion",
+            threetenabp           : "com.jakewharton.threetenabp:threetenabp:$threetenabpVersion",
+    ]
+    dataTestDependencies = [
+            junit: "junit:junit:$junitVersion"
+    ]
+    domainDependencies = [
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            rxjava: "io.reactivex:rxjava:$rxjavaVersion",
+            threetenbp: "org.threeten:threetenbp:$threetenbpVersion:no-tzdb"
+    ]
+    domainTestDependencies = [
+            junit: "junit:junit:$junitVersion"
+    ]
+    RxViewModelDependencies = [
+            kotlin   : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            appcompat: "com.android.support:appcompat-v7:$androidSupportVersion",
+            rxjava   : "io.reactivex:rxjava:$rxjavaVersion"
+    ]
+    RxViewModelTestDependencies = [
+            junit: "junit:junit:$junitVersion"
+    ]
+    INotifyPropertyChnagedDependencies = [
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+    ]
+    INotifyPropertyChnagedTestDependencies = [
+            junit: "junit:junit:$junitVersion"
+    ]
+}
