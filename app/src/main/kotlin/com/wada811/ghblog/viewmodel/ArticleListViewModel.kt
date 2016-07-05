@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import com.wada811.ghblog.App
+import com.wada811.ghblog.domain.model.RepositoryContent
 import com.wada811.ghblog.view.activity.ArticleListActivity
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxMessenger
@@ -34,7 +35,7 @@ class ArticleListViewModel : RxViewModel() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         Log.e("wada", "currentRepository.getContents.onNext")
-                        articleViewModelList.addAll(it.map { ArticleListItemViewModel(it) })
+                        articleViewModelList.addAll(it.map { ArticleListItemViewModel(RepositoryContent(it)) })
                     }, { Log.e("wada", "currentRepository.getContents.onError", it) }, { Log.e("wada", "currentRepository.getContents.onComplete") })
         }
 

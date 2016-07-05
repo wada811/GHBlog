@@ -1,6 +1,8 @@
 package com.wada811.ghblog.domain.model
 
 import com.wada811.ghblog.domain.util.Base64
+import com.wada811.notifypropertychanged.INotifyPropertyChanged
+import com.wada811.notifypropertychanged.PropertyChangedDelegate
 
 class RepositoryContent(
         name: String,
@@ -13,8 +15,8 @@ class RepositoryContent(
         downloadUrl: String,
         type: String,
         contentLink: ContentLink,
-        val encoding: String,
-        val encodedContent: String
+        encoding: String = "",
+        encodedContent: String = ""
 ) : RepositoryContentInfo(
         name,
         path,
@@ -26,10 +28,24 @@ class RepositoryContent(
         downloadUrl,
         type,
         contentLink
-) {
-    lateinit var content: String
+), INotifyPropertyChanged {
+    var encoding: String by PropertyChangedDelegate(encoding)
+    var encodedContent: String by PropertyChangedDelegate(encodedContent)
+    var content: String by PropertyChangedDelegate(String(Base64.decode(encodedContent, Base64.NO_WRAP)))
 
-    init {
-        content = String(Base64.decode(encodedContent, Base64.NO_WRAP))
+    constructor(repositoryContentInfo: RepositoryContentInfo) : this(
+            repositoryContentInfo.name,
+            repositoryContentInfo.path,
+            repositoryContentInfo.sha,
+            repositoryContentInfo.size,
+            repositoryContentInfo.url,
+            repositoryContentInfo.htmlUrl,
+            repositoryContentInfo.gitUrl,
+            repositoryContentInfo.downloadUrl,
+            repositoryContentInfo.type,
+            repositoryContentInfo.contentLink,
+            "",
+            ""
+    ) {
     }
 }
