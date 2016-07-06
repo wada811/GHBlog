@@ -16,7 +16,7 @@ class NotifyTest {
         val commit = GitCommit("path", "message", "content")
         val sub = { sender: Any, e: PropertyChangedEventArgs ->
             System.out.println("PropertyChanged: e.PropertyName: " + e.PropertyName)
-            System.out.println("PropertyChanged: commit.path: " + (sender as GitCommit).path)
+            System.out.println("PropertyChanged: createCommit.path: " + (sender as GitCommit).path)
             Assert.assertEquals("path2", sender.path)
         }
         commit.PropertyChanged += sub
@@ -25,7 +25,7 @@ class NotifyTest {
         commit.path = "path3"
         val subscribe = commit.PropertyChangedAsObservable().subscribe {
             System.out.println("PropertyChangedAsObservable: it.PropertyName: " + it.PropertyName)
-            System.out.println("PropertyChangedAsObservable: commit.path: " + commit.path)
+            System.out.println("PropertyChangedAsObservable: createCommit.path: " + commit.path)
             Assert.assertEquals("path4", commit.path)
         }
         commit.path = "path4"
@@ -33,7 +33,7 @@ class NotifyTest {
         commit.path = "path5"
         val subscribe2 = commit.ObserveProperty("path", { it.path }).subscribe { it ->
             System.out.println("ObserveProperty: it: " + it)
-            System.out.println("ObserveProperty: commit.path: " + commit.path)
+            System.out.println("ObserveProperty: createCommit.path: " + commit.path)
             Assert.assertEquals("path6", it)
         }
         commit.path = "path6"
@@ -42,7 +42,7 @@ class NotifyTest {
         val rxPath = commit.ObserveProperty("path", { it.path }).toRxProperty(commit.path, EnumSet.of(RxProperty.Mode.DISTINCT_UNTIL_CHANGED))
         val subscribe3 = rxPath.asObservable().subscribe {
             System.out.println("RxProperty: it: " + it)
-            System.out.println("RxProperty: commit.path: " + commit.path)
+            System.out.println("RxProperty: createCommit.path: " + commit.path)
             Assert.assertEquals("path8", it)
         }
         commit.path = "path8"
@@ -51,7 +51,7 @@ class NotifyTest {
         val rxPath2 = commit.ObserveProperty("path", { it.path }).map { it.toUpperCase() }.toRxProperty(commit.path.toUpperCase(), EnumSet.of(RxProperty.Mode.DISTINCT_UNTIL_CHANGED))
         val subscribe4 = rxPath2.asObservable().subscribe {
             System.out.println("RxProperty: it: " + it)
-            System.out.println("RxProperty: commit.path: " + commit.path)
+            System.out.println("RxProperty: createCommit.path: " + commit.path)
             Assert.assertEquals("PATH10", it)
         }
         commit.path = "path10"

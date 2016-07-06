@@ -4,7 +4,7 @@ import android.databinding.ObservableArrayList
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import com.wada811.ghblog.App
+import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.domain.model.Repository
 import com.wada811.ghblog.view.activity.RepositoryListActivity
 import com.wada811.rxviewmodel.*
@@ -28,20 +28,22 @@ class RepositoryListViewModel : RxViewModel() {
             .toRxCommand(View.OnClickListener {
                 Log.e("wada", "save button clicked!")
                 Log.e("wada", "selectedRepository: " + selectedRepository.value!!.name)
-                App.currentRepository = selectedRepository.value
+                GHBlogContext.currentUser.currentRepository = selectedRepository.value
                 RxMessenger.send(RepositoryListActivity.NextAction())
             })
             .asManaged()
 
     init {
-        App.user.subscribe { user ->
-            user.repositoryList
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        Log.e("wada", "user.repositoryList.onNext")
-                        repositoryViewModelList.addAll(it.map { RepositoryListItemViewModel(it) })
-                    }, { Log.e("wada", "user.repositoryList.onError", it) }, { Log.e("wada", "user.repositoryList.onComplete") })
-        }
+        GHBlogContext.currentUser.repositoryList
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.e("wada", "user.repositoryList.onNext")
+                    repositoryViewModelList.addAll(it.map { RepositoryListItemViewModel(it) })
+                }, {
+                    Log.e("wada", "user.repositoryList.onError", it)
+                }, {
+                    Log.e("wada", "user.repositoryList.onComplete")
+                })
     }
 }

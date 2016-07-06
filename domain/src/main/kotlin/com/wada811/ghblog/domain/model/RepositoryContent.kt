@@ -33,6 +33,8 @@ class RepositoryContent(
     var encodedContent: String by PropertyChangedDelegate(encodedContent)
     var content: String by PropertyChangedDelegate(String(Base64.decode(encodedContent, Base64.NO_WRAP)))
 
+    fun createCommit(message: String) = GitCommit(path, message, content, sha)
+
     constructor(repositoryContentInfo: RepositoryContentInfo) : this(
             repositoryContentInfo.name,
             repositoryContentInfo.path,
@@ -43,9 +45,7 @@ class RepositoryContent(
             repositoryContentInfo.gitUrl,
             repositoryContentInfo.downloadUrl,
             repositoryContentInfo.type,
-            repositoryContentInfo.contentLink,
-            "",
-            ""
+            repositoryContentInfo.contentLink
     ) {
     }
 }

@@ -147,6 +147,8 @@ class Repository(
     var defaultBranch: String by PropertyChangedDelegate(defaultBranch)
     var permissions: Permission by PropertyChangedDelegate(permissions)
 
+    var currentRepositoryContent: RepositoryContent? by PropertyChangedDelegate(null)
+
     fun getContents(user: User, path: String): Observable<List<RepositoryContentInfo>> = GHBlogContext.gitHubRepository.getContents(user, this, path)
     fun getContent(user: User, path: String): Observable<RepositoryContent> = GHBlogContext.gitHubRepository.getContent(user, this, path)
     fun createContent(user: User, commit: GitCommit): Observable<GitHubCommit> = GHBlogContext.gitHubRepository.createContent(user, this, commit)
