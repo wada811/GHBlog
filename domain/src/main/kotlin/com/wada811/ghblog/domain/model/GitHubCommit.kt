@@ -2,6 +2,7 @@ package com.wada811.ghblog.domain.model
 
 import com.wada811.notifypropertychanged.INotifyPropertyChanged
 import com.wada811.notifypropertychanged.PropertyChangedDelegate
+import org.threeten.bp.ZonedDateTime
 
 class GitHubCommit(
         content: RepositoryContentInfo?,
@@ -30,11 +31,11 @@ class GitHubCommit(
         var parents: List<GitHubReference> by PropertyChangedDelegate(parents)
 
         class Author(
-                date: String,
+                date: ZonedDateTime,
                 name: String,
                 email: String
         ) : INotifyPropertyChanged {
-            var date: String by PropertyChangedDelegate(date)
+            var date: ZonedDateTime by PropertyChangedDelegate(date)
             var name: String by PropertyChangedDelegate(name)
             var email: String by PropertyChangedDelegate(email)
         }

@@ -1,5 +1,7 @@
 package com.wada811.ghblog.data.entity.response.github.repos.contents
 
+import org.threeten.bp.ZonedDateTime
+
 data class UpdateContentResponse(
         val content: UpdateContentContentResponse,
         val commit: UpdateContentCommitResponse
@@ -34,7 +36,7 @@ data class UpdateContentResponse(
             val parents: List<UpdateContentCommitGitReferenceResponse>
     ) {
         data class UpdateContentCommitAuthorResponse(
-                val date: String,
+                val date: ZonedDateTime,
                 val name: String,
                 val email: String
         )

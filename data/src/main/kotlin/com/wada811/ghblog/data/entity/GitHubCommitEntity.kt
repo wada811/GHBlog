@@ -1,5 +1,7 @@
 package com.wada811.ghblog.data.entity
 
+import org.threeten.bp.ZonedDateTime
+
 data class GitHubCommitEntity(
         var content: RepositoryContentInfoEntity,
         var commit: CommitEntity
@@ -15,7 +17,7 @@ data class GitHubCommitEntity(
             var parents: List<CommitEntity>
     ) {
         data class AuthorEntity(
-                var date: String,
+                var date: ZonedDateTime,
                 var name: String,
                 var email: String
         )

@@ -1,5 +1,7 @@
 package com.wada811.ghblog.data.entity.response.github.repos.contents
 
+import org.threeten.bp.ZonedDateTime
+
 data class DeleteContentResponse(
         val content: DeleteContentContentResponse,
         val commit: DeleteContentCommitResponse
@@ -34,7 +36,7 @@ data class DeleteContentResponse(
             val parents: List<DeleteContentCommitGitReferenceResponse>
     ) {
         data class DeleteContentCommitAuthorResponse(
-                val date: String,
+                val date: ZonedDateTime,
                 val name: String,
                 val email: String
         )
