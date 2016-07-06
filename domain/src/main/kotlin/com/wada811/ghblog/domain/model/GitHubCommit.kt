@@ -4,10 +4,10 @@ import com.wada811.notifypropertychanged.INotifyPropertyChanged
 import com.wada811.notifypropertychanged.PropertyChangedDelegate
 
 class GitHubCommit(
-        content: RepositoryContentInfo,
+        content: RepositoryContentInfo?,
         commit: Commit
 ) : INotifyPropertyChanged {
-    var content: RepositoryContentInfo by PropertyChangedDelegate(content)
+    var content: RepositoryContentInfo? by PropertyChangedDelegate(content)
     var commit: Commit by PropertyChangedDelegate(commit)
 
     class Commit(

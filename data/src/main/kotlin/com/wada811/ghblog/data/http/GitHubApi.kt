@@ -6,6 +6,7 @@ import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.ResponseBody
 import com.wada811.ghblog.data.entity.*
 import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
+import com.wada811.ghblog.data.entity.request.github.repos.contents.DeleteContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
 import com.wada811.ghblog.data.http.adapter.ZonedDateTimeAdapter
 import com.wada811.ghblog.domain.model.User
@@ -51,6 +52,7 @@ class GitHubApi(var user: User) {
     fun getContent(owner: String, repo: String, path: String): Observable<Response<RepositoryContentEntity>> = client.getContent(owner, repo, path)
     fun createContent(request: CreateContentRequest) = client.createContent(request.owner, request.repo, request.path, request.commit)
     fun updateContent(request: UpdateContentRequest) = client.updateContent(request.owner, request.repo, request.path, request.commit)
+    fun deleteContent(request: DeleteContentRequest) = client.deleteContent(request.owner, request.repo, request.path, request.commit.getQueryMap())
 
     fun getReference(owner: String, repo: String, ref: String): Observable<Response<ReferenceEntity>> = client.getReference(owner, repo, ref)
 

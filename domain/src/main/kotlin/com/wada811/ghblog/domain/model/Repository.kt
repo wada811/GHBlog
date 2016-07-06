@@ -153,5 +153,6 @@ class Repository(
     fun getContent(user: User, path: String): Observable<RepositoryContent> = GHBlogContext.gitHubRepository.getContent(user, this, path)
     fun createContent(user: User, commit: GitCommit): Observable<GitHubCommit> = GHBlogContext.gitHubRepository.createContent(user, this, commit)
     fun updateContent(user: User, commit: GitCommit): Observable<GitHubCommit> = GHBlogContext.gitHubRepository.updateContent(user, this, commit)
+    fun deleteContent(user: User, commit: GitCommit): Observable<GitHubCommit> = GHBlogContext.gitHubRepository.deleteContent(user, this, commit)
     fun getTree(user: User): Observable<GitHubTree> = GHBlogContext.gitHubRepository.getTree(user, this)
 }

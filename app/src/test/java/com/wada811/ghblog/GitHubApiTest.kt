@@ -108,6 +108,26 @@ class GitHubApiTest {
     }
 
     @Test
+    fun deleteContent() {
+        GHBlogContext.userRepository.user().subscribe({ user ->
+            user.repositoryList.subscribe({ repositoryList ->
+                val repository = repositoryList.first { repository ->
+                    System.out.println("repository.name: ${repository.name}")
+                    repository.name.equals("blogtest")
+                }
+                val path = "content/blog/test.md"
+                repository.getContent(user, path).subscribe({
+                    repository.deleteContent(user, it.createCommit("delete test message"))
+                            .subscribe({ gitHubCommit ->
+                                System.out.println("gitHubCommit: $gitHubCommit")
+                                assertEquals("onNext", gitHubCommit)
+                            }, { System.out.println("error: $it") }, {})
+                }, { System.out.println("error: $it") }, {})
+            }, { System.out.println("error: $it") }, {})
+        }, { System.out.println("error: $it") }, {})
+    }
+
+    @Test
     fun getTree() {
         GHBlogContext.userRepository.user().subscribe({ user ->
             user.repositoryList.subscribe({ repositoryList ->
