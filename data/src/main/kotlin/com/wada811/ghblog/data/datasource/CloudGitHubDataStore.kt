@@ -5,6 +5,7 @@ import com.wada811.ghblog.data.entity.mapper.GitTreeEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.RepositoryContentEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.RepositoryContentInfoEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.RepositoryEntityDataMapper
+import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.DeleteContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
@@ -234,6 +235,40 @@ class CloudGitHubDataStore(var user: User) {
                     GitTreeEntityDataMapper.transform(it.body())
                 }
         }
+    }
 
+    fun createGitTree(repository: Repository, tree: GitTree): Observable<GitHubTree> {
+        return Observable.defer {
+            val request = CreateTreeRequest(repository.owner.login, repository.name,
+                listOf(
+                    CreateTreeRequest.CreateTreeTreeRequest(
+                        tree.path,
+                        tree.mode,
+                        tree.type,
+                        tree.sha,
+                        tree.content
+                    )
+                ),
+                tree.baseTree
+            )
+            GitHubApi(user).createGitTree(request)
+                .map {
+                    val response = it.body()
+                    GitHubTree(
+                        response.sha,
+                        response.url,
+                        listOf(
+                            GitHubTree.Node(
+                                response.tree.path,
+                                response.tree.mode,
+                                response.tree.type,
+                                response.tree.size,
+                                response.tree.sha,
+                                response.tree.url
+                            )
+                        )
+                    )
+                }
+        }
     }
 }

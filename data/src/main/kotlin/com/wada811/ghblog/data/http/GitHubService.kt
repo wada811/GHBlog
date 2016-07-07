@@ -2,9 +2,11 @@ package com.wada811.ghblog.data.http
 
 import com.wada811.ghblog.data.entity.*
 import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
+import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
 import com.wada811.ghblog.data.entity.response.github.git.commits.CreateCommitResponse
+import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.CreateContentResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.DeleteContentResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.UpdateContentResponse
@@ -51,4 +53,8 @@ interface GitHubService {
 
     @GET("/repos/{owner}/{repo}/git/trees/{sha}")
     fun getGitTree(@Path("owner") owner: String, @Path("repo") repo: String, @Path("sha") sha: String): Observable<Response<GitTreeEntity>>
+
+    @POST("/repos/{owner}/{repo}/git/trees")
+    fun createGitTree(@Path("owner") owner: String, @Path("repo") repo: String, @Body tree: List<CreateTreeRequest.CreateTreeTreeRequest>,
+                      @Body base_tree: String): Observable<Response<CreateTreeResponse>>
 }

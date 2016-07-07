@@ -11,4 +11,5 @@ interface GitHubRepository {
     fun updateContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit>
     fun deleteContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit>
     fun getTree(user: User, repository: Repository): Observable<GitHubTree>
+    fun createTree(user: User, repository: Repository, gitTree: GitTree): Observable<GitHubTree>
 }

@@ -6,9 +6,11 @@ import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.ResponseBody
 import com.wada811.ghblog.data.entity.*
 import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
+import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.DeleteContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
+import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse
 import com.wada811.ghblog.data.http.adapter.ZonedDateTimeAdapter
 import com.wada811.ghblog.domain.model.User
 import org.threeten.bp.ZonedDateTime
@@ -59,5 +61,6 @@ class GitHubApi(var user: User) {
     fun getReference(owner: String, repo: String, ref: String): Observable<Response<ReferenceEntity>> = client.getReference(owner, repo, ref)
 
     fun getGitTree(owner: String, repo: String, sha: String): Observable<Response<GitTreeEntity>> = client.getGitTree(owner, repo, sha)
+    fun createGitTree(request: CreateTreeRequest): Observable<Response<CreateTreeResponse>> = client.createGitTree(request.owner, request.repo, request.tree, request.base_tree)
 
 }

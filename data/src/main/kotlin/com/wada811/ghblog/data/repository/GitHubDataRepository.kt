@@ -33,4 +33,8 @@ class GitHubDataRepository : GitHubRepository {
     override fun getTree(user: User, repository: Repository): Observable<GitHubTree> {
         return CloudGitHubDataStore(user).getTree(repository)
     }
+
+    override fun createTree(user: User, repository: Repository, gitTree: GitTree): Observable<GitHubTree> {
+        return CloudGitHubDataStore(user).createGitTree(repository, gitTree)
+    }
 }
