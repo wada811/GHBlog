@@ -55,6 +55,7 @@ class GitHubApi(var user: User) {
     fun updateContent(request: UpdateContentRequest) = client.updateContent(request.owner, request.repo, request.path, request.commit)
     fun deleteContent(request: DeleteContentRequest) = client.deleteContent(request.owner, request.repo, request.path, request.commit.getQueryMap())
 
+    fun createCommit(request: CreateCommitRequest) = client.createCommit(request.owner, request.repo, request.commit)
     fun getReference(owner: String, repo: String, ref: String): Observable<Response<ReferenceEntity>> = client.getReference(owner, repo, ref)
 
     fun getGitTree(owner: String, repo: String, sha: String): Observable<Response<GitTreeEntity>> = client.getGitTree(owner, repo, sha)

@@ -1,8 +1,10 @@
 package com.wada811.ghblog.data.http
 
 import com.wada811.ghblog.data.entity.*
+import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
+import com.wada811.ghblog.data.entity.response.github.git.commits.CreateCommitResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.CreateContentResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.DeleteContentResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.UpdateContentResponse
@@ -31,12 +33,18 @@ interface GitHubService {
     @PUT("/repos/{owner}/{repo}/contents/{path}")
     fun createContent(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String,
                       @Body commit: CreateContentRequest.CreateContentCommitRequest): Observable<Response<CreateContentResponse>>
+
     @PUT("/repos/{owner}/{repo}/contents/{path}")
     fun updateContent(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String,
                       @Body commit: UpdateContentRequest.UpdateContentCommitRequest): Observable<Response<UpdateContentResponse>>
+
     @DELETE("/repos/{owner}/{repo}/contents/{path}")
     fun deleteContent(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String,
                       @QueryMap commit: Map<String, String>): Observable<Response<DeleteContentResponse>>
+
+    @POST("/repos/{owner}/{repo}/git/commits")
+    fun createCommit(@Path("owner") owner: String, @Path("repo") repo: String,
+                     @Body commit: CreateCommitRequest.CreateCommitCommitRequest): Observable<Response<CreateCommitResponse>>
 
     @GET("/repos/{owner}/{repo}/git/refs/{ref}")
     fun getReference(@Path("owner") owner: String, @Path("repo") repo: String, @Path("ref") ref: String): Observable<Response<ReferenceEntity>>
