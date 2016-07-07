@@ -19,11 +19,11 @@ class CloudGitHubDataStore(var user: User) {
     fun getAllRepository(): Observable<List<Repository>> {
         return Observable.defer {
             getNextPageRepository(GitHubApi(user).getRepositoryList())
-                    .map {
-                        it.map {
-                            RepositoryEntityDataMapper.transform(it)
-                        }
+                .map {
+                    it.map {
+                        RepositoryEntityDataMapper.transform(it)
                     }
+                }
         }
     }
 
@@ -35,12 +35,12 @@ class CloudGitHubDataStore(var user: User) {
                 Observable.just(response.body())
             } else {
                 Observable.just(response.body())
-                        .zipWith(getNextPageRepository(GitHubApi(user).getRepositoryList(nextPageUrl)), {
-                            list1, list2 ->
-                            val list = list1 as ArrayList<RepositoryEntity>
-                            list.addAll(list2)
-                            list
-                        })
+                    .zipWith(getNextPageRepository(GitHubApi(user).getRepositoryList(nextPageUrl)), {
+                        list1, list2 ->
+                        val list = list1 as ArrayList<RepositoryEntity>
+                        list.addAll(list2)
+                        list
+                    })
             }
         }
     }
@@ -48,138 +48,138 @@ class CloudGitHubDataStore(var user: User) {
     fun getContents(repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
         return Observable.defer {
             GitHubApi(user).getContents(repository.owner.login, repository.name, path)
-                    .map {
-                        it.body().map {
-                            RepositoryContentInfoEntityDataMapper.transform(it)
-                        }
+                .map {
+                    it.body().map {
+                        RepositoryContentInfoEntityDataMapper.transform(it)
                     }
+                }
         }
     }
 
     fun getContent(repository: Repository, path: String): Observable<RepositoryContent> {
         return Observable.defer {
             GitHubApi(user).getContent(repository.owner.login, repository.name, path)
-                    .map {
-                        RepositoryContentEntityDataMapper.transform(it.body())
-                    }
+                .map {
+                    RepositoryContentEntityDataMapper.transform(it.body())
+                }
         }
     }
 
     fun createContent(repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
         return Observable.defer {
             val request = CreateContentRequest(repository.owner.login, repository.name, commit.path,
-                    CreateContentRequest.CreateContentCommitRequest(commit.path, commit.message, commit.encodedContent())
+                CreateContentRequest.CreateContentCommitRequest(commit.path, commit.message, commit.encodedContent())
             )
             GitHubApi(user).createContent(request)
-                    .map {
-                        val response = it.body()
-                        GitHubCommit(
-                                RepositoryContentInfo(
-                                        response.content.name,
-                                        response.content.path,
-                                        response.content.sha,
-                                        response.content.size,
-                                        response.content.url,
-                                        response.content.html_url,
-                                        response.content.git_url,
-                                        response.content.download_url,
-                                        response.content.type,
-                                        RepositoryContentInfo.ContentLink(
-                                                response.content._links.self,
-                                                response.content._links.git,
-                                                response.content._links.html
-                                        )
-                                ),
-                                GitHubCommit.Commit(
-                                        response.commit.sha,
-                                        response.commit.url,
-                                        response.commit.html_url,
-                                        GitHubCommit.Commit.Author(
-                                                response.commit.author.date,
-                                                response.commit.author.name,
-                                                response.commit.author.email
-                                        ),
-                                        GitHubCommit.Commit.Author(
-                                                response.commit.committer.date,
-                                                response.commit.committer.name,
-                                                response.commit.committer.email
-                                        ),
-                                        response.commit.message,
-                                        GitHubTree(
-                                                response.commit.tree.sha,
-                                                response.commit.tree.url
-                                        ),
-                                        response.commit.parents.map {
-                                            GitHubReference(
-                                                    it.sha,
-                                                    it.url,
-                                                    it.html_url
-                                            )
-                                        }
+                .map {
+                    val response = it.body()
+                    GitHubCommit(
+                        RepositoryContentInfo(
+                            response.content.name,
+                            response.content.path,
+                            response.content.sha,
+                            response.content.size,
+                            response.content.url,
+                            response.content.html_url,
+                            response.content.git_url,
+                            response.content.download_url,
+                            response.content.type,
+                            RepositoryContentInfo.ContentLink(
+                                response.content._links.self,
+                                response.content._links.git,
+                                response.content._links.html
+                            )
+                        ),
+                        GitHubCommit.Commit(
+                            response.commit.sha,
+                            response.commit.url,
+                            response.commit.html_url,
+                            GitHubCommit.Commit.Author(
+                                response.commit.author.date,
+                                response.commit.author.name,
+                                response.commit.author.email
+                            ),
+                            GitHubCommit.Commit.Author(
+                                response.commit.committer.date,
+                                response.commit.committer.name,
+                                response.commit.committer.email
+                            ),
+                            response.commit.message,
+                            GitHubTree(
+                                response.commit.tree.sha,
+                                response.commit.tree.url
+                            ),
+                            response.commit.parents.map {
+                                GitHubReference(
+                                    it.sha,
+                                    it.url,
+                                    it.html_url
                                 )
+                            }
                         )
-                    }
+                    )
+                }
         }
     }
 
     fun updateContent(repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
         return Observable.defer {
             val request = UpdateContentRequest(repository.owner.login, repository.name, commit.path,
-                    UpdateContentRequest.UpdateContentCommitRequest(commit.path, commit.message, commit.encodedContent(), commit.sha!!)
+                UpdateContentRequest.UpdateContentCommitRequest(commit.path, commit.message, commit.encodedContent(), commit.sha!!)
             )
             GitHubApi(user).updateContent(request)
-                    .map {
-                        val response = it.body()
-                        GitHubCommit(
-                                RepositoryContentInfo(
-                                        response.content.name,
-                                        response.content.path,
-                                        response.content.sha,
-                                        response.content.size,
-                                        response.content.url,
-                                        response.content.html_url,
-                                        response.content.git_url,
-                                        response.content.download_url,
-                                        response.content.type,
-                                        RepositoryContentInfo.ContentLink(
-                                                response.content._links.self,
-                                                response.content._links.git,
-                                                response.content._links.html
-                                        )
-                                ),
-                                GitHubCommit.Commit(
-                                        response.commit.sha,
-                                        response.commit.url,
-                                        response.commit.html_url,
-                                        GitHubCommit.Commit.Author(
-                                                response.commit.author.date,
-                                                response.commit.author.name,
-                                                response.commit.author.email
-                                        ),
-                                        GitHubCommit.Commit.Author(
-                                                response.commit.committer.date,
-                                                response.commit.committer.name,
-                                                response.commit.committer.email
-                                        ),
-                                        response.commit.message,
-                                        GitHubTree(
-                                                response.commit.tree.sha,
-                                                response.commit.tree.url
-                                        ),
-                                        response.commit.parents.map {
-                                            GitHubReference(
-                                                    it.sha,
-                                                    it.url,
-                                                    it.html_url
-                                            )
-                                        }
+                .map {
+                    val response = it.body()
+                    GitHubCommit(
+                        RepositoryContentInfo(
+                            response.content.name,
+                            response.content.path,
+                            response.content.sha,
+                            response.content.size,
+                            response.content.url,
+                            response.content.html_url,
+                            response.content.git_url,
+                            response.content.download_url,
+                            response.content.type,
+                            RepositoryContentInfo.ContentLink(
+                                response.content._links.self,
+                                response.content._links.git,
+                                response.content._links.html
+                            )
+                        ),
+                        GitHubCommit.Commit(
+                            response.commit.sha,
+                            response.commit.url,
+                            response.commit.html_url,
+                            GitHubCommit.Commit.Author(
+                                response.commit.author.date,
+                                response.commit.author.name,
+                                response.commit.author.email
+                            ),
+                            GitHubCommit.Commit.Author(
+                                response.commit.committer.date,
+                                response.commit.committer.name,
+                                response.commit.committer.email
+                            ),
+                            response.commit.message,
+                            GitHubTree(
+                                response.commit.tree.sha,
+                                response.commit.tree.url
+                            ),
+                            response.commit.parents.map {
+                                GitHubReference(
+                                    it.sha,
+                                    it.url,
+                                    it.html_url
                                 )
+                            }
                         )
-                    }
+                    )
+                }
         }
     }
 
-    fun  deleteContent(repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
+    fun deleteContent(repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
         return Observable.defer {
             System.out.println("deleteContent:: repository.owner.login: ${repository.owner.login}")
             System.out.println("deleteContent:: repository.name: ${repository.name}")
@@ -187,60 +187,52 @@ class CloudGitHubDataStore(var user: User) {
             System.out.println("deleteContent:: commit.message: ${commit.message}")
             System.out.println("deleteContent:: commit.sha: ${commit.sha}")
             val request = DeleteContentRequest(repository.owner.login, repository.name, commit.path,
-                    DeleteContentRequest.DeleteContentCommitRequest(commit.path, commit.message, commit.sha!!)
+                DeleteContentRequest.DeleteContentCommitRequest(commit.path, commit.message, commit.sha!!)
             )
             GitHubApi(user).deleteContent(request)
-                    .map {
-                        val response = it.body()
-                        System.out.println("deleteContent:: response: $response")
-                        GitHubCommit(
-                                null,
-                                GitHubCommit.Commit(
-                                        response.commit.sha,
-                                        response.commit.url,
-                                        response.commit.html_url,
-                                        GitHubCommit.Commit.Author(
-                                                response.commit.author.date,
-                                                response.commit.author.name,
-                                                response.commit.author.email
-                                        ),
-                                        GitHubCommit.Commit.Author(
-                                                response.commit.committer.date,
-                                                response.commit.committer.name,
-                                                response.commit.committer.email
-                                        ),
-                                        response.commit.message,
-                                        GitHubTree(
-                                                response.commit.tree.sha,
-                                                response.commit.tree.url
-                                        ),
-                                        response.commit.parents.map {
-                                            GitHubReference(
-                                                    it.sha,
-                                                    it.url,
-                                                    it.html_url
-                                            )
-                                        }
+                .map {
+                    val response = it.body()
+                    System.out.println("deleteContent:: response: $response")
+                    GitHubCommit(
+                        null,
+                        GitHubCommit.Commit(
+                            response.commit.sha,
+                            response.commit.url,
+                            response.commit.html_url,
+                            GitHubCommit.Commit.Author(
+                                response.commit.author.date,
+                                response.commit.author.name,
+                                response.commit.author.email
+                            ),
+                            GitHubCommit.Commit.Author(
+                                response.commit.committer.date,
+                                response.commit.committer.name,
+                                response.commit.committer.email
+                            ),
+                            response.commit.message,
+                            GitHubTree(
+                                response.commit.tree.sha,
+                                response.commit.tree.url
+                            ),
+                            response.commit.parents.map {
+                                GitHubReference(
+                                    it.sha,
+                                    it.url,
+                                    it.html_url
                                 )
+                            }
                         )
-                    }
+                    )
+                }
         }
     }
 
     fun getTree(repository: Repository): Observable<GitHubTree> {
         return Observable.defer {
-//            GitHubApi(user).getReference(repository.owner.login, repository.name, "heads/" + repository.defaultBranch)
-//                    .map { ReferenceEntityDataMapper.transform(it) }
-//                    .flatMap { reference ->
-//                        GitHubApi(user).getGitTree(repository.owner.login, repository.name, reference.referenceObject.sha)
-//                                .map { gitTreeEntity: GitTreeEntity ->
-//                                    GitTreeEntityDataMapper.transform(gitTreeEntity)
-//                                }
-//                    }
             GitHubApi(user).getGitTree(repository.owner.login, repository.name, "heads/" + repository.defaultBranch)
-                    .map {
-                        GitTreeEntityDataMapper.transform(it.body())
-                    }
+                .map {
+                    GitTreeEntityDataMapper.transform(it.body())
+                }
         }
 
     }

@@ -5,6 +5,7 @@ import com.squareup.okhttp.Interceptor
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.ResponseBody
 import com.wada811.ghblog.data.entity.*
+import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.DeleteContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
@@ -21,15 +22,15 @@ class GitHubApi(var user: User) {
     val client: GitHubService
         get() {
             val moshi = Moshi.Builder()
-                    .add(ZonedDateTime::class.java, ZonedDateTimeAdapter())
-                    .build()
+                .add(ZonedDateTime::class.java, ZonedDateTimeAdapter())
+                .build()
             val client = OkHttpClient()
             client.interceptors()?.add(Interceptor {
                 chain: Interceptor.Chain ->
                 val request = chain.request()
-                        .newBuilder()
-                        .addHeader("Authorization", "token ${user.accessToken}")
-                        .build()
+                    .newBuilder()
+                    .addHeader("Authorization", "token ${user.accessToken}")
+                    .build()
                 System.out.println("GitHubApi, URL: ${request.httpUrl().toString()}")
                 val response = chain.proceed(request)
                 val responseBodyText = response.body().string()
@@ -37,11 +38,11 @@ class GitHubApi(var user: User) {
                 return@Interceptor response.newBuilder().body(ResponseBody.create(response.body().contentType(), responseBodyText)).build()
             })
             val retrofit = Retrofit.Builder()
-                    .client(client)
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                    .addConverterFactory(MoshiConverterFactory.create(moshi))
-                    .baseUrl(GitHubService.ApiBaseUrl)
-                    .build()
+                .client(client)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .baseUrl(GitHubService.ApiBaseUrl)
+                .build()
             return retrofit.create(GitHubService::class.java)
         }
 
