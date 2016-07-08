@@ -4,10 +4,9 @@ import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.domain.model.GitCommit
-import com.wada811.ghblog.domain.model.GitHubTree
-import com.wada811.ghblog.domain.model.RepositoryContent
 import com.wada811.ghblog.domain.model.RepositoryContentInfo
-import junit.framework.Assert.*
+import junit.framework.Assert.assertNotNull
+import junit.framework.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 
@@ -36,24 +35,16 @@ class GitHubApiTest {
     @Test
     fun getContents() {
         GHBlogContext.userRepository.user().subscribe({ user ->
-            user.repositoryList.subscribe({ repositoryList ->
+            user.repositoryList.subscribe { repositoryList ->
                 val repository = repositoryList.first { repository ->
                     System.out.println("repository.name: ${repository.name}")
                     repository.name.equals("blogtest")
                 }
-                repository.getContents(user, "content/blog").subscribe({
+                repository.getContents(user, "content/blog").subscribe {
                     it.forEach { System.out.println("content.name: ${it.name}") }
                     assertNotNull(it)
-                }, {
-                    System.out.println("error: $it")
-                    it.printStackTrace()
-                    assertNull(it)
-                })
-            }, {
-                System.out.println("error: $it")
-                it.printStackTrace()
-                assertNull(it)
-            })
+                }
+            }
         }, {
             System.out.println("error: $it")
             it.printStackTrace()
@@ -65,33 +56,16 @@ class GitHubApiTest {
     @Test
     fun getContent() {
         GHBlogContext.userRepository.user().subscribe({ user ->
-            user.repositoryList.subscribe({ repositoryList ->
-                val repository = repositoryList.first { repository ->
-                    System.out.println("repository.name: ${repository.name}")
-                    repository.name.equals("blogtest")
-                }
-                repository.getContents(user, "content/blog").subscribe({ repositoryContentInfoList: List<RepositoryContentInfo> ->
-                    repositoryContentInfoList.first { it.name.equals("test.md") }
+            user.repositoryList.subscribe { repositoryList ->
+                val repository = repositoryList.first { it.name.equals("blogtest") }
+                repository.getContents(user, "content/blog").subscribe { repositoryContentInfoList: List<RepositoryContentInfo> ->
+                    repositoryContentInfoList.first()
                         .getContent(user, repository)
-                        .subscribe({ content: RepositoryContent ->
-                            System.out.println("content.encoding: ${content.encoding}")
-                            System.out.println("content.content: ${content.encodedContent}")
-                            assertEquals("onNext", content.content)
-                        }, {
-                            System.out.println("error: $it")
-                            it.printStackTrace()
-                            assertNull(it)
-                        })
-                }, {
-                    System.out.println("error: $it")
-                    it.printStackTrace()
-                    assertNull(it)
-                })
-            }, {
-                System.out.println("error: $it")
-                it.printStackTrace()
-                assertNull(it)
-            })
+                        .subscribe {
+                            assertNotNull(it)
+                        }
+                }
+            }
         }, {
             System.out.println("error: $it")
             it.printStackTrace()
@@ -102,25 +76,14 @@ class GitHubApiTest {
     @Test
     fun createContent() {
         GHBlogContext.userRepository.user().subscribe({ user ->
-            user.repositoryList.subscribe({ repositoryList ->
-                val repository = repositoryList.first { repository ->
-                    System.out.println("repository.name: ${repository.name}")
-                    repository.name.equals("blogtest")
-                }
+            user.repositoryList.subscribe { repositoryList ->
+                val repository = repositoryList.first { it.name.equals("blogtest") }
                 repository.createContent(user, GitCommit("content/blog/test.md", "create test message", "create content body"))
-                    .subscribe({ it ->
+                    .subscribe {
                         System.out.println("onNext: $it")
                         assertNotNull(it)
-                    }, {
-                        System.out.println("error: $it")
-                        it.printStackTrace()
-                        assertNull(it)
-                    })
-            }, {
-                System.out.println("error: $it")
-                it.printStackTrace()
-                assertNull(it)
-            })
+                    }
+            }
         }, {
             System.out.println("error: $it")
             it.printStackTrace()
@@ -131,32 +94,16 @@ class GitHubApiTest {
     @Test
     fun updateContent() {
         GHBlogContext.userRepository.user().subscribe({ user ->
-            user.repositoryList.subscribe({ repositoryList ->
-                val repository = repositoryList.first { repository ->
-                    System.out.println("repository.name: ${repository.name}")
-                    repository.name.equals("blogtest")
-                }
+            user.repositoryList.subscribe { repositoryList ->
+                val repository = repositoryList.first { it.name.equals("blogtest") }
                 val path = "content/blog/test.md"
-                repository.getContent(user, path).subscribe({
+                repository.getContent(user, path).subscribe {
                     repository.updateContent(user, GitCommit(path, "update test message", "update content body", it.sha))
-                        .subscribe({ gitHubCommit ->
-                            System.out.println("gitHubCommit: $gitHubCommit")
-                            assertEquals("onNext", gitHubCommit)
-                        }, {
-                            System.out.println("error: $it")
-                            it.printStackTrace()
-                            assertNull(it)
-                        })
-                }, {
-                    System.out.println("error: $it")
-                    it.printStackTrace()
-                    assertNull(it)
-                })
-            }, {
-                System.out.println("error: $it")
-                it.printStackTrace()
-                assertNull(it)
-            })
+                        .subscribe {
+                            assertNotNull(it)
+                        }
+                }
+            }
         }, {
             System.out.println("error: $it")
             it.printStackTrace()
@@ -167,32 +114,16 @@ class GitHubApiTest {
     @Test
     fun deleteContent() {
         GHBlogContext.userRepository.user().subscribe({ user ->
-            user.repositoryList.subscribe({ repositoryList ->
-                val repository = repositoryList.first { repository ->
-                    System.out.println("repository.name: ${repository.name}")
-                    repository.name.equals("blogtest")
-                }
+            user.repositoryList.subscribe { repositoryList ->
+                val repository = repositoryList.first { it.name.equals("blogtest") }
                 val path = "content/blog/test.md"
-                repository.getContent(user, path).subscribe({
+                repository.getContent(user, path).subscribe {
                     repository.deleteContent(user, it.createCommit("delete test message"))
-                        .subscribe({ gitHubCommit ->
-                            System.out.println("gitHubCommit: $gitHubCommit")
-                            assertEquals("onNext", gitHubCommit)
-                        }, {
-                            System.out.println("error: $it")
-                            it.printStackTrace()
-                            assertNull(it)
-                        })
-                }, {
-                    System.out.println("error: $it")
-                    it.printStackTrace()
-                    assertNull(it)
-                })
-            }, {
-                System.out.println("error: $it")
-                it.printStackTrace()
-                assertNull(it)
-            })
+                        .subscribe {
+                            assertNotNull(it)
+                        }
+                }
+            }
         }, {
             System.out.println("error: $it")
             it.printStackTrace()
@@ -203,23 +134,12 @@ class GitHubApiTest {
     @Test
     fun getTree() {
         GHBlogContext.userRepository.user().subscribe({ user ->
-            user.repositoryList.subscribe({ repositoryList ->
-                val repository = repositoryList.first { repository ->
-                    System.out.println("repository.name: ${repository.name}")
-                    repository.name.equals("wada811.com")
+            user.repositoryList.subscribe { repositoryList ->
+                val repository = repositoryList.first { it.name.equals("blogtest") }
+                repository.getTree(user).subscribe {
+                    assertNotNull(it)
                 }
-                repository.getTree(user).subscribe({ tree: GitHubTree ->
-                    assertEquals("tree", tree.toString())
-                }, {
-                    System.out.println("error: $it")
-                    it.printStackTrace()
-                    assertNull(it)
-                })
-            }, {
-                System.out.println("error: $it")
-                it.printStackTrace()
-                assertNull(it)
-            })
+            }
         }, {
             System.out.println("error: $it")
             it.printStackTrace()
