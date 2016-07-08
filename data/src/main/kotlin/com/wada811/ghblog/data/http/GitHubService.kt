@@ -1,12 +1,17 @@
 package com.wada811.ghblog.data.http
 
-import com.wada811.ghblog.data.entity.*
+import com.wada811.ghblog.data.entity.GitTreeEntity
+import com.wada811.ghblog.data.entity.RepositoryContentEntity
+import com.wada811.ghblog.data.entity.RepositoryContentInfoEntity
+import com.wada811.ghblog.data.entity.RepositoryEntity
 import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
 import com.wada811.ghblog.data.entity.request.github.git.refs.UpdateReferenceRequest.UpdateReferenceReferenceRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
 import com.wada811.ghblog.data.entity.response.github.git.commits.CreateCommitResponse
+import com.wada811.ghblog.data.entity.response.github.git.commits.GetCommitResponse
+import com.wada811.ghblog.data.entity.response.github.git.refs.GetReferenceResponse
 import com.wada811.ghblog.data.entity.response.github.git.refs.UpdateReferenceResponse
 import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.CreateContentResponse
@@ -46,12 +51,15 @@ interface GitHubService {
     fun deleteContent(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String,
                       @QueryMap commit: Map<String, String>): Observable<Response<DeleteContentResponse>>
 
+    @GET("/repos/{owner}/{repo}/git/commits/{sha}")
+    fun getCommit(@Path("owner") owner: String, @Path("repo") repo: String, @Path("sha") sha: String): Observable<Response<GetCommitResponse>>
+
     @POST("/repos/{owner}/{repo}/git/commits")
     fun createCommit(@Path("owner") owner: String, @Path("repo") repo: String,
                      @Body commit: CreateCommitRequest.CreateCommitCommitRequest): Observable<Response<CreateCommitResponse>>
 
     @GET("/repos/{owner}/{repo}/git/refs/{ref}")
-    fun getReference(@Path("owner") owner: String, @Path("repo") repo: String, @Path("ref") ref: String): Observable<Response<ReferenceEntity>>
+    fun getReference(@Path("owner") owner: String, @Path("repo") repo: String, @Path("ref") ref: String): Observable<Response<GetReferenceResponse>>
 
     @PATCH("/repos/{owner}/{repo}/git/refs/{ref}")
     fun updateReference(@Path("owner") owner: String, @Path("repo") repo: String, @Path("ref") ref: String,
@@ -60,7 +68,11 @@ interface GitHubService {
     @GET("/repos/{owner}/{repo}/git/trees/{sha}")
     fun getGitTree(@Path("owner") owner: String, @Path("repo") repo: String, @Path("sha") sha: String): Observable<Response<GitTreeEntity>>
 
+    @GET("/repos/{owner}/{repo}/git/trees/{sha}")
+    fun getGitTreeRecursively(@Path("owner") owner: String, @Path("repo") repo: String, @Path("sha") sha: String,
+                              @Query("recursive") recursive: Int): Observable<Response<GitTreeEntity>>
+
     @POST("/repos/{owner}/{repo}/git/trees")
-    fun createGitTree(@Path("owner") owner: String, @Path("repo") repo: String, @Body tree: List<CreateTreeRequest.CreateTreeTreeRequest>,
-                      @Body base_tree: String): Observable<Response<CreateTreeResponse>>
+    fun createGitTree(@Path("owner") owner: String, @Path("repo") repo: String,
+                      @Body tree: CreateTreeRequest.CreateTreeBodyRequest): Observable<Response<CreateTreeResponse>>
 }

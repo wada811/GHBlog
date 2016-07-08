@@ -4,8 +4,13 @@ import com.squareup.moshi.Moshi
 import com.squareup.okhttp.Interceptor
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.ResponseBody
-import com.wada811.ghblog.data.entity.*
+import com.wada811.ghblog.data.entity.GitTreeEntity
+import com.wada811.ghblog.data.entity.RepositoryContentEntity
+import com.wada811.ghblog.data.entity.RepositoryContentInfoEntity
+import com.wada811.ghblog.data.entity.RepositoryEntity
 import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
+import com.wada811.ghblog.data.entity.request.github.git.commits.GetCommitRequest
+import com.wada811.ghblog.data.entity.request.github.git.refs.GetReferenceRequest
 import com.wada811.ghblog.data.entity.request.github.git.refs.UpdateReferenceRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
@@ -58,11 +63,14 @@ class GitHubApi(var user: User) {
     fun updateContent(request: UpdateContentRequest) = client.updateContent(request.owner, request.repo, request.path, request.commit)
     fun deleteContent(request: DeleteContentRequest) = client.deleteContent(request.owner, request.repo, request.path, request.commit.getQueryMap())
 
+    fun getCommit(request: GetCommitRequest) = client.getCommit(request.owner, request.repo, request.sha)
     fun createCommit(request: CreateCommitRequest) = client.createCommit(request.owner, request.repo, request.commit)
-    fun getReference(owner: String, repo: String, ref: String): Observable<Response<ReferenceEntity>> = client.getReference(owner, repo, ref)
-    fun updateRefernece(request: UpdateReferenceRequest) = client.updateReference(request.owner, request.repo, request.ref, request.reference)
+
+    fun getReference(request: GetReferenceRequest) = client.getReference(request.owner, request.repo, request.ref)
+    fun updateReference(request: UpdateReferenceRequest) = client.updateReference(request.owner, request.repo, request.ref, request.reference)
 
     fun getGitTree(owner: String, repo: String, sha: String): Observable<Response<GitTreeEntity>> = client.getGitTree(owner, repo, sha)
-    fun createGitTree(request: CreateTreeRequest): Observable<Response<CreateTreeResponse>> = client.createGitTree(request.owner, request.repo, request.tree, request.base_tree)
+    fun getGitTreeRecursively(owner: String, repo: String, sha: String, recursive: Int = 1): Observable<Response<GitTreeEntity>> = client.getGitTreeRecursively(owner, repo, sha, recursive)
+    fun createGitTree(request: CreateTreeRequest): Observable<Response<CreateTreeResponse>> = client.createGitTree(request.owner, request.repo, request.body)
 
 }
