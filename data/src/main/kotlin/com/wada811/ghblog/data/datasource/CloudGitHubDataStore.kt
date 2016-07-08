@@ -6,6 +6,8 @@ import com.wada811.ghblog.data.entity.mapper.RepositoryContentEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.RepositoryContentInfoEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.RepositoryEntityDataMapper
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
+import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest.CreateTreeBodyRequest
+import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest.CreateTreeBodyRequest.CreateTreeTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.DeleteContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
@@ -240,16 +242,18 @@ class CloudGitHubDataStore(var user: User) {
     fun createGitTree(repository: Repository, tree: GitTree): Observable<GitHubTree> {
         return Observable.defer {
             val request = CreateTreeRequest(repository.owner.login, repository.name,
-                listOf(
-                    CreateTreeRequest.CreateTreeTreeRequest(
-                        tree.path,
-                        tree.mode,
-                        tree.type,
-                        tree.sha,
-                        tree.content
-                    )
-                ),
-                tree.baseTree
+                CreateTreeBodyRequest(
+                    listOf(
+                        CreateTreeTreeRequest(
+                            tree.path,
+                            tree.mode,
+                            tree.type,
+                            tree.sha,
+                            tree.content
+                        )
+                    ),
+                    tree.baseTree
+                )
             )
             GitHubApi(user).createGitTree(request)
                 .map {
@@ -257,16 +261,16 @@ class CloudGitHubDataStore(var user: User) {
                     GitHubTree(
                         response.sha,
                         response.url,
-                        listOf(
+                        response.tree.map {
                             GitHubTree.Node(
-                                response.tree.path,
-                                response.tree.mode,
-                                response.tree.type,
-                                response.tree.size,
-                                response.tree.sha,
-                                response.tree.url
+                                it.path,
+                                it.mode,
+                                it.type,
+                                it.size,
+                                it.sha,
+                                it.url
                             )
-                        )
+                        }
                     )
                 }
         }

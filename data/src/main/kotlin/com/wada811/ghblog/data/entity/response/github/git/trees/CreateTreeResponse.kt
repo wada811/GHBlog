@@ -3,7 +3,7 @@ package com.wada811.ghblog.data.entity.response.github.git.trees
 data class CreateTreeResponse(
     val sha: String,
     val url: String,
-    val tree: CreateTreeTreeResponse
+    val tree: List<CreateTreeTreeResponse>
 ) {
     data class CreateTreeTreeResponse(
         val path: String,
