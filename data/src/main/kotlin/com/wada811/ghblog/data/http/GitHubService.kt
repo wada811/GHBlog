@@ -2,10 +2,12 @@ package com.wada811.ghblog.data.http
 
 import com.wada811.ghblog.data.entity.*
 import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
+import com.wada811.ghblog.data.entity.request.github.git.refs.UpdateReferenceRequest.UpdateReferenceReferenceRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
 import com.wada811.ghblog.data.entity.response.github.git.commits.CreateCommitResponse
+import com.wada811.ghblog.data.entity.response.github.git.refs.UpdateReferenceResponse
 import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.CreateContentResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.DeleteContentResponse
@@ -50,6 +52,10 @@ interface GitHubService {
 
     @GET("/repos/{owner}/{repo}/git/refs/{ref}")
     fun getReference(@Path("owner") owner: String, @Path("repo") repo: String, @Path("ref") ref: String): Observable<Response<ReferenceEntity>>
+
+    @PATCH("/repos/{owner}/{repo}/git/refs/{ref}")
+    fun updateReference(@Path("owner") owner: String, @Path("repo") repo: String, @Path("ref") ref: String,
+                        @Body reference: UpdateReferenceReferenceRequest): Observable<Response<UpdateReferenceResponse>>
 
     @GET("/repos/{owner}/{repo}/git/trees/{sha}")
     fun getGitTree(@Path("owner") owner: String, @Path("repo") repo: String, @Path("sha") sha: String): Observable<Response<GitTreeEntity>>
