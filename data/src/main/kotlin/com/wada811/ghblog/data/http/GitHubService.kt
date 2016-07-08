@@ -17,8 +17,8 @@ import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeRespon
 import com.wada811.ghblog.data.entity.response.github.repos.contents.CreateContentResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.DeleteContentResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.UpdateContentResponse
-import retrofit.Response
-import retrofit.http.*
+import retrofit2.Response
+import retrofit2.http.*
 import rx.Observable
 
 interface GitHubService {

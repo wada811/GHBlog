@@ -14,7 +14,7 @@ import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateConten
 import com.wada811.ghblog.data.http.ApiInfoParser
 import com.wada811.ghblog.data.http.GitHubApi
 import com.wada811.ghblog.domain.model.*
-import retrofit.Response
+import retrofit2.Response
 import rx.Observable
 import java.util.*
 

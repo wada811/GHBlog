@@ -1,6 +1,6 @@
 package com.wada811.ghblog.data.http
 
-import com.squareup.okhttp.Headers
+import okhttp3.Headers
 import java.util.*
 
 internal object ApiInfoParser {
