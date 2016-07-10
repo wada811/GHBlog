@@ -4,6 +4,7 @@ import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.domain.model.GitCommit
+import com.wada811.ghblog.domain.model.GitRenameCommit
 import com.wada811.ghblog.domain.model.RepositoryContentInfo
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertNull
@@ -119,6 +120,33 @@ class GitHubApiTest {
                 val path = "content/blog/test.md"
                 repository.getContent(user, path).subscribe {
                     repository.deleteContent(user, it.createCommit("delete test message"))
+                        .subscribe {
+                            assertNotNull(it)
+                        }
+                }
+            }
+        }, {
+            System.out.println("error: $it")
+            it.printStackTrace()
+            assertNull(it)
+        })
+    }
+
+    @Test
+    fun renameContent() {
+        GHBlogContext.userRepository.user().subscribe({ user ->
+            user.repositoryList.subscribe { repositoryList ->
+                val repository = repositoryList.first { it.name.equals("blogtest") }
+                val path = "content/blog/rename.md"
+                repository.getContent(user, path).subscribe {
+                    repository.renameContent(user,
+                        GitRenameCommit(
+                            "content/blog/rename.md",
+                            "content/blog/renamed.md",
+                            "rename rename.md",
+                            "rename content",
+                            it.sha
+                        ))
                         .subscribe {
                             assertNotNull(it)
                         }

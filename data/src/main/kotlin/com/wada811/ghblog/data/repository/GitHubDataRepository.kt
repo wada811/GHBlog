@@ -30,6 +30,10 @@ class GitHubDataRepository : GitHubRepository {
         return CloudGitHubDataStore(user).deleteContent(repository, commit)
     }
 
+    override fun renameContent(user: User, repository: Repository, commit: GitRenameCommit): Observable<GitHubCommit> {
+        return CloudGitHubDataStore(user).renameContent(repository, commit)
+    }
+
     override fun getTree(user: User, repository: Repository): Observable<GitHubTree> {
         return CloudGitHubDataStore(user).getTree(repository)
     }
