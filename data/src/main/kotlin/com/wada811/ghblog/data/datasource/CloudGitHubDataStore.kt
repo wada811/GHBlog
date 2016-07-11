@@ -16,8 +16,7 @@ import rx.Observable
 class CloudGitHubDataStore(var user: User) {
     fun getAllRepository(): Observable<List<Repository>> {
         return Observable.defer {
-            getAllRepository(GitHubApi(user).getRepositoryList())
-                .map { it.map { RepositoryResponseDataMapper.transform(it) } }
+            getAllRepository(GitHubApi(user).getRepositoryList()).map { it.map { RepositoryResponseDataMapper.transform(it) } }
         }
     }
 
