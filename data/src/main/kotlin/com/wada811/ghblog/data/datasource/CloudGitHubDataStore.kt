@@ -94,36 +94,11 @@ class CloudGitHubDataStore(var user: User) {
         return Observable.defer {
             val request = CreateTreeRequest(repository.owner.login, repository.name,
                 CreateTreeBodyRequest(
-                    listOf(
-                        CreateTreeTreeRequest(
-                            tree.path,
-                            tree.mode,
-                            tree.type,
-                            tree.sha,
-                            tree.content
-                        )
-                    ),
+                    tree.nodes.map { CreateTreeTreeRequest(it.path, it.mode, it.type, it.sha, it.content) },
                     tree.baseTree
                 )
             )
-            GitHubApi(user).createGitTree(request)
-                .map {
-                    val response = it.body()
-                    GitHubTree(
-                        response.sha,
-                        response.url,
-                        response.tree.map {
-                            GitHubTree.Node(
-                                it.path,
-                                it.mode,
-                                it.type,
-                                it.size,
-                                it.sha,
-                                it.url
-                            )
-                        }
-                    )
-                }
+            GitHubApi(user).createGitTree(request).map { CreateTreeResponseDataMapper.transform(it.body()) }
         }
     }
 }

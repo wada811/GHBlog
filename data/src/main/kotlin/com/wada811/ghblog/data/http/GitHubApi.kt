@@ -8,18 +8,15 @@ import com.wada811.ghblog.data.entity.request.github.git.refs.UpdateReferenceReq
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.GetTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.*
-import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse
 import com.wada811.ghblog.data.http.adapter.ZonedDateTimeAdapter
 import com.wada811.ghblog.domain.model.User
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import org.threeten.bp.ZonedDateTime
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import rx.Observable
 
 class GitHubApi(var user: User) {
     val client: GitHubService
@@ -67,6 +64,6 @@ class GitHubApi(var user: User) {
 
     fun getTree(request: GetTreeRequest) = client.getTree(request.owner, request.repo, request.sha)
     fun getGitTreeRecursively(request: GetTreeRequest, recursive: Int = 1) = client.getGitTreeRecursively(request.owner, request.repo, request.sha, recursive)
-    fun createGitTree(request: CreateTreeRequest): Observable<Response<CreateTreeResponse>> = client.createGitTree(request.owner, request.repo, request.body)
+    fun createGitTree(request: CreateTreeRequest) = client.createGitTree(request.owner, request.repo, request.body)
 
 }
