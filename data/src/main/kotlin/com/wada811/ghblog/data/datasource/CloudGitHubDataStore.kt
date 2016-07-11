@@ -12,7 +12,6 @@ import com.wada811.ghblog.data.http.GitHubApi
 import com.wada811.ghblog.domain.model.*
 import retrofit2.Response
 import rx.Observable
-import java.util.*
 
 class CloudGitHubDataStore(var user: User) {
     fun getAllRepository(): Observable<List<Repository>> {
@@ -30,12 +29,7 @@ class CloudGitHubDataStore(var user: User) {
                 Observable.just(response.body())
             } else {
                 Observable.just(response.body())
-                    .zipWith(getAllRepository(GitHubApi(user).getRepositoryList(nextPageUrl)), {
-                        list1, list2 ->
-                        val list = list1 as ArrayList<RepositoryResponse>
-                        list.addAll(list2)
-                        list
-                    })
+                    .zipWith(getAllRepository(GitHubApi(user).getRepositoryList(nextPageUrl)), { list1, list2 -> list1 + list2 })
             }
         }
     }
