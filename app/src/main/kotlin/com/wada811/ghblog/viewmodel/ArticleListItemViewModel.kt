@@ -12,14 +12,18 @@ import rx.schedulers.Schedulers
 class ArticleListItemViewModel(var repositoryContentInfo: RepositoryContent) : RxViewModel() {
     init {
         GHBlogContext.currentUser.currentRepository!!.getContent(GHBlogContext.currentUser, repositoryContentInfo.path)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    repositoryContentInfo.encoding = it.encoding
-                    repositoryContentInfo.encodedContent = it.encodedContent
-                    repositoryContentInfo.content = it.content
-                    Log.e("wada", "getContent: repositoryContent.content: " + repositoryContentInfo.content)
-                }, { Log.e("wada", "getContent.onError: " + it) }, { Log.e("wada", "getContent.onComplete") })
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                repositoryContentInfo.encoding = it.encoding
+                repositoryContentInfo.encodedContent = it.encodedContent
+                repositoryContentInfo.content = it.content
+                Log.e("wada", "getContent: repositoryContent.content: " + repositoryContentInfo.content)
+            }, {
+                Log.e("wada", "getContent.onError: " + it)
+            }, {
+                Log.e("wada", "getContent.onComplete")
+            })
     }
 
     var articleName = repositoryContentInfo.ObserveProperty("name", { it.name }).toRxProperty(repositoryContentInfo.name).asManaged()

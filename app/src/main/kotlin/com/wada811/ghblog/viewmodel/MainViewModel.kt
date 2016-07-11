@@ -16,13 +16,13 @@ import java.util.concurrent.TimeUnit
 class MainViewModel : RxViewModel() {
 
     var userName = GHBlogContext.currentUser
-            .ObserveProperty("userName", { it.userName })
-            .toRxProperty(GHBlogContext.currentUser.userName)
-            .asManaged()
+        .ObserveProperty("userName", { it.userName })
+        .toRxProperty(GHBlogContext.currentUser.userName)
+        .asManaged()
     var accessToken = GHBlogContext.currentUser
-            .ObserveProperty("accessToken", { it.accessToken })
-            .toRxProperty(GHBlogContext.currentUser.accessToken)
-            .asManaged()
+        .ObserveProperty("accessToken", { it.accessToken })
+        .toRxProperty(GHBlogContext.currentUser.accessToken)
+        .asManaged()
     var input = Observable.interval(2, TimeUnit.SECONDS)
     var next = RxCommand(View.OnClickListener { RxMessenger.send(MainActivity.NextAction()) }).asManaged()
     var text = ObservableField("")

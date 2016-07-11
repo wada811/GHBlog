@@ -23,27 +23,27 @@ class RepositoryListViewModel : RxViewModel() {
         Log.e("wada", "selectedRepository: " + viewModel.repositoryName.value)
     }).asManaged()
     var save = selectedRepository
-            .asObservable()
-            .map { it != null }
-            .toRxCommand(View.OnClickListener {
-                Log.e("wada", "save button clicked!")
-                Log.e("wada", "selectedRepository: " + selectedRepository.value!!.name)
-                GHBlogContext.currentUser.currentRepository = selectedRepository.value
-                RxMessenger.send(RepositoryListActivity.NextAction())
-            })
-            .asManaged()
+        .asObservable()
+        .map { it != null }
+        .toRxCommand(View.OnClickListener {
+            Log.e("wada", "save button clicked!")
+            Log.e("wada", "selectedRepository: " + selectedRepository.value!!.name)
+            GHBlogContext.currentUser.currentRepository = selectedRepository.value
+            RxMessenger.send(RepositoryListActivity.NextAction())
+        })
+        .asManaged()
 
     init {
         GHBlogContext.currentUser.repositoryList
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    Log.e("wada", "user.repositoryList.onNext")
-                    repositoryViewModelList.addAll(it.map { RepositoryListItemViewModel(it) })
-                }, {
-                    Log.e("wada", "user.repositoryList.onError", it)
-                }, {
-                    Log.e("wada", "user.repositoryList.onComplete")
-                })
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Log.e("wada", "user.repositoryList.onNext")
+                repositoryViewModelList.addAll(it.map { RepositoryListItemViewModel(it) })
+            }, {
+                Log.e("wada", "user.repositoryList.onError", it)
+            }, {
+                Log.e("wada", "user.repositoryList.onComplete")
+            })
     }
 }

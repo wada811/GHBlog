@@ -4,7 +4,6 @@ import android.databinding.ObservableArrayList
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import com.wada811.ghblog.GHBlogApplication
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.domain.model.RepositoryContent
 import com.wada811.ghblog.view.activity.ArticleListActivity
@@ -30,15 +29,15 @@ class ArticleListViewModel : RxViewModel() {
 
     init {
         GHBlogContext.currentUser.currentRepository!!.getContents(GHBlogContext.currentUser, "content/blog")
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    Log.e("wada", "currentRepository.getContents.onNext")
-                    articleViewModelList.addAll(it.map { ArticleListItemViewModel(RepositoryContent(it)) })
-                }, {
-                    Log.e("wada", "currentRepository.getContents.onError", it)
-                }, {
-                    Log.e("wada", "currentRepository.getContents.onComplete")
-                })
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Log.e("wada", "currentRepository.getContents.onNext")
+                articleViewModelList.addAll(it.map { ArticleListItemViewModel(RepositoryContent(it)) })
+            }, {
+                Log.e("wada", "currentRepository.getContents.onError", it)
+            }, {
+                Log.e("wada", "currentRepository.getContents.onComplete")
+            })
     }
 }
