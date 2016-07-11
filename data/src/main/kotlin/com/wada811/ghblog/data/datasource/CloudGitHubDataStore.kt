@@ -74,8 +74,8 @@ class CloudGitHubDataStore(var user: User) {
         }
     }
 
-    fun renameContent(repository: Repository, commit: GitRenameCommit): Observable<GitHubCommit> {
-        return deleteContent(repository, GitCommit(commit.oldPath, commit.message, commit.content, commit.sha))
+    fun renameContent(repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
+        return deleteContent(repository, GitCommit(commit.oldPath!!, commit.message, commit.content, commit.sha))
             .zipWith(createContent(repository, GitCommit(commit.path, commit.message, commit.content)), {
                 deleteCommit, createCommit -> createCommit
             })

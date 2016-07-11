@@ -3,8 +3,6 @@ package com.wada811.ghblog
 import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
 import com.wada811.ghblog.domain.GHBlogContext
-import com.wada811.ghblog.domain.model.GitCommit
-import com.wada811.ghblog.domain.model.GitRenameCommit
 import com.wada811.ghblog.domain.model.RepositoryContentInfo
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertNull
@@ -79,7 +77,7 @@ class GitHubApiTest {
         GHBlogContext.userRepository.user().subscribe({ user ->
             user.repositoryList.subscribe { repositoryList ->
                 val repository = repositoryList.first { it.name.equals("blogtest") }
-                repository.createContent(user, GitCommit("content/blog/test.md", "create test message", "create content body"))
+                repository.createContent("content/blog/test.md", "create test message", "create content body")
                     .subscribe {
                         System.out.println("onNext: $it")
                         assertNotNull(it)
@@ -99,7 +97,7 @@ class GitHubApiTest {
                 val repository = repositoryList.first { it.name.equals("blogtest") }
                 val path = "content/blog/test.md"
                 repository.getContent(user, path).subscribe {
-                    repository.updateContent(user, GitCommit(path, "update test message", "update content body", it.sha))
+                    it.update(path, "update test message", "update content body")
                         .subscribe {
                             assertNotNull(it)
                         }
@@ -119,7 +117,7 @@ class GitHubApiTest {
                 val repository = repositoryList.first { it.name.equals("blogtest") }
                 val path = "content/blog/test.md"
                 repository.getContent(user, path).subscribe {
-                    repository.deleteContent(user, it.createCommit("delete test message"))
+                    it.delete("delete test message", it.content)
                         .subscribe {
                             assertNotNull(it)
                         }
@@ -139,14 +137,7 @@ class GitHubApiTest {
                 val repository = repositoryList.first { it.name.equals("blogtest") }
                 val path = "content/blog/rename.md"
                 repository.getContent(user, path).subscribe {
-                    repository.renameContent(user,
-                        GitRenameCommit(
-                            "content/blog/rename.md",
-                            "content/blog/renamed.md",
-                            "rename rename.md",
-                            "rename content",
-                            it.sha
-                        ))
+                    it.update("content/blog/renamed.md", "rename rename.md", "rename content")
                         .subscribe {
                             assertNotNull(it)
                         }

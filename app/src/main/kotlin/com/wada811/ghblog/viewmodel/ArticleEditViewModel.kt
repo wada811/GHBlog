@@ -37,19 +37,15 @@ class ArticleEditViewModel() : RxViewModel() {
             .toRxProperty(repositoryContent.content.splitToSequence(System.getProperty("line.separator"), limit = 2).last())
             .asManaged()
     var save = RxCommand(View.OnClickListener {
-        // TODO: path が変わると新しいファイルとして作成されてしまうので直す
-        repositoryContent.path = path.value!!
-        repositoryContent.content = name.value + System.getProperty("line.separator") + content.value
-        val commit = repositoryContent.createCommit("message")
-        GHBlogContext.currentUser.currentRepository!!.updateContent(GHBlogContext.currentUser, commit)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    Log.e("wada", "currentRepository.updateContent.onNext")
-                }, {
-                    Log.e("wada", "currentRepository.updateContent.onError", it)
-                }, {
-                    Log.e("wada", "currentRepository.updateContent.onComplete")
-                })
+        repositoryContent.update(path.value!!, "Update ${path.value!!}", name.value + System.getProperty("line.separator") + content.value)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Log.e("wada", "currentRepository.updateContent.onNext")
+            }, {
+                Log.e("wada", "currentRepository.updateContent.onError", it)
+            }, {
+                Log.e("wada", "currentRepository.updateContent.onComplete")
+            })
     }).asManaged()
 }
