@@ -1,12 +1,12 @@
 package com.wada811.ghblog.data.http
 
 import com.squareup.moshi.Moshi
-import com.wada811.ghblog.data.entity.GitTreeEntity
 import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
 import com.wada811.ghblog.data.entity.request.github.git.commits.GetCommitRequest
 import com.wada811.ghblog.data.entity.request.github.git.refs.GetReferenceRequest
 import com.wada811.ghblog.data.entity.request.github.git.refs.UpdateReferenceRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
+import com.wada811.ghblog.data.entity.request.github.git.trees.GetTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.*
 import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse
 import com.wada811.ghblog.data.http.adapter.ZonedDateTimeAdapter
@@ -65,8 +65,8 @@ class GitHubApi(var user: User) {
     fun getReference(request: GetReferenceRequest) = client.getReference(request.owner, request.repo, request.ref)
     fun updateReference(request: UpdateReferenceRequest) = client.updateReference(request.owner, request.repo, request.ref, request.reference)
 
-    fun getGitTree(owner: String, repo: String, sha: String): Observable<Response<GitTreeEntity>> = client.getGitTree(owner, repo, sha)
-    fun getGitTreeRecursively(owner: String, repo: String, sha: String, recursive: Int = 1): Observable<Response<GitTreeEntity>> = client.getGitTreeRecursively(owner, repo, sha, recursive)
+    fun getTree(request: GetTreeRequest) = client.getTree(request.owner, request.repo, request.sha)
+    fun getGitTreeRecursively(request: GetTreeRequest, recursive: Int = 1) = client.getGitTreeRecursively(request.owner, request.repo, request.sha, recursive)
     fun createGitTree(request: CreateTreeRequest): Observable<Response<CreateTreeResponse>> = client.createGitTree(request.owner, request.repo, request.body)
 
 }

@@ -4,6 +4,7 @@ import com.wada811.ghblog.data.entity.mapper.*
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest.CreateTreeBodyRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest.CreateTreeBodyRequest.CreateTreeTreeRequest
+import com.wada811.ghblog.data.entity.request.github.git.trees.GetTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.*
 import com.wada811.ghblog.data.entity.response.github.repos.RepositoryResponse
 import com.wada811.ghblog.data.http.ApiInfoParser
@@ -90,10 +91,8 @@ class CloudGitHubDataStore(var user: User) {
 
     fun getTree(repository: Repository): Observable<GitHubTree> {
         return Observable.defer {
-            GitHubApi(user).getGitTree(repository.owner.login, repository.name, "heads/" + repository.defaultBranch)
-                .map {
-                    GitTreeEntityDataMapper.transform(it.body())
-                }
+            val request = GetTreeRequest(repository.owner.login, repository.name, "heads/" + repository.defaultBranch)
+            GitHubApi(user).getTree(request).map { GetTreeResponseDataMapper.transform(it.body()) }
         }
     }
 

@@ -1,6 +1,5 @@
 package com.wada811.ghblog.data.http
 
-import com.wada811.ghblog.data.entity.GitTreeEntity
 import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
 import com.wada811.ghblog.data.entity.request.github.git.refs.UpdateReferenceRequest.UpdateReferenceReferenceRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
@@ -11,6 +10,7 @@ import com.wada811.ghblog.data.entity.response.github.git.commits.GetCommitRespo
 import com.wada811.ghblog.data.entity.response.github.git.refs.GetReferenceResponse
 import com.wada811.ghblog.data.entity.response.github.git.refs.UpdateReferenceResponse
 import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse
+import com.wada811.ghblog.data.entity.response.github.git.trees.GetTreeResponse
 import com.wada811.ghblog.data.entity.response.github.repos.RepositoryResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.*
 import retrofit2.Response
@@ -62,11 +62,11 @@ interface GitHubService {
                         @Body reference: UpdateReferenceReferenceRequest): Observable<Response<UpdateReferenceResponse>>
 
     @GET("/repos/{owner}/{repo}/git/trees/{sha}")
-    fun getGitTree(@Path("owner") owner: String, @Path("repo") repo: String, @Path("sha") sha: String): Observable<Response<GitTreeEntity>>
+    fun getTree(@Path("owner") owner: String, @Path("repo") repo: String, @Path("sha") sha: String): Observable<Response<GetTreeResponse>>
 
     @GET("/repos/{owner}/{repo}/git/trees/{sha}")
     fun getGitTreeRecursively(@Path("owner") owner: String, @Path("repo") repo: String, @Path("sha") sha: String,
-                              @Query("recursive") recursive: Int): Observable<Response<GitTreeEntity>>
+                              @Query("recursive") recursive: Int): Observable<Response<GetTreeResponse>>
 
     @POST("/repos/{owner}/{repo}/git/trees")
     fun createGitTree(@Path("owner") owner: String, @Path("repo") repo: String,
