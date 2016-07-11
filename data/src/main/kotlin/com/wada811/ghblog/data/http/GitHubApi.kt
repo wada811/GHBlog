@@ -2,18 +2,13 @@ package com.wada811.ghblog.data.http
 
 import com.squareup.moshi.Moshi
 import com.wada811.ghblog.data.entity.GitTreeEntity
-import com.wada811.ghblog.data.entity.RepositoryContentEntity
-import com.wada811.ghblog.data.entity.RepositoryContentInfoEntity
 import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
 import com.wada811.ghblog.data.entity.request.github.git.commits.GetCommitRequest
 import com.wada811.ghblog.data.entity.request.github.git.refs.GetReferenceRequest
 import com.wada811.ghblog.data.entity.request.github.git.refs.UpdateReferenceRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
-import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
-import com.wada811.ghblog.data.entity.request.github.repos.contents.DeleteContentRequest
-import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
+import com.wada811.ghblog.data.entity.request.github.repos.contents.*
 import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse
-import com.wada811.ghblog.data.entity.response.github.repos.RepositoryResponse
 import com.wada811.ghblog.data.http.adapter.ZonedDateTimeAdapter
 import com.wada811.ghblog.domain.model.User
 import okhttp3.Interceptor
@@ -58,8 +53,8 @@ class GitHubApi(var user: User) {
     fun getRepositoryList() = client.getRepositoryList()
     fun getRepositoryList(url: String) = client.getRepositoryList(url)
 
-    fun getContents(owner: String, repo: String, path: String): Observable<Response<List<RepositoryContentInfoEntity>>> = client.getContents(owner, repo, path)
-    fun getContent(owner: String, repo: String, path: String): Observable<Response<RepositoryContentEntity>> = client.getContent(owner, repo, path)
+    fun getContents(request: GetContentsRequest) = client.getContents(request.owner, request.repo, request.path)
+    fun getContent(request: GetContentRequest) = client.getContent(request.owner, request.repo, request.path)
     fun createContent(request: CreateContentRequest) = client.createContent(request.owner, request.repo, request.path, request.commit)
     fun updateContent(request: UpdateContentRequest) = client.updateContent(request.owner, request.repo, request.path, request.commit)
     fun deleteContent(request: DeleteContentRequest) = client.deleteContent(request.owner, request.repo, request.path, request.commit.getQueryMap())

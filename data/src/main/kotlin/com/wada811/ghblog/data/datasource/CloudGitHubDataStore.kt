@@ -1,15 +1,13 @@
 package com.wada811.ghblog.data.datasource
 
+import com.wada811.ghblog.data.entity.mapper.GetContentResponseDataMapper
+import com.wada811.ghblog.data.entity.mapper.GetContentsResponseDataMapper
 import com.wada811.ghblog.data.entity.mapper.GitTreeEntityDataMapper
-import com.wada811.ghblog.data.entity.mapper.RepositoryContentEntityDataMapper
-import com.wada811.ghblog.data.entity.mapper.RepositoryContentInfoEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.RepositoryResponseDataMapper
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest.CreateTreeBodyRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest.CreateTreeBodyRequest.CreateTreeTreeRequest
-import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
-import com.wada811.ghblog.data.entity.request.github.repos.contents.DeleteContentRequest
-import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
+import com.wada811.ghblog.data.entity.request.github.repos.contents.*
 import com.wada811.ghblog.data.entity.response.github.repos.RepositoryResponse
 import com.wada811.ghblog.data.http.ApiInfoParser
 import com.wada811.ghblog.data.http.GitHubApi
@@ -46,21 +44,17 @@ class CloudGitHubDataStore(var user: User) {
 
     fun getContents(repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
         return Observable.defer {
-            GitHubApi(user).getContents(repository.owner.login, repository.name, path)
-                .map {
-                    it.body().map {
-                        RepositoryContentInfoEntityDataMapper.transform(it)
-                    }
-                }
+            val request = GetContentsRequest(repository.owner.login, repository.name, path)
+            GitHubApi(user).getContents(request)
+                .map { it.body().map { GetContentsResponseDataMapper.transform(it) } }
         }
     }
 
     fun getContent(repository: Repository, path: String): Observable<RepositoryContent> {
         return Observable.defer {
-            GitHubApi(user).getContent(repository.owner.login, repository.name, path)
-                .map {
-                    RepositoryContentEntityDataMapper.transform(it.body())
-                }
+            val request = GetContentRequest(repository.owner.login, repository.name, path)
+            GitHubApi(user).getContent(request)
+                .map { GetContentResponseDataMapper.transform(it.body()) }
         }
     }
 

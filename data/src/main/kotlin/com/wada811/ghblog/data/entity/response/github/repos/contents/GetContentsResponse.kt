@@ -1,6 +1,6 @@
-package com.wada811.ghblog.data.entity
+package com.wada811.ghblog.data.entity.response.github.repos.contents
 
-data class RepositoryContentInfoEntity(
+data class GetContentsResponse(
         var name: String,
         var path: String,
         var sha: String,
@@ -10,9 +10,9 @@ data class RepositoryContentInfoEntity(
         var git_url: String,
         var download_url: String,
         var type: String,
-        var _links: ContentLinkEntity
+        var _links: ContentLinkResponse
 ) {
-    data class ContentLinkEntity(
+    data class ContentLinkResponse(
             var self: String,
             var git: String,
             var html: String

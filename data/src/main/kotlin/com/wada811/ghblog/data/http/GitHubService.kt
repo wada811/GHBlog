@@ -1,8 +1,6 @@
 package com.wada811.ghblog.data.http
 
 import com.wada811.ghblog.data.entity.GitTreeEntity
-import com.wada811.ghblog.data.entity.RepositoryContentEntity
-import com.wada811.ghblog.data.entity.RepositoryContentInfoEntity
 import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
 import com.wada811.ghblog.data.entity.request.github.git.refs.UpdateReferenceRequest.UpdateReferenceReferenceRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
@@ -14,9 +12,7 @@ import com.wada811.ghblog.data.entity.response.github.git.refs.GetReferenceRespo
 import com.wada811.ghblog.data.entity.response.github.git.refs.UpdateReferenceResponse
 import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse
 import com.wada811.ghblog.data.entity.response.github.repos.RepositoryResponse
-import com.wada811.ghblog.data.entity.response.github.repos.contents.CreateContentResponse
-import com.wada811.ghblog.data.entity.response.github.repos.contents.DeleteContentResponse
-import com.wada811.ghblog.data.entity.response.github.repos.contents.UpdateContentResponse
+import com.wada811.ghblog.data.entity.response.github.repos.contents.*
 import retrofit2.Response
 import retrofit2.http.*
 import rx.Observable
@@ -34,10 +30,10 @@ interface GitHubService {
     fun getRepositoryList(@Url url: String): Observable<Response<List<RepositoryResponse>>>
 
     @GET("/repos/{owner}/{repo}/contents/{path}")
-    fun getContents(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String): Observable<Response<List<RepositoryContentInfoEntity>>>
+    fun getContents(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String): Observable<Response<List<GetContentsResponse>>>
 
     @GET("/repos/{owner}/{repo}/contents/{path}")
-    fun getContent(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String): Observable<Response<RepositoryContentEntity>>
+    fun getContent(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String): Observable<Response<GetContentResponse>>
 
     @PUT("/repos/{owner}/{repo}/contents/{path}")
     fun createContent(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String,

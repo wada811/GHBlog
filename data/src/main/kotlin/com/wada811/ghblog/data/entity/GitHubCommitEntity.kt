@@ -1,10 +1,11 @@
 package com.wada811.ghblog.data.entity
 
+import com.wada811.ghblog.data.entity.response.github.repos.contents.GetContentsResponse
 import org.threeten.bp.ZonedDateTime
 
 data class GitHubCommitEntity(
-        var content: RepositoryContentInfoEntity,
-        var commit: CommitEntity
+    var content: GetContentsResponse,
+    var commit: CommitEntity
 ) {
     data class CommitEntity(
             var sha: String,
