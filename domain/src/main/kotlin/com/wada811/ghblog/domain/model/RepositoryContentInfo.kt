@@ -38,5 +38,5 @@ open class RepositoryContentInfo(
         var html: String by PropertyChangedDelegate(html)
     }
 
-    fun getContent(user: User, repository: Repository): Observable<RepositoryContent> = GHBlogContext.gitHubRepository.getContent(user, repository, path)
+    fun getContent(user: User, repository: Repository) = GHBlogContext.gitHubRepository.getContent(user, repository, path)
 }
