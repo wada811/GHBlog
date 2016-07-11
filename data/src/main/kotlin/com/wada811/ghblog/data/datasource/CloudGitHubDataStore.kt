@@ -73,49 +73,10 @@ class CloudGitHubDataStore(var user: User) {
 
     fun deleteContent(repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
         return Observable.defer {
-            System.out.println("deleteContent:: repository.owner.login: ${repository.owner.login}")
-            System.out.println("deleteContent:: repository.name: ${repository.name}")
-            System.out.println("deleteContent:: commit.path: ${commit.path}")
-            System.out.println("deleteContent:: commit.message: ${commit.message}")
-            System.out.println("deleteContent:: commit.sha: ${commit.sha}")
             val request = DeleteContentRequest(repository.owner.login, repository.name, commit.path,
                 DeleteContentRequest.DeleteContentCommitRequest(commit.path, commit.message, commit.sha!!)
             )
-            GitHubApi(user).deleteContent(request)
-                .map {
-                    val response = it.body()
-                    System.out.println("deleteContent:: response: $response")
-                    GitHubCommit(
-                        null,
-                        GitHubCommit.Commit(
-                            response.commit.sha,
-                            response.commit.url,
-                            response.commit.html_url,
-                            GitHubCommit.Commit.Author(
-                                response.commit.author.date,
-                                response.commit.author.name,
-                                response.commit.author.email
-                            ),
-                            GitHubCommit.Commit.Author(
-                                response.commit.committer.date,
-                                response.commit.committer.name,
-                                response.commit.committer.email
-                            ),
-                            response.commit.message,
-                            GitHubTree(
-                                response.commit.tree.sha,
-                                response.commit.tree.url
-                            ),
-                            response.commit.parents.map {
-                                GitHubReference(
-                                    it.sha,
-                                    it.url,
-                                    it.html_url
-                                )
-                            }
-                        )
-                    )
-                }
+            GitHubApi(user).deleteContent(request).map { DeleteContentResponseDataMapper.transform(it.body()) }
         }
     }
 
