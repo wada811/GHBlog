@@ -1,16 +1,16 @@
 package com.wada811.ghblog.data.datasource
 
-import com.wada811.ghblog.data.entity.RepositoryEntity
 import com.wada811.ghblog.data.entity.mapper.GitTreeEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.RepositoryContentEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.RepositoryContentInfoEntityDataMapper
-import com.wada811.ghblog.data.entity.mapper.RepositoryEntityDataMapper
+import com.wada811.ghblog.data.entity.mapper.RepositoryResponseDataMapper
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest.CreateTreeBodyRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest.CreateTreeBodyRequest.CreateTreeTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.CreateContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.DeleteContentRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.UpdateContentRequest
+import com.wada811.ghblog.data.entity.response.github.repos.RepositoryResponse
 import com.wada811.ghblog.data.http.ApiInfoParser
 import com.wada811.ghblog.data.http.GitHubApi
 import com.wada811.ghblog.domain.model.*
@@ -21,26 +21,22 @@ import java.util.*
 class CloudGitHubDataStore(var user: User) {
     fun getAllRepository(): Observable<List<Repository>> {
         return Observable.defer {
-            getNextPageRepository(GitHubApi(user).getRepositoryList())
-                .map {
-                    it.map {
-                        RepositoryEntityDataMapper.transform(it)
-                    }
-                }
+            getAllRepository(GitHubApi(user).getRepositoryList())
+                .map { it.map { RepositoryResponseDataMapper.transform(it) } }
         }
     }
 
-    private fun getNextPageRepository(observable: Observable<Response<List<RepositoryEntity>>>): Observable<List<RepositoryEntity>> {
-        return observable.flatMap { response: Response<List<RepositoryEntity>> ->
+    private fun getAllRepository(observable: Observable<Response<List<RepositoryResponse>>>): Observable<List<RepositoryResponse>> {
+        return observable.flatMap { response: Response<List<RepositoryResponse>> ->
             val apiInfo = ApiInfoParser.parseResponseHeader(response.headers())
             val nextPageUrl = apiInfo.getNextPageUrl()
             if (nextPageUrl == null) {
                 Observable.just(response.body())
             } else {
                 Observable.just(response.body())
-                    .zipWith(getNextPageRepository(GitHubApi(user).getRepositoryList(nextPageUrl)), {
+                    .zipWith(getAllRepository(GitHubApi(user).getRepositoryList(nextPageUrl)), {
                         list1, list2 ->
-                        val list = list1 as ArrayList<RepositoryEntity>
+                        val list = list1 as ArrayList<RepositoryResponse>
                         list.addAll(list2)
                         list
                     })

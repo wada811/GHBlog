@@ -3,7 +3,6 @@ package com.wada811.ghblog.data.http
 import com.wada811.ghblog.data.entity.GitTreeEntity
 import com.wada811.ghblog.data.entity.RepositoryContentEntity
 import com.wada811.ghblog.data.entity.RepositoryContentInfoEntity
-import com.wada811.ghblog.data.entity.RepositoryEntity
 import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
 import com.wada811.ghblog.data.entity.request.github.git.refs.UpdateReferenceRequest.UpdateReferenceReferenceRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
@@ -14,6 +13,7 @@ import com.wada811.ghblog.data.entity.response.github.git.commits.GetCommitRespo
 import com.wada811.ghblog.data.entity.response.github.git.refs.GetReferenceResponse
 import com.wada811.ghblog.data.entity.response.github.git.refs.UpdateReferenceResponse
 import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse
+import com.wada811.ghblog.data.entity.response.github.repos.RepositoryResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.CreateContentResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.DeleteContentResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.UpdateContentResponse
@@ -28,10 +28,10 @@ interface GitHubService {
     }
 
     @GET("user/repos")
-    fun getRepositoryList(): Observable<Response<List<RepositoryEntity>>>
+    fun getRepositoryList(): Observable<Response<List<RepositoryResponse>>>
 
     @GET
-    fun getRepositoryList(@Url url: String): Observable<Response<List<RepositoryEntity>>>
+    fun getRepositoryList(@Url url: String): Observable<Response<List<RepositoryResponse>>>
 
     @GET("/repos/{owner}/{repo}/contents/{path}")
     fun getContents(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String): Observable<Response<List<RepositoryContentInfoEntity>>>
