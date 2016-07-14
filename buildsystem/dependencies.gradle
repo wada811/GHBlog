@@ -25,6 +25,7 @@ ext {
     retrofitVersion = "2.1.0" // https://github.com/square/retrofit
     threetenabpVersion = "1.0.3" // https://github.com/JakeWharton/ThreeTenABP
     threetenbpVersion = "1.3.1" // https://github.com/ThreeTen/threetenbp
+    concurrentLocksVersion = "1.0.0" // https://github.com/npgall/concurrent-locks
 
     // Development
     leakCanaryVersion = "1.4-beta2" // https://github.com/square/leakcanary
@@ -33,14 +34,14 @@ ext {
     junitVersion = '4.12'
 
     appDependencies = [
-            kotlin     : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
-            appcompat  : "com.android.support:appcompat-v7:$androidSupportVersion",
-            rxjava     : "io.reactivex:rxjava:$rxjavaVersion",
-            rxandroid  : "io.reactivex:rxandroid:$rxandroidVersion",
-            threetenabp: "com.jakewharton.threetenabp:threetenabp:$threetenabpVersion",
-            debugLeakCanary: "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion",
+            kotlin           : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            appcompat        : "com.android.support:appcompat-v7:$androidSupportVersion",
+            rxjava           : "io.reactivex:rxjava:$rxjavaVersion",
+            rxandroid        : "io.reactivex:rxandroid:$rxandroidVersion",
+            threetenabp      : "com.jakewharton.threetenabp:threetenabp:$threetenabpVersion",
+            debugLeakCanary  : "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion",
             releaseLeakCanary: "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion",
-            testLeakCanary: "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion",
+            testLeakCanary   : "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion",
     ]
     appTestDependencies = [
             junit: "junit:junit:$junitVersion"
@@ -60,8 +61,8 @@ ext {
             junit: "junit:junit:$junitVersion"
     ]
     domainDependencies = [
-            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
-            rxjava: "io.reactivex:rxjava:$rxjavaVersion",
+            kotlin    : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            rxjava    : "io.reactivex:rxjava:$rxjavaVersion",
             threetenbp: "org.threeten:threetenbp:$threetenbpVersion:no-tzdb"
     ]
     domainTestDependencies = [
@@ -79,6 +80,14 @@ ext {
             kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
     ]
     INotifyPropertyChnagedTestDependencies = [
+            junit: "junit:junit:$junitVersion"
+    ]
+    ObservableModelDependencies = [
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            locks : "com.googlecode.concurrent-locks:concurrent-locks:$concurrentLocksVersion",
+            rxjava: "io.reactivex:rxjava:$rxjavaVersion",
+    ]
+    ObservableModelTestDependencies = [
             junit: "junit:junit:$junitVersion"
     ]
 }

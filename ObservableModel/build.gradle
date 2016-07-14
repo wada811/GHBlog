@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+//noinspection GroovyUnusedAssignment
+sourceCompatibility = 1.7
+//noinspection GroovyUnusedAssignment
+targetCompatibility = 1.7
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/main/kotlin'
+}
+
+dependencies {
+    def dependencies = rootProject.ext.ObservableModelDependencies
+    def testDependencies = rootProject.ext.ObservableModelTestDependencies
+    compile dependencies.kotlin
+    testCompile testDependencies.junit
+    compile dependencies.locks
+    compile dependencies.rxjava
+    compile project(":INotifyPropertyChanged")
+}

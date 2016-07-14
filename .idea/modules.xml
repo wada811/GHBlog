@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GHBlog.iml" filepath="$PROJECT_DIR$/GHBlog.iml" />
       <module fileurl="file://$PROJECT_DIR$/INotifyPropertyChanged/INotifyPropertyChanged.iml" filepath="$PROJECT_DIR$/INotifyPropertyChanged/INotifyPropertyChanged.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ObservableModel/ObservableModel.iml" filepath="$PROJECT_DIR$/ObservableModel/ObservableModel.iml" />
       <module fileurl="file://$PROJECT_DIR$/RxViewModel/RxViewModel.iml" filepath="$PROJECT_DIR$/RxViewModel/RxViewModel.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/data/data.iml" filepath="$PROJECT_DIR$/data/data.iml" />
