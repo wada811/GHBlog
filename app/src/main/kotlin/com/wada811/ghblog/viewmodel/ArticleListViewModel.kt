@@ -1,21 +1,20 @@
 package com.wada811.ghblog.viewmodel
 
-import android.databinding.ObservableArrayList
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.domain.model.RepositoryContent
 import com.wada811.ghblog.view.activity.ArticleListActivity
+import com.wada811.observablemodel.ObservableSynchronizedArrayList
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxMessenger
 import com.wada811.rxviewmodel.RxViewModel
-import com.wada811.rxviewmodel.toSynchronizedObservableArrayList
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 class ArticleListViewModel : RxViewModel() {
-    val articleViewModelList = ObservableArrayList<ArticleListItemViewModel>().toSynchronizedObservableArrayList()
+    val articleViewModelList = ObservableSynchronizedArrayList<ArticleListItemViewModel>()
     val edit = RxCommand(AdapterView.OnItemClickListener {
         parent: AdapterView<*>, view: View, position: Int, id: Long ->
         Log.e("wada", "edit: " + parent.getItemAtPosition(position))

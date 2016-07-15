@@ -41,7 +41,6 @@ dependencies {
     compile dependencies.rxandroid
     compile project(':RxViewModel')
     compile project(':data')
-    compile project(':ObservableModel')
     compile dependencies.threetenabp
 }
 

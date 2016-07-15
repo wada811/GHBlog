@@ -15,6 +15,6 @@ dependencies {
     compile dependencies.kotlin
     testCompile testDependencies.junit
     compile dependencies.rxjava
-    compile project(':INotifyPropertyChanged')
+    compile project(':ObservableModel')
     compile dependencies.threetenbp
 }
