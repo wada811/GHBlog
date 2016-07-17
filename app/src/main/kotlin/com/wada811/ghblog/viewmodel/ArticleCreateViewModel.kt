@@ -3,6 +3,7 @@ package com.wada811.ghblog.viewmodel
 import android.util.Log
 import android.view.View
 import com.wada811.ghblog.domain.GHBlogContext
+import com.wada811.ghblog.domain.model.RepositoryContent
 import com.wada811.ghblog.view.activity.ArticleCreateActivity
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxMessenger
@@ -22,6 +23,7 @@ class ArticleCreateViewModel : RxViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Log.e("wada", "currentRepository.createContent.onNext")
+                GHBlogContext.currentUser.currentRepository!!.repositoryContents.add(RepositoryContent(it.content!!))
                 RxMessenger.send(ArticleCreateActivity.SaveAction())
             }, {
                 Log.e("wada", "currentRepository.createContent.onError", it)
