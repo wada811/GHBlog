@@ -25,12 +25,13 @@ class RepositoryListActivity : AppCompatActivity() {
         binding = RepositoryListActivityBindingAdapter(this, R.layout.activity_repository_list)
         binding.viewModel = RepositoryListViewModel()
         subscriptions.add(RxMessenger
-                .toObservable()
-                .sample(300, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    (it as? NextAction)?.invoke(this)
-                }
+            .toObservable()
+            .ofType(NextAction::class.java)
+            .throttleFirst(300, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                it.invoke(this)
+            }
         )
     }
 

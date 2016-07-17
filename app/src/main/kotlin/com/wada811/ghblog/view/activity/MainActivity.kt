@@ -22,14 +22,14 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = MainViewModel()
         Log.d("wada", "binding.viewModel.userName: " + binding.viewModel.userName)
         Log.d("wada", "binding.viewModel.accessToken: " + binding.viewModel.accessToken)
-        subscriptions.add(
-                RxMessenger
-                        .toObservable()
-                        .sample(300, TimeUnit.MILLISECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe {
-                            (it as? NextAction)?.invoke(this)
-                        }
+        subscriptions.add(RxMessenger
+            .toObservable()
+            .ofType(NextAction::class.java)
+            .throttleFirst(300, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                it.invoke(this)
+            }
         )
     }
 

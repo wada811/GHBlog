@@ -17,6 +17,7 @@ class ArticleListActivity : AppCompatActivity() {
     companion object {
         fun createIntent(context: Context) = Intent(context, ArticleListActivity::class.java)
     }
+
     lateinit var binding: ArticleListActivityBindingAdapter
     var subscriptions = CompositeSubscription()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,22 +25,22 @@ class ArticleListActivity : AppCompatActivity() {
         binding = ArticleListActivityBindingAdapter(this, R.layout.activity_article_list)
         binding.viewModel = ArticleListViewModel()
         subscriptions.add(RxMessenger
-                .toObservable()
-                .sample(300, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .ofType(CreateAction::class.java)
-                .subscribe {
-                    it.invoke(this)
-                }
+            .toObservable()
+            .ofType(CreateAction::class.java)
+            .throttleFirst(300, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                it.invoke(this)
+            }
         )
         subscriptions.add(RxMessenger
-                .toObservable()
-                .sample(300, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .ofType(EditAction::class.java)
-                .subscribe {
-                    it.invoke(this)
-                }
+            .toObservable()
+            .ofType(EditAction::class.java)
+            .throttleFirst(300, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                it.invoke(this)
+            }
         )
     }
 
