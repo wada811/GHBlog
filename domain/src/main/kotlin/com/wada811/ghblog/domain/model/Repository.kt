@@ -3,8 +3,10 @@ package com.wada811.ghblog.domain.model
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.notifypropertychanged.INotifyPropertyChanged
 import com.wada811.notifypropertychanged.PropertyChangedDelegate
+import com.wada811.observablemodel.ObservableSynchronizedArrayList
 import org.threeten.bp.ZonedDateTime
 import rx.Observable
+import rx.schedulers.Schedulers
 
 class Repository(
     id: Long,
@@ -147,7 +149,16 @@ class Repository(
     var defaultBranch: String by PropertyChangedDelegate(defaultBranch)
     var permissions: Permission by PropertyChangedDelegate(permissions)
 
+    val repositoryContents: ObservableSynchronizedArrayList<RepositoryContent> = ObservableSynchronizedArrayList()
     var currentRepositoryContent: RepositoryContent? by PropertyChangedDelegate(null)
+
+    fun loadContents(path : String) {
+        getContents(GHBlogContext.currentUser, path)
+            .subscribeOn(Schedulers.newThread())
+            .subscribe({
+                repositoryContents.addAll(it.map { RepositoryContent(it) })
+            })
+    }
 
     fun getContents(user: User, path: String) = GHBlogContext.gitHubRepository.getContents(user, this, path)
     fun getContent(user: User, path: String) = GHBlogContext.gitHubRepository.getContent(user, this, path)
@@ -155,5 +166,6 @@ class Repository(
         val commit = GitCommit(path, message, content)
         return GHBlogContext.gitHubRepository.createContent(GHBlogContext.currentUser, this, commit)
     }
+
     fun getTree(user: User) = GHBlogContext.gitHubRepository.getTree(user, this)
 }
