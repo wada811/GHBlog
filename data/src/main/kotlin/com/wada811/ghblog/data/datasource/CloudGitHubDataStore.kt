@@ -28,7 +28,7 @@ class CloudGitHubDataStore(var user: User) {
                 Observable.just(response.body())
             } else {
                 Observable.just(response.body())
-                    .zipWith(getAllRepository(GitHubApi(user).getRepositoryList(nextPageUrl)), { list1, list2 -> list1 + list2 })
+                    .mergeWith(getAllRepository(GitHubApi(user).getRepositoryList(nextPageUrl)))
             }
         }
     }

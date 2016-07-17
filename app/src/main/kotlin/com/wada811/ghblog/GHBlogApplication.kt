@@ -6,6 +6,7 @@ import com.squareup.leakcanary.LeakCanary
 import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
 import com.wada811.ghblog.domain.GHBlogContext
+import com.wada811.rxviewmodel.UIThreadScheduler
 import rx.android.schedulers.AndroidSchedulers
 
 class GHBlogApplication : Application() {
@@ -13,6 +14,7 @@ class GHBlogApplication : Application() {
         super.onCreate()
         LeakCanary.install(this)
         AndroidThreeTen.init(this)
-        GHBlogContext.init(AndroidSchedulers.mainThread(), UserDataRepository(), GitHubDataRepository())
+        GHBlogContext.init(UserDataRepository(), GitHubDataRepository())
+        UIThreadScheduler.DefaultScheduler = AndroidSchedulers.mainThread()
     }
 }

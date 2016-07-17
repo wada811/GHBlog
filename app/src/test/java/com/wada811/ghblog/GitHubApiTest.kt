@@ -4,17 +4,19 @@ import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.domain.model.RepositoryContentInfo
+import com.wada811.rxviewmodel.UIThreadScheduler
 import junit.framework.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
-import rx.schedulers.TestScheduler
+import rx.schedulers.Schedulers
 
 class GitHubApiTest {
 
     @Before
     fun init() {
         System.out.println("GHBlogContext.init")
-        GHBlogContext.init(TestScheduler(), UserDataRepository(), GitHubDataRepository())
+        GHBlogContext.init(UserDataRepository(), GitHubDataRepository())
+        UIThreadScheduler.DefaultScheduler = Schedulers.immediate()
         GHBlogContext.currentUser.loadRepositories()
     }
 

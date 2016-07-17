@@ -1,7 +1,6 @@
 package com.wada811.observablemodel
 
 import com.googlecode.concurentlocks.ReentrantReadWriteUpdateLock
-import com.wada811.observablemodel.extensions.CollectionChangedAsObservable
 import com.wada811.observablemodel.extensions.read
 import com.wada811.observablemodel.extensions.writeAndRead
 import com.wada811.observablemodel.extensions.writeWithUpdateAndRead
@@ -26,7 +25,6 @@ class ObservableSynchronizedArrayList<T>(source: Collection<T>) : IObservableSyn
     constructor() : this(listOf())
 
     internal var sourceSubscription: Subscription? = null
-    override fun subscribe(onNext: (CollectionChangedEventArgs) -> Unit, onError: (Throwable) -> Unit, onComplete: () -> Unit): Subscription = this.CollectionChangedAsObservable().subscribe(onNext, onError, onComplete)
     override fun isUnsubscribed(): Boolean = sourceSubscription == null || sourceSubscription!!.isUnsubscribed
     override fun unsubscribe() {
         if (sourceSubscription != null && !isUnsubscribed) {

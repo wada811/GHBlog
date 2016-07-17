@@ -22,6 +22,11 @@ open class RxViewModel : Subscription {
         return this
     }
 
+    protected fun <T> RxArrayList<T>.asManaged(): RxArrayList<T> {
+        subscriptions.add(this)
+        return this
+    }
+
     protected fun <T> RxCommand<T>.asManaged(): RxCommand<T> {
         subscriptions.add(this)
         return this

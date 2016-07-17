@@ -3,12 +3,12 @@ apply from: 'buildsystem/dependencies.gradle'
 
 buildscript {
     ext.kotlinVersion = "1.0.3"
-    ext.rx_android_kotlin_version = '0.4.0'
     repositories {
         jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion"
         classpath 'com.android.tools.build:gradle:2.2.0-alpha5'
 
         // NOTE: Do not place your application dependencies here; they belong

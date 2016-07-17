@@ -5,10 +5,14 @@ import com.wada811.observablemodel.CollectionChangedEventArgs
 import com.wada811.observablemodel.IObservableSynchronizedArrayList
 import com.wada811.observablemodel.ObservableSynchronizedArrayList
 import rx.Observable
+import rx.Scheduler
+import rx.Subscription
+import rx.schedulers.Schedulers
 import rx.subjects.PublishSubject
+import rx.subjects.SerializedSubject
 
-internal fun <T> IObservableSynchronizedArrayList<T>.CollectionChangedAsObservable(): Observable<CollectionChangedEventArgs> {
-    val subject = PublishSubject.create<CollectionChangedEventArgs>()
+fun <T> IObservableSynchronizedArrayList<T>.CollectionChangedAsObservable(): Observable<CollectionChangedEventArgs> {
+    val subject = SerializedSubject<CollectionChangedEventArgs, CollectionChangedEventArgs>(PublishSubject.create<CollectionChangedEventArgs>())
     val handler = { sender: Any, e: CollectionChangedEventArgs -> subject.onNext(e) }
     return subject.doOnSubscribe { this.CollectionChanged += handler }.doOnUnsubscribe { this.CollectionChanged -= handler }
 }
@@ -16,29 +20,40 @@ internal fun <T> IObservableSynchronizedArrayList<T>.CollectionChangedAsObservab
 fun <T, TResult> IObservableSynchronizedArrayList<T>.ToObservableSynchronizedArrayList(converter: (T) -> TResult): IObservableSynchronizedArrayList<TResult> {
     return this.readLockAction({
         val result = ObservableSynchronizedArrayList(this.map(converter))
-        result.sourceSubscription = this.subscribe({
+        result.sourceSubscription = this.subscribeCollectionChanged(result, converter)
+        return@readLockAction result
+    })
+}
+
+fun <TSource, TResult> IObservableSynchronizedArrayList<TSource>.subscribeCollectionChanged(
+    target: IObservableSynchronizedArrayList<TResult>,
+    converter: (TSource) -> TResult,
+    scheduler: Scheduler = Schedulers.immediate()
+): Subscription {
+    return this.CollectionChangedAsObservable()
+        .onBackpressureBuffer()
+        .observeOn(scheduler)
+        .subscribe {
             when (it.action) {
                 CollectionChangedEventAction.Add -> {
                     val e = it as CollectionChangedEventArgs.Add
-                    result.add(e.index, @Suppress("UNCHECKED_CAST") converter(e.item as T))
+                    target.add(e.index, @Suppress("UNCHECKED_CAST") converter(e.item as TSource))
                 }
                 CollectionChangedEventAction.Remove -> {
                     val e = it as CollectionChangedEventArgs.Remove
-                    result.removeAt(e.index)
+                    target.removeAt(e.index)
                 }
                 CollectionChangedEventAction.Replace -> {
                     val e = it as CollectionChangedEventArgs.Replace
-                    result[e.index] = @Suppress("UNCHECKED_CAST") converter(e.newItem as T)
+                    target[e.index] = @Suppress("UNCHECKED_CAST") converter(e.newItem as TSource)
                 }
                 CollectionChangedEventAction.Move -> {
                     val e = it as CollectionChangedEventArgs.Move
-                    result.move(e.oldIndex, e.newIndex)
+                    target.move(e.oldIndex, e.newIndex)
                 }
                 CollectionChangedEventAction.Reset -> {
-                    result.clear()
+                    target.clear()
                 }
             }
-        })
-        return@readLockAction result
-    })
+        }
 }

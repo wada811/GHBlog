@@ -6,7 +6,7 @@ import com.wada811.notifypropertychanged.PropertyChangedEventArgs
 import com.wada811.rxviewmodel.extensions.ObserveProperty
 import com.wada811.rxviewmodel.extensions.PropertyChangedAsObservable
 import com.wada811.rxviewmodel.extensions.toRxProperty
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Test
 
 class RxPropertyTest {

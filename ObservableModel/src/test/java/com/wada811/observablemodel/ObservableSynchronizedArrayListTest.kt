@@ -1,5 +1,6 @@
 package com.wada811.observablemodel
 
+import com.wada811.observablemodel.extensions.CollectionChangedAsObservable
 import com.wada811.observablemodel.extensions.ToObservableSynchronizedArrayList
 import org.junit.Assert
 import org.junit.Assert.assertEquals
@@ -162,7 +163,7 @@ class ObservableSynchronizedArrayListTest {
         val threadCount = 100
         val original = ObservableSynchronizedArrayList<String>()
         val converted = original.ToObservableSynchronizedArrayList { it + it }
-        original.subscribe({ e ->
+        original.CollectionChangedAsObservable().subscribe({ e ->
             when (e.action) {
                 CollectionChangedEventAction.Add -> {
                     val eventArgs = e as CollectionChangedEventArgs.Add
@@ -198,7 +199,7 @@ class ObservableSynchronizedArrayListTest {
         }, {
             System.out.println("original: onError: $it")
         })
-        converted.subscribe({ e ->
+        converted.CollectionChangedAsObservable().subscribe({ e ->
             when (e.action) {
                 CollectionChangedEventAction.Add -> {
                     val eventArgs = e as CollectionChangedEventArgs.Add

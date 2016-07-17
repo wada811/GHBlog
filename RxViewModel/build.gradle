@@ -35,5 +35,5 @@ dependencies {
     testCompile testDependencies.junit
     compile dependencies.appcompat
     compile dependencies.rxjava
-    compile project(":INotifyPropertyChanged")
+    compile project(":ObservableModel")
 }
