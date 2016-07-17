@@ -3,7 +3,9 @@ package com.wada811.ghblog.viewmodel
 import android.util.Log
 import android.view.View
 import com.wada811.ghblog.domain.GHBlogContext
+import com.wada811.ghblog.view.activity.ArticleEditActivity
 import com.wada811.rxviewmodel.RxCommand
+import com.wada811.rxviewmodel.RxMessenger
 import com.wada811.rxviewmodel.RxProperty
 import com.wada811.rxviewmodel.RxViewModel
 import com.wada811.rxviewmodel.extensions.ObserveProperty
@@ -20,7 +22,9 @@ class ArticleEditViewModel() : RxViewModel() {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                repositoryContent = it
+                repositoryContent.encoding = it.encoding
+                repositoryContent.encodedContent = it.encodedContent
+                repositoryContent.content = it.content
             }, {
                 Log.e("wada", "getContent.onError: " + it)
             }, {
@@ -38,11 +42,15 @@ class ArticleEditViewModel() : RxViewModel() {
         .toRxProperty(repositoryContent.content.splitToSequence(System.getProperty("line.separator"), limit = 2).last())
         .asManaged()
     var save = RxCommand(View.OnClickListener {
-        repositoryContent.update(path.value!!, "Update ${path.value!!}", name.value + System.getProperty("line.separator") + content.value)
+        val contentString = name.value + System.getProperty("line.separator") + content.value
+        repositoryContent.update(path.value!!, "Update ${path.value!!}", contentString)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                repositoryContent.path = path.value!!
+                repositoryContent.content = contentString
                 Log.e("wada", "currentRepository.updateContent.onNext")
+                RxMessenger.send(ArticleEditActivity.SaveAction())
             }, {
                 Log.e("wada", "currentRepository.updateContent.onError", it)
             }, {
