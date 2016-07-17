@@ -3,19 +3,18 @@ package com.wada811.ghblog.domain.model
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.notifypropertychanged.INotifyPropertyChanged
 import com.wada811.notifypropertychanged.PropertyChangedDelegate
-import rx.Observable
 
 open class RepositoryContentInfo(
-        name: String,
-        path: String,
-        sha: String,
-        size: Int,
-        url: String,
-        htmlUrl: String,
-        gitUrl: String,
-        downloadUrl: String,
-        type: String,
-        contentLink: ContentLink
+    name: String,
+    path: String,
+    sha: String,
+    size: Int,
+    url: String,
+    htmlUrl: String,
+    gitUrl: String,
+    downloadUrl: String,
+    type: String,
+    contentLink: ContentLink
 ) : INotifyPropertyChanged {
     var name: String by PropertyChangedDelegate(name)
     var path: String  by PropertyChangedDelegate(path)
@@ -29,9 +28,9 @@ open class RepositoryContentInfo(
     var contentLink: ContentLink by PropertyChangedDelegate(contentLink)
 
     class ContentLink(
-            self: String,
-            git: String,
-            html: String
+        self: String,
+        git: String,
+        html: String
     ) : INotifyPropertyChanged {
         var self: String by PropertyChangedDelegate(self)
         var git: String by PropertyChangedDelegate(git)
