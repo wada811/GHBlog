@@ -11,8 +11,8 @@ fun <T> T.PropertyChangedAsObservable(): Observable<PropertyChangedEventArgs> wh
     return subject.doOnSubscribe { this.PropertyChanged += handler }.doOnUnsubscribe { this.PropertyChanged -= handler }
 }
 
-fun <T, TProperty> T.ObserveProperty(propertyName: String, propertySelector: (T) -> TProperty): Observable<TProperty> where T : INotifyPropertyChanged{
+fun <T, TProperty> T.ObserveProperty(propertyName: String, propertySelector: (T) -> TProperty): Observable<TProperty> where T : INotifyPropertyChanged {
     return this.PropertyChangedAsObservable()
-            .filter { it.PropertyName == propertyName }
-            .map { propertySelector(this) }
+        .filter { it.PropertyName == propertyName }
+        .map { propertySelector(this) }
 }
