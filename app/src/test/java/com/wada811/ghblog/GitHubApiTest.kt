@@ -32,7 +32,7 @@ class GitHubApiTest {
             repository.name.equals("blogtest")
         }
         GHBlogContext.currentUser.currentRepository = repository
-        repository.getContents(GHBlogContext.currentUser, "content/blog").subscribe {
+        repository.getContents("content/blog").subscribe {
             it.forEach { System.out.println("content.name: ${it.name}") }
             assertNotNull(it)
         }
@@ -43,7 +43,7 @@ class GitHubApiTest {
     fun getContent() {
         val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
         GHBlogContext.currentUser.currentRepository = repository
-        repository.getContents(GHBlogContext.currentUser, "content/blog").subscribe { repositoryContentInfoList: List<RepositoryContentInfo> ->
+        repository.getContents("content/blog").subscribe { repositoryContentInfoList: List<RepositoryContentInfo> ->
             repositoryContentInfoList.first()
                 .getContent(GHBlogContext.currentUser, repository)
                 .subscribe {
@@ -68,7 +68,7 @@ class GitHubApiTest {
         val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
         GHBlogContext.currentUser.currentRepository = repository
         val path = "content/blog/test.md"
-        repository.getContent(GHBlogContext.currentUser, path).subscribe {
+        repository.getContent(path).subscribe {
             it.update(path, "update test message", "update content body")
                 .subscribe {
                     assertNotNull(it)
@@ -80,8 +80,7 @@ class GitHubApiTest {
     fun deleteContent() {
         val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
         GHBlogContext.currentUser.currentRepository = repository
-        val path = "content/blog/test.md"
-        repository.getContent(GHBlogContext.currentUser, path).subscribe {
+        repository.getContent("content/blog/test.md").subscribe {
             it.delete("delete test message", it.content)
                 .subscribe {
                     assertNotNull(it)
@@ -93,13 +92,13 @@ class GitHubApiTest {
     fun renameContent() {
         val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
         GHBlogContext.currentUser.currentRepository = repository
-        repository.getContent(GHBlogContext.currentUser, "content/blog/rename.md").subscribe({
+        repository.getContent("content/blog/rename.md").subscribe({
             it.update("content/blog/renamed.md", "rename rename.md", "rename content")
                 .subscribe {
                     assertNotNull(it)
                 }
         }, {
-            repository.getContent(GHBlogContext.currentUser, "content/blog/renamed.md").subscribe {
+            repository.getContent("content/blog/renamed.md").subscribe {
                 it.update("content/blog/rename.md", "rename renamed.md", "rename content")
                     .subscribe {
                         assertNotNull(it)
@@ -112,7 +111,7 @@ class GitHubApiTest {
     fun getTree() {
         val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
         GHBlogContext.currentUser.currentRepository = repository
-        repository.getTree(GHBlogContext.currentUser).subscribe {
+        repository.getTree().subscribe {
             assertNotNull(it)
         }
     }

@@ -16,7 +16,8 @@ import rx.Observable
 class CloudGitHubDataStore(var user: User) {
     fun getAllRepository(): Observable<List<Repository>> {
         return Observable.defer {
-            getAllRepository(GitHubApi(user).getRepositoryList()).map { it.map { RepositoryResponseDataMapper.transform(it) } }
+            getAllRepository(GitHubApi(user).getRepositoryList())
+                .map { it.map { RepositoryResponseDataMapper.transform(user, it) } }
         }
     }
 
@@ -77,7 +78,8 @@ class CloudGitHubDataStore(var user: User) {
     fun renameContent(repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
         return deleteContent(repository, GitCommit(commit.oldPath!!, commit.message, commit.content, commit.sha))
             .zipWith(createContent(repository, GitCommit(commit.path, commit.message, commit.content)), {
-                deleteCommit, createCommit -> createCommit
+                deleteCommit, createCommit ->
+                createCommit
             })
 
     }

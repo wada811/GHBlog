@@ -9,6 +9,7 @@ import rx.Observable
 import rx.schedulers.Schedulers
 
 class Repository(
+    val user: User,
     id: Long,
     name: String,
     fullName: String,
@@ -153,19 +154,19 @@ class Repository(
     var currentRepositoryContent: RepositoryContent? by PropertyChangedDelegate(null)
 
     fun loadContents(path : String) {
-        getContents(GHBlogContext.currentUser, path)
+        getContents(path)
             .subscribeOn(Schedulers.newThread())
             .subscribe({
                 repositoryContents.addAll(it.map { RepositoryContent(it) })
             })
     }
 
-    fun getContents(user: User, path: String) = GHBlogContext.gitHubRepository.getContents(user, this, path)
-    fun getContent(user: User, path: String) = GHBlogContext.gitHubRepository.getContent(user, this, path)
+    fun getContents(path: String) = GHBlogContext.gitHubRepository.getContents(user, this, path)
+    fun getContent(path: String) = GHBlogContext.gitHubRepository.getContent(user, this, path)
     fun createContent(path: String, message: String, content: String): Observable<GitHubCommit> {
         val commit = GitCommit(path, message, content)
-        return GHBlogContext.gitHubRepository.createContent(GHBlogContext.currentUser, this, commit)
+        return GHBlogContext.gitHubRepository.createContent(user, this, commit)
     }
 
-    fun getTree(user: User) = GHBlogContext.gitHubRepository.getTree(user, this)
+    fun getTree() = GHBlogContext.gitHubRepository.getTree(user, this)
 }

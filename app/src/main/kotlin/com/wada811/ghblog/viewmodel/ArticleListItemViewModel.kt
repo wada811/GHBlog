@@ -11,7 +11,7 @@ import rx.schedulers.Schedulers
 
 class ArticleListItemViewModel(var repositoryContentInfo: RepositoryContent) : RxViewModel() {
     init {
-        GHBlogContext.currentUser.currentRepository!!.getContent(GHBlogContext.currentUser, repositoryContentInfo.path)
+        GHBlogContext.currentUser.currentRepository!!.getContent(repositoryContentInfo.path)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

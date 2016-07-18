@@ -18,7 +18,7 @@ class ArticleEditViewModel() : RxViewModel() {
 
     init {
         GHBlogContext.currentUser.currentRepository!!
-            .getContent(GHBlogContext.currentUser, repositoryContent.path)
+            .getContent(repositoryContent.path)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

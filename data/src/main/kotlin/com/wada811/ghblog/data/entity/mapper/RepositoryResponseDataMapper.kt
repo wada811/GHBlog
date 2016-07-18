@@ -4,9 +4,11 @@ import com.wada811.ghblog.data.entity.response.github.repos.RepositoryResponse
 import com.wada811.ghblog.domain.model.Owner
 import com.wada811.ghblog.domain.model.Permission
 import com.wada811.ghblog.domain.model.Repository
+import com.wada811.ghblog.domain.model.User
 
 object RepositoryResponseDataMapper {
-    fun transform(response: RepositoryResponse) = Repository(
+    fun transform(user: User, response: RepositoryResponse) = Repository(
+        user,
         response.id,
         response.name,
         response.full_name,
