@@ -55,6 +55,28 @@ class RepositoryContent(
         repositoryContentInfo.contentLink
     )
 
+    fun loadContent() {
+        GHBlogContext.gitHubRepository.getContent(user, repository, path)
+            .subscribeOn(Schedulers.newThread())
+            .subscribe {
+                this.name = it.name
+                this.path = it.path
+                this.sha = it.sha
+                this.size = it.size
+                this.url = it.url
+                this.htmlUrl = it.htmlUrl
+                this.gitUrl = it.gitUrl
+                this.downloadUrl = it.downloadUrl
+                this.type = it.type
+                this.contentLink.self = it.contentLink.self
+                this.contentLink.git = it.contentLink.git
+                this.contentLink.html = it.contentLink.html
+                this.encoding = it.encoding
+                this.encodedContent = it.encodedContent
+                this.content = it.content
+            }
+    }
+
     fun update(newPath: String, message: String, content: String) {
         val commit = GitCommit(newPath, message, content, sha, path)
         val observable = if (path == newPath) {

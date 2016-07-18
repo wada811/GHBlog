@@ -3,7 +3,6 @@ package com.wada811.ghblog
 import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
 import com.wada811.ghblog.domain.GHBlogContext
-import com.wada811.ghblog.domain.model.RepositoryContentInfo
 import com.wada811.observablemodel.extensions.ObserveCollection
 import com.wada811.rxviewmodel.UIThreadScheduler
 import com.wada811.rxviewmodel.extensions.ObserveProperty
@@ -38,8 +37,8 @@ class GitHubApiTest {
                 repository.name.equals("blogtest")
             }
             GHBlogContext.currentUser.currentRepository = repository
-            repository.getContents("content/blog").subscribe {
-                it.forEach { System.out.println("content.name: ${it.name}") }
+            repository.loadContents("content/blog")
+            repository.repositoryContents.ObserveCollection().subscribe {
                 assertNotNull(it)
             }
         }
@@ -51,12 +50,13 @@ class GitHubApiTest {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
             GHBlogContext.currentUser.currentRepository = repository
-            repository.getContents("content/blog").subscribe { repositoryContentInfoList: List<RepositoryContentInfo> ->
-                repositoryContentInfoList.first()
-                    .getContent()
-                    .subscribe {
-                        assertNotNull(it)
-                    }
+            repository.loadContents("content/blog")
+            repository.repositoryContents.ObserveCollection().subscribe {
+                val repositoryContent = repository.repositoryContents.first()
+                repositoryContent.loadContent()
+                repositoryContent.ObserveProperty("content", { it.content }).subscribe {
+                    assertNotNull(it)
+                }
             }
         }
     }
@@ -80,9 +80,12 @@ class GitHubApiTest {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
             GHBlogContext.currentUser.currentRepository = repository
             val path = "content/blog/test.md"
-            repository.getContent(path).subscribe {
-                it.update(path, "update test message", "update content body")
-                it.ObserveProperty("sha", { it.sha }).toRxProperty(it.sha).asObservable().subscribe { assertNotNull(it) }
+            repository.loadContent(path)
+            repository.ObserveProperty("currentRepositoryContent", { it.currentRepositoryContent }).subscribe {
+                it!!.update(path, "update test message", "update content body")
+                it.ObserveProperty("sha", { it.sha }).toRxProperty(it.sha).asObservable().subscribe {
+                    assertNotNull(it)
+                }
             }
         }
     }
@@ -92,8 +95,9 @@ class GitHubApiTest {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
             GHBlogContext.currentUser.currentRepository = repository
-            repository.getContent("content/blog/test.md").subscribe {
-                it.delete("delete test message", it.content)
+            repository.loadContent("content/blog/test.md")
+            repository.ObserveProperty("currentRepositoryContent", { it.currentRepositoryContent }).subscribe {
+                it!!.delete("delete test message", it.content)
                     .subscribe {
                         assertNotNull(it)
                     }
@@ -106,12 +110,14 @@ class GitHubApiTest {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
             GHBlogContext.currentUser.currentRepository = repository
-            repository.getContent("content/blog/rename.md").subscribe({
-                it.update("content/blog/renamed.md", "rename rename.md", "rename content")
+            repository.loadContent("content/blog/rename.md")
+            repository.ObserveProperty("currentRepositoryContent", { it.currentRepositoryContent }).subscribe({
+                it!!.update("content/blog/renamed.md", "rename rename.md", "rename content")
                 it.ObserveProperty("sha", { it.sha }).toRxProperty(it.sha).asObservable().subscribe { assertNotNull(it) }
             }, {
-                repository.getContent("content/blog/renamed.md").subscribe {
-                    it.update("content/blog/rename.md", "rename renamed.md", "rename content")
+                repository.loadContent("content/blog/renamed.md")
+                repository.ObserveProperty("currentRepositoryContent", { it.currentRepositoryContent }).subscribe {
+                    it!!.update("content/blog/rename.md", "rename renamed.md", "rename content")
                     it.ObserveProperty("sha", { it.sha }).toRxProperty(it.sha).asObservable().subscribe { assertNotNull(it) }
                 }
             })

@@ -38,6 +38,4 @@ open class RepositoryContentInfo(
         var git: String by PropertyChangedDelegate(git)
         var html: String by PropertyChangedDelegate(html)
     }
-
-    fun getContent() = GHBlogContext.gitHubRepository.getContent(user, repository, path)
 }

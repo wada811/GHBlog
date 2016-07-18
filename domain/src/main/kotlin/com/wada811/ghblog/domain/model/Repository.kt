@@ -153,16 +153,22 @@ class Repository(
     val repositoryContents: ObservableSynchronizedArrayList<RepositoryContent> = ObservableSynchronizedArrayList()
     var currentRepositoryContent: RepositoryContent? by PropertyChangedDelegate(null)
 
-    fun loadContents(path : String) {
-        getContents(path)
+    fun loadContents(path: String) {
+        GHBlogContext.gitHubRepository.getContents(user, this, path)
             .subscribeOn(Schedulers.newThread())
-            .subscribe({
+            .subscribe {
                 repositoryContents.addAll(it.map { RepositoryContent(it) })
-            })
+            }
     }
 
-    fun getContents(path: String) = GHBlogContext.gitHubRepository.getContents(user, this, path)
-    fun getContent(path: String) = GHBlogContext.gitHubRepository.getContent(user, this, path)
+    fun loadContent(path: String) {
+        GHBlogContext.gitHubRepository.getContent(user, this, path)
+            .subscribeOn(Schedulers.newThread())
+            .subscribe {
+                currentRepositoryContent = it
+            }
+    }
+
     fun createContent(path: String, message: String, content: String): Observable<GitHubCommit> {
         val commit = GitCommit(path, message, content)
         return GHBlogContext.gitHubRepository.createContent(user, this, commit)
