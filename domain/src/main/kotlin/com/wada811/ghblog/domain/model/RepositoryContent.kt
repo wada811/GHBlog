@@ -5,6 +5,7 @@ import com.wada811.ghblog.domain.util.Base64
 import com.wada811.notifypropertychanged.INotifyPropertyChanged
 import com.wada811.notifypropertychanged.PropertyChangedDelegate
 import rx.Observable
+import rx.schedulers.Schedulers
 
 class RepositoryContent(
     user: User,
@@ -54,13 +55,29 @@ class RepositoryContent(
         repositoryContentInfo.contentLink
     )
 
-    fun update(newPath: String, message: String, content: String): Observable<GitHubCommit> {
+    fun update(newPath: String, message: String, content: String) {
         val commit = GitCommit(newPath, message, content, sha, path)
-        if (path == newPath) {
-            return GHBlogContext.gitHubRepository.updateContent(user, repository, commit)
+        val observable = if (path == newPath) {
+            GHBlogContext.gitHubRepository.updateContent(user, repository, commit)
         } else {
-            return GHBlogContext.gitHubRepository.renameContent(user, repository, commit)
+            GHBlogContext.gitHubRepository.renameContent(user, repository, commit)
         }
+        observable.subscribeOn(Schedulers.newThread())
+            .subscribe {
+                this.name = it.content!!.name
+                this.path = it.content!!.path
+                this.sha = it.content!!.sha
+                this.size = it.content!!.size
+                this.url = it.content!!.url
+                this.htmlUrl = it.content!!.htmlUrl
+                this.gitUrl = it.content!!.gitUrl
+                this.downloadUrl = it.content!!.downloadUrl
+                this.type = it.content!!.type
+                this.contentLink.self = it.content!!.contentLink.self
+                this.contentLink.git = it.content!!.contentLink.git
+                this.contentLink.html = it.content!!.contentLink.html
+                this.content = content
+            }
     }
 
     fun delete(message: String, content: String): Observable<GitHubCommit> {

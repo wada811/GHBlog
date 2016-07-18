@@ -1,7 +1,8 @@
 package com.wada811.rxviewmodel.extensions
 
 import com.wada811.observablemodel.IObservableSynchronizedArrayList
-import com.wada811.observablemodel.extensions.subscribeCollectionChanged
+import com.wada811.observablemodel.extensions.ObserveCollection
+import com.wada811.observablemodel.extensions.map
 import com.wada811.rxviewmodel.RxArrayList
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxProperty
@@ -20,7 +21,7 @@ fun <T> Observable<Boolean>.toRxCommand(initialValue: Boolean, command: T) = RxC
 fun <T, TResult> IObservableSynchronizedArrayList<T>.ToRxArrayList(converter: (T) -> TResult): RxArrayList<TResult> {
     return this.readLockAction({
         val result = RxArrayList(this.map(converter))
-        result.sourceSubscription = this.subscribeCollectionChanged(result, converter, UIThreadScheduler.DefaultScheduler)
+        result.sourceSubscription = this.ObserveCollection(UIThreadScheduler.DefaultScheduler).map(result, converter)
         return@readLockAction result
     })
 }
