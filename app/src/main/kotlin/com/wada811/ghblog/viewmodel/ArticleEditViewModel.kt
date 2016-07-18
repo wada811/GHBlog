@@ -47,7 +47,8 @@ class ArticleEditViewModel() : RxViewModel() {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                repositoryContent.path = path.value!!
+                repositoryContent.sha = it.content!!.sha
+                repositoryContent.path = it.content!!.path
                 repositoryContent.content = contentString
                 Log.e("wada", "currentRepository.updateContent.onNext")
                 RxMessenger.send(ArticleEditActivity.SaveAction())
