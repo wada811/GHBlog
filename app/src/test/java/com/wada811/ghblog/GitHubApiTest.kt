@@ -45,7 +45,7 @@ class GitHubApiTest {
         GHBlogContext.currentUser.currentRepository = repository
         repository.getContents("content/blog").subscribe { repositoryContentInfoList: List<RepositoryContentInfo> ->
             repositoryContentInfoList.first()
-                .getContent(GHBlogContext.currentUser, repository)
+                .getContent()
                 .subscribe {
                     assertNotNull(it)
                 }

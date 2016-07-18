@@ -5,6 +5,8 @@ import com.wada811.notifypropertychanged.INotifyPropertyChanged
 import com.wada811.notifypropertychanged.PropertyChangedDelegate
 
 open class RepositoryContentInfo(
+    val user: User,
+    val repository: Repository,
     name: String,
     path: String,
     sha: String,
@@ -37,5 +39,5 @@ open class RepositoryContentInfo(
         var html: String by PropertyChangedDelegate(html)
     }
 
-    fun getContent(user: User, repository: Repository) = GHBlogContext.gitHubRepository.getContent(user, repository, path)
+    fun getContent() = GHBlogContext.gitHubRepository.getContent(user, repository, path)
 }

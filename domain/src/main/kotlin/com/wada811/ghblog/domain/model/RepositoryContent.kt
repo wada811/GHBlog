@@ -7,6 +7,8 @@ import com.wada811.notifypropertychanged.PropertyChangedDelegate
 import rx.Observable
 
 class RepositoryContent(
+    user: User,
+    repository: Repository,
     name: String,
     path: String,
     sha: String,
@@ -20,6 +22,8 @@ class RepositoryContent(
     encoding: String = "",
     encodedContent: String = ""
 ) : RepositoryContentInfo(
+    user,
+    repository,
     name,
     path,
     sha,
@@ -36,6 +40,8 @@ class RepositoryContent(
     var content: String by PropertyChangedDelegate(String(Base64.decode(encodedContent, Base64.NO_WRAP)))
 
     constructor(repositoryContentInfo: RepositoryContentInfo) : this(
+        repositoryContentInfo.user,
+        repositoryContentInfo.repository,
         repositoryContentInfo.name,
         repositoryContentInfo.path,
         repositoryContentInfo.sha,
@@ -51,14 +57,14 @@ class RepositoryContent(
     fun update(newPath: String, message: String, content: String): Observable<GitHubCommit> {
         val commit = GitCommit(newPath, message, content, sha, path)
         if (path == newPath) {
-            return GHBlogContext.gitHubRepository.updateContent(GHBlogContext.currentUser, GHBlogContext.currentUser.currentRepository!!, commit)
+            return GHBlogContext.gitHubRepository.updateContent(user, repository, commit)
         } else {
-            return GHBlogContext.gitHubRepository.renameContent(GHBlogContext.currentUser, GHBlogContext.currentUser.currentRepository!!, commit)
+            return GHBlogContext.gitHubRepository.renameContent(user, repository, commit)
         }
     }
 
     fun delete(message: String, content: String): Observable<GitHubCommit> {
         val commit = GitCommit(path, message, content, sha)
-        return GHBlogContext.gitHubRepository.deleteContent(GHBlogContext.currentUser, GHBlogContext.currentUser.currentRepository!!, commit)
+        return GHBlogContext.gitHubRepository.deleteContent(user, repository, commit)
     }
 }

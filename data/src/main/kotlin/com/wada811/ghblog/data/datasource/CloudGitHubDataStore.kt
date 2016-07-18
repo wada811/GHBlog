@@ -37,14 +37,16 @@ class CloudGitHubDataStore(var user: User) {
     fun getContents(repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
         return Observable.defer {
             val request = GetContentsRequest(repository.owner.login, repository.name, path)
-            GitHubApi(user).getContents(request).map { it.body().map { GetContentsResponseDataMapper.transform(it) } }
+            GitHubApi(user).getContents(request)
+                .map { it.body().map { GetContentsResponseDataMapper.transform(user, repository, it) } }
         }
     }
 
     fun getContent(repository: Repository, path: String): Observable<RepositoryContent> {
         return Observable.defer {
             val request = GetContentRequest(repository.owner.login, repository.name, path)
-            GitHubApi(user).getContent(request).map { GetContentResponseDataMapper.transform(it.body()) }
+            GitHubApi(user).getContent(request)
+                .map { GetContentResponseDataMapper.transform(user, repository, it.body()) }
         }
     }
 
@@ -53,7 +55,8 @@ class CloudGitHubDataStore(var user: User) {
             val request = CreateContentRequest(repository.owner.login, repository.name, commit.path,
                 CreateContentRequest.CreateContentCommitRequest(commit.path, commit.message, commit.encodedContent())
             )
-            GitHubApi(user).createContent(request).map { CreateContentResponseDataMapper.transform(it.body()) }
+            GitHubApi(user).createContent(request)
+                .map { CreateContentResponseDataMapper.transform(user, repository, it.body()) }
         }
     }
 
@@ -62,7 +65,8 @@ class CloudGitHubDataStore(var user: User) {
             val request = UpdateContentRequest(repository.owner.login, repository.name, commit.path,
                 UpdateContentRequest.UpdateContentCommitRequest(commit.path, commit.message, commit.encodedContent(), commit.sha!!)
             )
-            GitHubApi(user).updateContent(request).map { UpdateContentResponseDataMapper.transform(it.body()) }
+            GitHubApi(user).updateContent(request)
+                .map { UpdateContentResponseDataMapper.transform(user, repository, it.body()) }
         }
     }
 

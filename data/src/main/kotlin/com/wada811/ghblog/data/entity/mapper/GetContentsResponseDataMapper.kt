@@ -2,11 +2,15 @@ package com.wada811.ghblog.data.entity.mapper
 
 import com.wada811.ghblog.data.entity.response.github.repos.contents.GetContentsResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.GetContentsResponse.ContentLinkResponse
+import com.wada811.ghblog.domain.model.Repository
 import com.wada811.ghblog.domain.model.RepositoryContentInfo
 import com.wada811.ghblog.domain.model.RepositoryContentInfo.ContentLink
+import com.wada811.ghblog.domain.model.User
 
 object GetContentsResponseDataMapper {
-    fun transform(response: GetContentsResponse) = RepositoryContentInfo(
+    fun transform(user: User, repository: Repository, response: GetContentsResponse) = RepositoryContentInfo(
+        user,
+        repository,
         response.name,
         response.path,
         response.sha,

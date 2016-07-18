@@ -1,14 +1,13 @@
 package com.wada811.ghblog.data.entity.mapper
 
 import com.wada811.ghblog.data.entity.response.github.repos.contents.UpdateContentResponse
-import com.wada811.ghblog.domain.model.GitHubCommit
-import com.wada811.ghblog.domain.model.GitHubReference
-import com.wada811.ghblog.domain.model.GitHubTree
-import com.wada811.ghblog.domain.model.RepositoryContentInfo
+import com.wada811.ghblog.domain.model.*
 
 object UpdateContentResponseDataMapper {
-    fun transform(response: UpdateContentResponse) = GitHubCommit(
+    fun transform(user: User, repository: Repository, response: UpdateContentResponse) = GitHubCommit(
         RepositoryContentInfo(
+            user,
+            repository,
             response.content.name,
             response.content.path,
             response.content.sha,
