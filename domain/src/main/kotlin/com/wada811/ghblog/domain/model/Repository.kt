@@ -5,7 +5,6 @@ import com.wada811.notifypropertychanged.INotifyPropertyChanged
 import com.wada811.notifypropertychanged.PropertyChangedDelegate
 import com.wada811.observablemodel.ObservableSynchronizedArrayList
 import org.threeten.bp.ZonedDateTime
-import rx.Observable
 import rx.schedulers.Schedulers
 
 class Repository(
@@ -169,9 +168,13 @@ class Repository(
             }
     }
 
-    fun createContent(path: String, message: String, content: String): Observable<GitHubCommit> {
+    fun createContent(path: String, message: String, content: String) {
         val commit = GitCommit(path, message, content)
-        return GHBlogContext.gitHubRepository.createContent(user, this, commit)
+        GHBlogContext.gitHubRepository.createContent(user, this, commit)
+            .subscribeOn(Schedulers.newThread())
+            .subscribe {
+                repositoryContents.add(RepositoryContent(it.content!!))
+            }
     }
 
     fun getTree() = GHBlogContext.gitHubRepository.getTree(user, this)

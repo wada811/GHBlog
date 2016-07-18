@@ -67,10 +67,6 @@ class GitHubApiTest {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
             GHBlogContext.currentUser.currentRepository = repository
             repository.createContent("content/blog/test.md", "create test message", "create content body")
-                .subscribe {
-                    System.out.println("onNext: $it")
-                    assertNotNull(it)
-                }
         }
     }
 
