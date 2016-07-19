@@ -4,7 +4,6 @@ import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.domain.util.Base64
 import com.wada811.notifypropertychanged.INotifyPropertyChanged
 import com.wada811.notifypropertychanged.PropertyChangedDelegate
-import rx.Observable
 import rx.schedulers.Schedulers
 
 class RepositoryContent(
@@ -102,8 +101,25 @@ class RepositoryContent(
             }
     }
 
-    fun delete(message: String, content: String): Observable<GitHubCommit> {
+    fun delete(message: String, content: String) {
         val commit = GitCommit(path, message, content, sha)
-        return GHBlogContext.gitHubRepository.deleteContent(user, repository, commit)
+        GHBlogContext.gitHubRepository.deleteContent(user, repository, commit)
+            .subscribeOn(Schedulers.newThread())
+            .subscribe {
+                this.name = it.content!!.name
+                this.path = it.content!!.path
+                this.sha = it.content!!.sha
+                this.size = it.content!!.size
+                this.url = it.content!!.url
+                this.htmlUrl = it.content!!.htmlUrl
+                this.gitUrl = it.content!!.gitUrl
+                this.downloadUrl = it.content!!.downloadUrl
+                this.type = it.content!!.type
+                this.contentLink.self = it.content!!.contentLink.self
+                this.contentLink.git = it.content!!.contentLink.git
+                this.contentLink.html = it.content!!.contentLink.html
+                this.content = content
+                repository.repositoryContents.remove(this)
+            }
     }
 }

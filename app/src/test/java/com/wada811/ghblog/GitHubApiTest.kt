@@ -75,11 +75,11 @@ class GitHubApiTest {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
             GHBlogContext.currentUser.currentRepository = repository
-            val path = "content/blog/test.md"
-            repository.loadContent(path)
-            repository.ObserveProperty("currentRepositoryContent", { it.currentRepositoryContent }).subscribe {
-                it!!.update(path, "update test message", "update content body")
-                it.ObserveProperty("sha", { it.sha }).toRxProperty(it.sha).asObservable().subscribe {
+            repository.loadContents("content/blog")
+            repository.repositoryContents.ObserveCollection().subscribe {
+                val content = repository.repositoryContents.first { it.name == "test.md" }
+                content.update(content.path, "update test message", "update content body")
+                content.ObserveProperty("sha", { it.sha }).toRxProperty(content.sha).asObservable().subscribe {
                     assertNotNull(it)
                 }
             }
@@ -91,12 +91,13 @@ class GitHubApiTest {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
             GHBlogContext.currentUser.currentRepository = repository
-            repository.loadContent("content/blog/test.md")
-            repository.ObserveProperty("currentRepositoryContent", { it.currentRepositoryContent }).subscribe {
-                it!!.delete("delete test message", it.content)
-                    .subscribe {
-                        assertNotNull(it)
-                    }
+            repository.loadContents("content/blog")
+            repository.repositoryContents.ObserveCollection().subscribe {
+                val content = repository.repositoryContents.first { it.name == "test.md" }
+                content.delete("delete test message", content.content)
+                content.ObserveProperty("sha", { it.sha }).toRxProperty(content.sha).asObservable().subscribe {
+                    assertNotNull(it)
+                }
             }
         }
     }
@@ -106,17 +107,17 @@ class GitHubApiTest {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
             GHBlogContext.currentUser.currentRepository = repository
-            repository.loadContent("content/blog/rename.md")
-            repository.ObserveProperty("currentRepositoryContent", { it.currentRepositoryContent }).subscribe({
-                it!!.update("content/blog/renamed.md", "rename rename.md", "rename content")
-                it.ObserveProperty("sha", { it.sha }).toRxProperty(it.sha).asObservable().subscribe { assertNotNull(it) }
-            }, {
-                repository.loadContent("content/blog/renamed.md")
-                repository.ObserveProperty("currentRepositoryContent", { it.currentRepositoryContent }).subscribe {
-                    it!!.update("content/blog/rename.md", "rename renamed.md", "rename content")
-                    it.ObserveProperty("sha", { it.sha }).toRxProperty(it.sha).asObservable().subscribe { assertNotNull(it) }
+            repository.loadContents("content/blog")
+            repository.repositoryContents.ObserveCollection().subscribe {
+                val content = repository.repositoryContents.first { it.name == "rename.md" || it.name == "renamed.md" }
+                val path = content.path.replace("rename.md", "tmp.md")
+                    .replace("renamed.md", "rename.md")
+                    .replace("tmp.md", "renamed.md")
+                content.update(path, "rename ${content.name}", "rename content")
+                content.ObserveProperty("sha", { it.sha }).toRxProperty(content.sha).asObservable().subscribe {
+                    assertNotNull(it)
                 }
-            })
+            }
         }
     }
 

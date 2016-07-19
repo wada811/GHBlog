@@ -160,14 +160,6 @@ class Repository(
             }
     }
 
-    fun loadContent(path: String) {
-        GHBlogContext.gitHubRepository.getContent(user, this, path)
-            .subscribeOn(Schedulers.newThread())
-            .subscribe {
-                currentRepositoryContent = it
-            }
-    }
-
     fun createContent(path: String, message: String, content: String) {
         val commit = GitCommit(path, message, content)
         GHBlogContext.gitHubRepository.createContent(user, this, commit)
