@@ -4,6 +4,6 @@
     <string name="save">Save</string>
     <string name="new_article">New</string>
     <string name="save_article">Save Article</string>
-    <string name="article_path">File Path: </string>
-    <string name="article_title">Title: </string>
+    <string name="article_path">File Path</string>
+    <string name="article_title">Title</string>
 </resources>
