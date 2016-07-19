@@ -1,6 +1,6 @@
-package com.wada811.observablemodel
+package com.wada811.observablemodel.events.collection
 
-import com.wada811.notifypropertychanged.EventArgs
+import com.wada811.observablemodel.events.EventArgs
 
 sealed class CollectionChangedEventArgs(val action: CollectionChangedEventAction) : EventArgs() {
     class Add(val index: Int, val item: Any?) : CollectionChangedEventArgs(CollectionChangedEventAction.Add)

@@ -1,8 +1,7 @@
 package com.wada811.ghblog.domain.model
 
-import com.wada811.ghblog.domain.GHBlogContext
-import com.wada811.notifypropertychanged.INotifyPropertyChanged
-import com.wada811.notifypropertychanged.PropertyChangedDelegate
+import com.wada811.observablemodel.events.property.INotifyPropertyChanged
+import com.wada811.observablemodel.events.property.PropertyChangedDelegate
 
 open class RepositoryContentInfo(
     val user: User,

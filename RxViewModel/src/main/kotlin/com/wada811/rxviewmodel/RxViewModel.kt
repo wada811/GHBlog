@@ -12,7 +12,7 @@ open class RxViewModel : Subscription {
         }
     }
 
-    protected fun Subscription.asManaged(): Subscription {
+    protected fun <T> T.asManaged(): T where T : Subscription {
         subscriptions.add(this)
         return this
     }

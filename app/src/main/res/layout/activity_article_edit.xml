@@ -37,13 +37,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/article_name"
+                android:text="@string/article_title"
                 />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:text="@={viewModel.name}"
+                android:text="@={viewModel.title}"
                 />
         </LinearLayout>
         <EditText
@@ -52,7 +52,7 @@
             android:layout_weight="1"
             android:gravity="top|start"
             android:inputType="textMultiLine"
-            android:text="@={viewModel.content}"
+            android:text="@={viewModel.body}"
             />
         <Button
             android:layout_width="match_parent"

@@ -78,6 +78,7 @@ ext {
     ]
     INotifyPropertyChnagedDependencies = [
             kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            rxjava: "io.reactivex:rxjava:$rxjavaVersion",
     ]
     INotifyPropertyChnagedTestDependencies = [
             junit: "junit:junit:$junitVersion"

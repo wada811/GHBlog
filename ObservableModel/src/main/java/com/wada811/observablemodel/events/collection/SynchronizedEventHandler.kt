@@ -1,6 +1,7 @@
-package com.wada811.observablemodel
+package com.wada811.observablemodel.events.collection
 
-import com.wada811.notifypropertychanged.EventArgs
+import com.wada811.observablemodel.ObservableSynchronizedArrayList
+import com.wada811.observablemodel.events.EventArgs
 
 class SynchronizedEventHandler<TObj, TArg> where TArg : EventArgs {
     private val handlers = ObservableSynchronizedArrayList<(TObj, TArg) -> Unit>()

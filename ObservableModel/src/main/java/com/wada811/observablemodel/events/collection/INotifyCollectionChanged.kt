@@ -1,4 +1,4 @@
-package com.wada811.observablemodel
+package com.wada811.observablemodel.events.collection
 
 import java.util.*
 

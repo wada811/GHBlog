@@ -1,5 +1,7 @@
 package com.wada811.observablemodel
 
+import com.wada811.observablemodel.events.collection.CollectionChangedEventAction
+import com.wada811.observablemodel.events.collection.CollectionChangedEventArgs
 import com.wada811.observablemodel.extensions.CollectionChangedAsObservable
 import com.wada811.observablemodel.extensions.ToObservableSynchronizedArrayList
 import org.junit.Assert

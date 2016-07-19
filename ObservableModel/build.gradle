@@ -18,5 +18,4 @@ dependencies {
     testCompile testDependencies.junit
     compile dependencies.locks
     compile dependencies.rxjava
-    compile project(":INotifyPropertyChanged")
 }

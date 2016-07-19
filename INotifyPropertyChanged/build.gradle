@@ -14,4 +14,5 @@ dependencies {
     def testDependencies = rootProject.ext.INotifyPropertyChnagedTestDependencies
     compile dependencies.kotlin
     testCompile testDependencies.junit
+    compile dependencies.rxjava
 }
