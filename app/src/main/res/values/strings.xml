@@ -6,4 +6,5 @@
     <string name="save_article">Save Article</string>
     <string name="article_path">File Path</string>
     <string name="article_title">Title</string>
+    <string name="article_body">Body</string>
 </resources>

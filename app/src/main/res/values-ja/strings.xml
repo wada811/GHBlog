@@ -6,4 +6,5 @@
     <string name="save_article">記事を保存する</string>
     <string name="article_path">ファイル名</string>
     <string name="article_title">タイトル</string>
+    <string name="article_body">本文</string>
 </resources>
