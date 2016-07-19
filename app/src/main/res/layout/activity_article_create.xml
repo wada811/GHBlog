@@ -41,7 +41,7 @@
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/save_article"
                     android:onClick="@{viewModel.save.command}"
-                    android:src="@drawable/ic_check_black"
+                    android:src="@drawable/ic_check_black_24dp"
                     android:tint="@color/colorAccent"
                     />
             </RelativeLayout>
