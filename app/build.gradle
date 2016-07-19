@@ -29,6 +29,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'http://github.com/wada811/Android-Material-Design-Colors/raw/master/repository/' }
+}
+
 dependencies {
     def dependencies = rootProject.ext.appDependencies
     def testDependencies = rootProject.ext.appTestDependencies
@@ -43,6 +47,7 @@ dependencies {
     compile project(':RxViewModel')
     compile project(':data')
     compile dependencies.threetenabp
+    compile dependencies.materialDesignColors
 }
 
 kapt {
