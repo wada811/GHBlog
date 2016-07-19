@@ -38,12 +38,12 @@
                     android:layout_width="?attr/actionBarSize"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_alignParentRight="true"
-                    android:tint="@color/colorAccent"
                     android:layout_centerVertical="true"
-                    android:onClick="@{viewModel.save.command}"
-                    android:src="@drawable/ic_check_black"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/save_article"
+                    android:onClick="@{viewModel.save.command}"
+                    android:src="@drawable/ic_check_black"
+                    android:tint="@color/colorAccent"
                     />
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
@@ -65,8 +65,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:hint="@string/article_body"
             android:gravity="top|start"
+            android:hint="@string/article_body"
             android:inputType="textMultiLine"
             android:text="@={viewModel.body}"
             />
