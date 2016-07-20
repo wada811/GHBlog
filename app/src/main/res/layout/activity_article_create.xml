@@ -14,10 +14,7 @@
         >
         <android.support.v7.widget.CardView style="@style/AppTheme.CardViewToolbar_CardView">
             <android.support.v7.widget.Toolbar style="@style/AppTheme.CardViewToolbar_Toolbar">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                <LinearLayout style="@style/AppTheme.CardViewToolbar_LinearLayout">
                     <TextView style="@style/AppTheme.CardViewToolbar_Title" />
                     <ImageButton
                         style="@style/AppTheme.CardViewToolbar_MenuButton"
@@ -25,7 +22,7 @@
                         android:onClick="@{viewModel.save.command}"
                         android:src="@drawable/ic_check_black_24dp"
                         />
-                </RelativeLayout>
+                </LinearLayout>
             </android.support.v7.widget.Toolbar>
         </android.support.v7.widget.CardView>
         <EditText
