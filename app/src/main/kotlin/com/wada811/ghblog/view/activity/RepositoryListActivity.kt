@@ -1,5 +1,6 @@
 package com.wada811.ghblog.view.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,9 +9,8 @@ import com.wada811.ghblog.R
 import com.wada811.ghblog.view.binding.RepositoryListActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.RepositoryListViewModel
 import com.wada811.rxviewmodel.RxMessenger
-import rx.android.schedulers.AndroidSchedulers
+import rx.functions.Action1
 import rx.subscriptions.CompositeSubscription
-import java.util.concurrent.TimeUnit
 
 class RepositoryListActivity : AppCompatActivity() {
 
@@ -24,15 +24,7 @@ class RepositoryListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = RepositoryListActivityBindingAdapter(this, R.layout.activity_repository_list)
         binding.viewModel = RepositoryListViewModel()
-        subscriptions.add(RxMessenger
-            .toObservable()
-            .ofType(NextAction::class.java)
-            .throttleFirst(300, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                it.invoke(this)
-            }
-        )
+        subscriptions.add(RxMessenger.observe(NextAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
     }
 
     override fun onDestroy() {
@@ -41,9 +33,9 @@ class RepositoryListActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    class NextAction {
-        fun invoke(context: Context) {
-            context.startActivity(ArticleListActivity.createIntent(context))
+    class NextAction : Action1<Activity> {
+        override fun call(activity: Activity) {
+            activity.startActivity(ArticleListActivity.createIntent(activity))
         }
     }
 }

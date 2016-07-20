@@ -1,5 +1,6 @@
 package com.wada811.ghblog.view.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,9 +9,8 @@ import com.wada811.ghblog.R
 import com.wada811.ghblog.view.binding.ArticleCreateActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.ArticleCreateViewModel
 import com.wada811.rxviewmodel.RxMessenger
-import rx.android.schedulers.AndroidSchedulers
+import rx.functions.Action1
 import rx.subscriptions.CompositeSubscription
-import java.util.concurrent.TimeUnit
 
 class ArticleCreateActivity : AppCompatActivity() {
 
@@ -24,15 +24,7 @@ class ArticleCreateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ArticleCreateActivityBindingAdapter(this, R.layout.activity_article_create)
         binding.viewModel = ArticleCreateViewModel()
-        subscriptions.add(RxMessenger
-            .toObservable()
-            .ofType(SaveAction::class.java)
-            .throttleFirst(300, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                finish()
-            }
-        )
+        subscriptions.add(RxMessenger.observe(SaveAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
     }
 
     override fun onDestroy() {
@@ -41,7 +33,9 @@ class ArticleCreateActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    class SaveAction {
-
+    class SaveAction : Action1<Activity> {
+        override fun call(activity: Activity) {
+            activity.finish()
+        }
     }
 }
