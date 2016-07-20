@@ -3,8 +3,8 @@ package com.wada811.rxviewmodel
 import com.wada811.observablemodel.events.property.INotifyPropertyChanged
 import com.wada811.observablemodel.events.property.PropertyChangedDelegate
 import com.wada811.observablemodel.events.property.PropertyChangedEventArgs
+import com.wada811.observablemodel.extensions.PropertyChangedAsObservable
 import com.wada811.rxviewmodel.extensions.ObserveProperty
-import com.wada811.rxviewmodel.extensions.PropertyChangedAsObservable
 import com.wada811.rxviewmodel.extensions.toRxProperty
 import org.junit.Assert
 import org.junit.Test
