@@ -9,7 +9,6 @@ import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.GetTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.*
 import com.wada811.ghblog.data.http.adapter.ZonedDateTimeAdapter
-import com.wada811.ghblog.domain.model.User
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -18,7 +17,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class GitHubApi(var user: User) {
+class GitHubApi(var accessToken: String) {
     val client: GitHubService
         get() {
             val moshi = Moshi.Builder()
@@ -29,7 +28,7 @@ class GitHubApi(var user: User) {
                     chain: Interceptor.Chain ->
                     val request = chain.request()
                         .newBuilder()
-                        .addHeader("Authorization", "token ${user.accessToken}")
+                        .addHeader("Authorization", "token $accessToken")
                         .build()
                     System.out.println("GitHubApi, URL: ${request.url().toString()}")
                     val response = chain.proceed(request)
@@ -46,6 +45,8 @@ class GitHubApi(var user: User) {
                 .build()
             return retrofit.create(GitHubService::class.java)
         }
+
+    fun getUser() = client.getUser()
 
     fun getRepositoryList() = client.getRepositoryList()
     fun getRepositoryList(url: String) = client.getRepositoryList(url)

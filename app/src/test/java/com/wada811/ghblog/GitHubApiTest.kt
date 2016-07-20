@@ -3,6 +3,7 @@ package com.wada811.ghblog
 import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
 import com.wada811.ghblog.domain.GHBlogContext
+import com.wada811.ghblog.domain.model.GitHubApp
 import com.wada811.observablemodel.extensions.ObserveCollection
 import com.wada811.rxviewmodel.UIThreadScheduler
 import com.wada811.rxviewmodel.extensions.ObserveProperty
@@ -17,7 +18,7 @@ class GitHubApiTest {
     @Before
     fun init() {
         System.out.println("GHBlogContext.init")
-        GHBlogContext.init(UserDataRepository(), GitHubDataRepository())
+        GHBlogContext.init(GitHubApp(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET), UserDataRepository(), GitHubDataRepository())
         UIThreadScheduler.DefaultScheduler = Schedulers.immediate()
         GHBlogContext.currentUser.loadRepositories()
     }

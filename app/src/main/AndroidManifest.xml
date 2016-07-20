@@ -2,6 +2,7 @@
 <manifest package="com.wada811.ghblog"
           xmlns:android="http://schemas.android.com/apk/res/android"
     >
+
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".GHBlogApplication"
@@ -15,6 +16,15 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.activity.OAuthActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="ghblog" />
+                <data android:host="oauth.ghblog.com" />
             </intent-filter>
         </activity>
         <activity android:name=".view.activity.RepositoryListActivity" />

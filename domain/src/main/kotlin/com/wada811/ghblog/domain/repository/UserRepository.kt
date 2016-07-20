@@ -4,5 +4,6 @@ import com.wada811.ghblog.domain.model.User
 import rx.Observable
 
 interface UserRepository {
-    fun user(): Observable<User>
+    fun getAccessToken(code: String, state: String): Observable<String>
+    fun getUser(accessToken: String): Observable<User>
 }

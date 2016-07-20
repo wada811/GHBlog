@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wada811.ghblog.R
+import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.view.binding.MainActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.MainViewModel
 import com.wada811.rxviewmodel.RxMessenger
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         binding = MainActivityBindingAdapter(this, R.layout.activity_main)
         binding.viewModel = MainViewModel()
         subscriptions.add(RxMessenger.observe(NextAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
+        startActivity(OAuthActivity.createIntent(this))
     }
 
     override fun onDestroy() {

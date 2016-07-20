@@ -15,9 +15,15 @@ android {
         versionName globalConfiguration.getAt("versionName")
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "CLIENT_ID", "\"${globalConfiguration.CLIENT_ID}\""
+            buildConfigField "String", "CLIENT_SECRET", "\"${globalConfiguration.CLIENT_SECRET}\""
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "CLIENT_ID", "\"${globalConfiguration.CLIENT_ID}\""
+            buildConfigField "String", "CLIENT_SECRET", "\"${globalConfiguration.CLIENT_SECRET}\""
         }
     }
     sourceSets {

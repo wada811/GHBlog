@@ -16,7 +16,7 @@ import rx.Observable
 class CloudGitHubDataStore(var user: User) {
     fun getAllRepository(): Observable<List<Repository>> {
         return Observable.defer {
-            getAllRepository(GitHubApi(user).getRepositoryList())
+            getAllRepository(GitHubApi(user.accessToken).getRepositoryList())
                 .map { it.map { RepositoryResponseDataMapper.transform(user, it) } }
         }
     }
@@ -29,7 +29,7 @@ class CloudGitHubDataStore(var user: User) {
                 Observable.just(response.body())
             } else {
                 Observable.just(response.body())
-                    .mergeWith(getAllRepository(GitHubApi(user).getRepositoryList(nextPageUrl)))
+                    .mergeWith(getAllRepository(GitHubApi(user.accessToken).getRepositoryList(nextPageUrl)))
             }
         }
     }
@@ -37,7 +37,7 @@ class CloudGitHubDataStore(var user: User) {
     fun getContents(repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
         return Observable.defer {
             val request = GetContentsRequest(repository.owner.login, repository.name, path)
-            GitHubApi(user).getContents(request)
+            GitHubApi(user.accessToken).getContents(request)
                 .map { it.body().map { GetContentsResponseDataMapper.transform(user, repository, it) } }
         }
     }
@@ -45,7 +45,7 @@ class CloudGitHubDataStore(var user: User) {
     fun getContent(repository: Repository, path: String): Observable<RepositoryContent> {
         return Observable.defer {
             val request = GetContentRequest(repository.owner.login, repository.name, path)
-            GitHubApi(user).getContent(request)
+            GitHubApi(user.accessToken).getContent(request)
                 .map { GetContentResponseDataMapper.transform(user, repository, it.body()) }
         }
     }
@@ -55,7 +55,7 @@ class CloudGitHubDataStore(var user: User) {
             val request = CreateContentRequest(repository.owner.login, repository.name, commit.path,
                 CreateContentRequest.CreateContentCommitRequest(commit.path, commit.message, commit.encodedContent())
             )
-            GitHubApi(user).createContent(request)
+            GitHubApi(user.accessToken).createContent(request)
                 .map { CreateContentResponseDataMapper.transform(user, repository, it.body()) }
         }
     }
@@ -65,7 +65,7 @@ class CloudGitHubDataStore(var user: User) {
             val request = UpdateContentRequest(repository.owner.login, repository.name, commit.path,
                 UpdateContentRequest.UpdateContentCommitRequest(commit.path, commit.message, commit.encodedContent(), commit.sha!!)
             )
-            GitHubApi(user).updateContent(request)
+            GitHubApi(user.accessToken).updateContent(request)
                 .map { UpdateContentResponseDataMapper.transform(user, repository, it.body()) }
         }
     }
@@ -75,7 +75,7 @@ class CloudGitHubDataStore(var user: User) {
             val request = DeleteContentRequest(repository.owner.login, repository.name, commit.path,
                 DeleteContentRequest.DeleteContentCommitRequest(commit.path, commit.message, commit.sha!!)
             )
-            GitHubApi(user).deleteContent(request).map { DeleteContentResponseDataMapper.transform(it.body()) }
+            GitHubApi(user.accessToken).deleteContent(request).map { DeleteContentResponseDataMapper.transform(it.body()) }
         }
     }
 
@@ -91,7 +91,7 @@ class CloudGitHubDataStore(var user: User) {
     fun getTree(repository: Repository): Observable<GitHubTree> {
         return Observable.defer {
             val request = GetTreeRequest(repository.owner.login, repository.name, "heads/" + repository.defaultBranch)
-            GitHubApi(user).getTree(request).map { GetTreeResponseDataMapper.transform(it.body()) }
+            GitHubApi(user.accessToken).getTree(request).map { GetTreeResponseDataMapper.transform(it.body()) }
         }
     }
 
@@ -103,7 +103,7 @@ class CloudGitHubDataStore(var user: User) {
                     tree.baseTree
                 )
             )
-            GitHubApi(user).createGitTree(request).map { CreateTreeResponseDataMapper.transform(it.body()) }
+            GitHubApi(user.accessToken).createGitTree(request).map { CreateTreeResponseDataMapper.transform(it.body()) }
         }
     }
 }
