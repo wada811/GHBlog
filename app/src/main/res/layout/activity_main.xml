@@ -12,6 +12,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
+        <android.support.v7.widget.CardView style="@style/AppTheme.CardViewToolbar_CardView">
+            <android.support.v7.widget.Toolbar style="@style/AppTheme.CardViewToolbar_Toolbar">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView style="@style/AppTheme.CardViewToolbar_Title" />
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+        </android.support.v7.widget.CardView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

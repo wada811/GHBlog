@@ -49,6 +49,7 @@ dependencies {
     compile dependencies.threetenabp
     compile dependencies.materialDesignColors
     compile dependencies.design
+    compile dependencies.cardview
 }
 
 kapt {
