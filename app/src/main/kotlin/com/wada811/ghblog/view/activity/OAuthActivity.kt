@@ -6,10 +6,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.wada811.ghblog.R
 import com.wada811.ghblog.view.binding.OAuthActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.OAuthViewModel
+import com.wada811.logforest.LogWood
 import com.wada811.rxviewmodel.RxMessenger
 import rx.functions.Action1
 import rx.subscriptions.CompositeSubscription
@@ -26,10 +26,10 @@ class OAuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         subscriptions.add(RxMessenger.observe(AuthorizeAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
         subscriptions.add(RxMessenger.observe(CompleteAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
-        Log.e("wada", "intent.action: ${intent.action}")
-        Log.e("wada", "intent.categories: ${intent.categories}")
-        Log.e("wada", "intent.data: ${intent.data}")
-        Log.e("wada", "intent.dataString: ${intent.dataString}")
+        LogWood.v("intent.action: ${intent.action}")
+        LogWood.v("intent.categories: ${intent.categories}")
+        LogWood.v("intent.data: ${intent.data}")
+        LogWood.v("intent.dataString: ${intent.dataString}")
         binding = OAuthActivityBindingAdapter(this, R.layout.activity_oauth)
         binding.viewModel = OAuthViewModel(intent.dataString)
     }

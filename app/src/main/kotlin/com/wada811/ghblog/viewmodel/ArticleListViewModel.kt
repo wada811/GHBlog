@@ -1,10 +1,10 @@
 package com.wada811.ghblog.viewmodel
 
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.view.activity.ArticleListActivity
+import com.wada811.logforest.LogWood
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxMessenger
 import com.wada811.rxviewmodel.RxViewModel
@@ -19,7 +19,7 @@ class ArticleListViewModel : RxViewModel() {
     val articleViewModelList = repository.repositoryContents.ToRxArrayList { ArticleListItemViewModel(it) }.asManaged()
     val edit = RxCommand(AdapterView.OnItemClickListener {
         parent: AdapterView<*>, view: View, position: Int, id: Long ->
-        Log.e("wada", "edit: " + parent.getItemAtPosition(position))
+        LogWood.e("edit: " + parent.getItemAtPosition(position))
         val viewModel = parent.getItemAtPosition(position) as ArticleListItemViewModel
         repository.currentRepositoryContent = viewModel.repositoryContentInfo
         RxMessenger.send(ArticleListActivity.EditAction())

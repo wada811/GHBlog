@@ -1,1 +1,1 @@
-include ':app', ':data', ':domain', ':RxViewModel', ':ObservableModel'
+include ':app', ':data', ':domain', ':RxViewModel', ':ObservableModel', ':LogForest', ':LogForestAndroid'

@@ -3,6 +3,7 @@ package com.wada811.ghblog.viewmodel
 import android.net.Uri
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.view.activity.OAuthActivity
+import com.wada811.logforest.LogWood
 import com.wada811.rxviewmodel.RxMessenger
 import com.wada811.rxviewmodel.RxProperty
 import com.wada811.rxviewmodel.RxViewModel
@@ -25,14 +26,14 @@ class OAuthViewModel(authorizedUrl: String?) : RxViewModel() {
                 .toString()
             RxMessenger.send(OAuthActivity.AuthorizeAction(authorizeUrl))
         } else {
-            System.out.println("authorizedUrl: $authorizedUrl")
+            LogWood.d("authorizedUrl: $authorizedUrl")
             val code = Uri.parse(authorizedUrl).getQueryParameter("code")
             val error = Uri.parse(authorizedUrl).getQueryParameter("error")
-            System.out.println("code: $code")
-            System.out.println("error: $error")
+            LogWood.v("code: $code")
+            LogWood.v("error: $error")
             if (code != null && error == null) {
-                System.out.println("code: $code")
-                System.out.println("GHBlogContext.state: ${GHBlogContext.gitHubApp.state}")
+                LogWood.d("code: $code")
+                LogWood.d("GHBlogContext.state: ${GHBlogContext.gitHubApp.state}")
                 GHBlogContext.userRepository.getAccessToken(code, GHBlogContext.gitHubApp.state)
                     .subscribeOn(Schedulers.newThread())
                     .subscribe {
@@ -45,7 +46,7 @@ class OAuthViewModel(authorizedUrl: String?) : RxViewModel() {
                         RxMessenger.send(OAuthActivity.CompleteAction())
                     }
             } else {
-                System.out.println("error: $error")
+                LogWood.e("error: $error")
             }
         }
     }

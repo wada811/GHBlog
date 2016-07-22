@@ -80,19 +80,24 @@ ext {
     RxViewModelTestDependencies = [
             junit: "junit:junit:$junit_version"
     ]
-    INotifyPropertyChnagedDependencies = [
-            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
-            rxjava: "io.reactivex:rxjava:$rxjava_version",
-    ]
-    INotifyPropertyChnagedTestDependencies = [
-            junit: "junit:junit:$junit_version"
-    ]
     ObservableModelDependencies = [
             kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
             locks : "com.googlecode.concurrent-locks:concurrent-locks:$concurrent_locks_version",
             rxjava: "io.reactivex:rxjava:$rxjava_version",
     ]
     ObservableModelTestDependencies = [
+            junit: "junit:junit:$junit_version"
+    ]
+    LogForestDependencies = [
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+    ]
+    LogForestTestDependencies = [
+            junit: "junit:junit:$junit_version"
+    ]
+    LogForestAndroidDependencies = [
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+    ]
+    LogForestAndroidTestDependencies = [
             junit: "junit:junit:$junit_version"
     ]
 }

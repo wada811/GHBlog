@@ -4,23 +4,38 @@ import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.domain.model.GitHubApp
+import com.wada811.logforest.LogForest
+import com.wada811.logforest.LogLevel
+import com.wada811.logforest.LogTree
+import com.wada811.logforest.LogWood
 import com.wada811.observablemodel.extensions.ObserveCollection
 import com.wada811.rxviewmodel.UIThreadScheduler
 import com.wada811.rxviewmodel.extensions.ObserveProperty
 import com.wada811.rxviewmodel.extensions.toRxProperty
 import junit.framework.Assert.assertNotNull
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import rx.schedulers.Schedulers
 
 class GitHubApiTest {
-
+    val logTree = object : LogTree(){
+        override fun log(level: LogLevel, tag: String, message: String, t: Throwable?) {
+            System.out.println("$tag: $message")
+        }
+    }
     @Before
-    fun init() {
-        System.out.println("GHBlogContext.init")
+    fun setUp() {
+        LogForest.plant(logTree)
+        LogWood.d("GHBlogContext.init")
         GHBlogContext.init(GitHubApp(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET), UserDataRepository(), GitHubDataRepository())
         UIThreadScheduler.DefaultScheduler = Schedulers.immediate()
         GHBlogContext.currentUser.loadRepositories()
+    }
+
+    @After
+    fun tearDown(){
+        LogForest.fell(logTree)
     }
 
     @Test
@@ -34,7 +49,7 @@ class GitHubApiTest {
     fun getContents() {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { repository ->
-                System.out.println("repository.name: ${repository.name}")
+                LogWood.d("repository.name: ${repository.name}")
                 repository.name.equals("blogtest")
             }
             GHBlogContext.currentUser.currentRepository = repository

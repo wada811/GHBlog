@@ -1,3 +1,4 @@
+apply plugin: 'java'
 apply plugin: 'kotlin'
 
 //noinspection GroovyUnusedAssignment
@@ -7,12 +8,12 @@ targetCompatibility = 1.7
 
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/main/kotlin'
 }
 
 dependencies {
-    def dependencies = rootProject.ext.INotifyPropertyChnagedDependencies
-    def testDependencies = rootProject.ext.INotifyPropertyChnagedTestDependencies
+    def dependencies = rootProject.ext.LogForestDependencies
+    def testDependencies = rootProject.ext.LogForestTestDependencies
     compile dependencies.kotlin
     testCompile testDependencies.junit
-    compile dependencies.rxjava
 }

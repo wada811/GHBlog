@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GHBlog.iml" filepath="$PROJECT_DIR$/GHBlog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LogForest/LogForest.iml" filepath="$PROJECT_DIR$/LogForest/LogForest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LogForestAndroid/LogForestAndroid.iml" filepath="$PROJECT_DIR$/LogForestAndroid/LogForestAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/ObservableModel/ObservableModel.iml" filepath="$PROJECT_DIR$/ObservableModel/ObservableModel.iml" />
       <module fileurl="file://$PROJECT_DIR$/RxViewModel/RxViewModel.iml" filepath="$PROJECT_DIR$/RxViewModel/RxViewModel.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

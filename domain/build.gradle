@@ -17,4 +17,5 @@ dependencies {
     compile dependencies.rxjava
     compile project(':ObservableModel')
     compile dependencies.threetenbp
+    compile project(':LogForest')
 }

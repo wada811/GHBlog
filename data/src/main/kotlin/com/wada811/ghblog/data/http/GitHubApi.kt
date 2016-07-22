@@ -9,6 +9,7 @@ import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.GetTreeRequest
 import com.wada811.ghblog.data.entity.request.github.repos.contents.*
 import com.wada811.ghblog.data.http.adapter.ZonedDateTimeAdapter
+import com.wada811.logforest.LogWood
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -30,10 +31,10 @@ class GitHubApi(var accessToken: String) {
                         .newBuilder()
                         .addHeader("Authorization", "token $accessToken")
                         .build()
-                    System.out.println("GitHubApi, URL: ${request.url().toString()}")
+                    LogWood.i("URL: ${request.url().toString()}")
                     val response = chain.proceed(request)
                     val responseBodyText = response.body().string()
-                    System.out.println("GitHubApi, response:  $responseBodyText")
+                    LogWood.i("response:  $responseBodyText")
                     return@addInterceptor response.newBuilder().body(ResponseBody.create(response.body().contentType(), responseBodyText)).build()
                 }
                 .build()

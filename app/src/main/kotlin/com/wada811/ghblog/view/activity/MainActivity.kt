@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wada811.ghblog.R
-import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.view.binding.MainActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.MainViewModel
 import com.wada811.rxviewmodel.RxMessenger

@@ -8,6 +8,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/LogForest" />
+            <option value="$PROJECT_DIR$/LogForestAndroid" />
             <option value="$PROJECT_DIR$/ObservableModel" />
             <option value="$PROJECT_DIR$/RxViewModel" />
             <option value="$PROJECT_DIR$/app" />
