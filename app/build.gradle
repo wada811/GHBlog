@@ -39,11 +39,18 @@ repositories {
     maven { url 'http://github.com/wada811/Android-Material-Design-Colors/raw/master/repository/' }
 }
 
+kapt {
+    generateStubs = true
+}
+
 dependencies {
     def dependencies = rootProject.ext.appDependencies
     def testDependencies = rootProject.ext.appTestDependencies
     compile dependencies.kotlin
     testCompile testDependencies.junit
+    kapt dependencies.databindingCompiler
+    kapt dependencies.ormaProcessor
+    compile dependencies.orma
     debugCompile dependencies.debugLeakCanary
     releaseCompile dependencies.releaseLeakCanary
     testCompile dependencies.testLeakCanary
@@ -57,8 +64,4 @@ dependencies {
     compile dependencies.design
     compile dependencies.cardview
     compile project(':LogForestAndroid')
-}
-
-kapt {
-    generateStubs = true
 }

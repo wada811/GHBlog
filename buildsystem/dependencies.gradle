@@ -27,6 +27,8 @@ ext {
     threetenbp_version = "1.3.1" // https://github.com/ThreeTen/threetenbp
     concurrent_locks_version = "1.0.0" // https://github.com/npgall/concurrent-locks
     material_design_colors_version = "3.0.0" // https://github.com/wada811/Android-Material-Design-Colors
+    orma_version = "2.5.2" // https://github.com/gfx/Android-Orma
+    databinding_compiler_version = android_tools_version // https://bintray.com/android/android-tools/com.android.databinding.compiler
 
     // Development
     leakcanary_version = "1.4-beta2" // https://github.com/square/leakcanary
@@ -46,6 +48,9 @@ ext {
             rxandroid           : "io.reactivex:rxandroid:$rxandroid_version",
             threetenabp         : "com.jakewharton.threetenabp:threetenabp:$threetenabp_version",
             materialDesignColors: "com.wada811:android-material-design-colors:$material_design_colors_version",
+            ormaProcessor       : "com.github.gfx.android.orma:orma-processor:$orma_version",
+            orma                : "com.github.gfx.android.orma:orma:$orma_version",
+            databindingCompiler : "com.android.databinding:compiler:$databinding_compiler_version",
     ]
     appTestDependencies = [
             junit: "junit:junit:$junit_version"
@@ -60,14 +65,18 @@ ext {
             retrofitRxJavaAdapter : "com.squareup.retrofit2:adapter-rxjava:$retrofit_version",
             retrofitMoshiConverter: "com.squareup.retrofit2:converter-moshi:$retrofit_version",
             threetenabp           : "com.jakewharton.threetenabp:threetenabp:$threetenabp_version",
+            ormaProcessor         : "com.github.gfx.android.orma:orma-processor:$orma_version",
+            orma                  : "com.github.gfx.android.orma:orma:$orma_version",
     ]
     dataTestDependencies = [
             junit: "junit:junit:$junit_version"
     ]
     domainDependencies = [
-            kotlin    : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
-            rxjava    : "io.reactivex:rxjava:$rxjava_version",
-            threetenbp: "org.threeten:threetenbp:$threetenbp_version:no-tzdb"
+            kotlin       : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            rxjava       : "io.reactivex:rxjava:$rxjava_version",
+            threetenbp   : "org.threeten:threetenbp:$threetenbp_version:no-tzdb",
+            ormaProcessor: "com.github.gfx.android.orma:orma-processor:$orma_version",
+            orma         : "com.github.gfx.android.orma:orma:$orma_version",
     ]
     domainTestDependencies = [
             junit: "junit:junit:$junit_version"

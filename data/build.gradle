@@ -25,11 +25,17 @@ android {
     }
 }
 
+kapt {
+    generateStubs = true
+}
+
 dependencies {
     def dependencies = rootProject.ext.dataDependencies
     def testDependencies = rootProject.ext.dataTestDependencies
     compile dependencies.kotlin
     testCompile testDependencies.junit
+    kapt dependencies.ormaProcessor
+    compile dependencies.orma
     compile dependencies.appcompat
     compile dependencies.rxjava
     compile dependencies.okhttp
