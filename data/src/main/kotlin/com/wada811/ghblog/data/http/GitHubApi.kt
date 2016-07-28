@@ -1,5 +1,6 @@
 package com.wada811.ghblog.data.http
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.Moshi
 import com.wada811.ghblog.data.entity.request.github.git.commits.CreateCommitRequest
 import com.wada811.ghblog.data.entity.request.github.git.commits.GetCommitRequest
@@ -25,6 +26,7 @@ class GitHubApi(var accessToken: String) {
                 .add(ZonedDateTime::class.java, ZonedDateTimeAdapter())
                 .build()
             val client = OkHttpClient.Builder()
+                .addNetworkInterceptor(StethoInterceptor())
                 .addInterceptor {
                     chain: Interceptor.Chain ->
                     val request = chain.request()

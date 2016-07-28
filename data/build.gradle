@@ -43,6 +43,8 @@ dependencies {
     compile dependencies.retrofit
     compile dependencies.retrofitRxJavaAdapter
     compile dependencies.retrofitMoshiConverter
+    compile dependencies.stetho
+    compile dependencies.stethoOkhttp3
     compile project(":domain")
     compile dependencies.threetenabp
 }

@@ -32,6 +32,7 @@ ext {
 
     // Development
     leakcanary_version = "1.4-beta2" // https://github.com/square/leakcanary
+    stetho_version = "1.3.1" // https://github.com/facebook/stetho
 
     // Testing
     junit_version = '4.12' // https://github.com/junit-team/junit4
@@ -51,6 +52,7 @@ ext {
             ormaProcessor       : "com.github.gfx.android.orma:orma-processor:$orma_version",
             orma                : "com.github.gfx.android.orma:orma:$orma_version",
             databindingCompiler : "com.android.databinding:compiler:$databinding_compiler_version",
+            stetho              : "com.facebook.stetho:stetho:$stetho_version",
     ]
     appTestDependencies = [
             junit: "junit:junit:$junit_version"
@@ -67,6 +69,8 @@ ext {
             threetenabp           : "com.jakewharton.threetenabp:threetenabp:$threetenabp_version",
             ormaProcessor         : "com.github.gfx.android.orma:orma-processor:$orma_version",
             orma                  : "com.github.gfx.android.orma:orma:$orma_version",
+            stetho                : "com.facebook.stetho:stetho:$stetho_version",
+            stethoOkhttp3         : "com.facebook.stetho:stetho-okhttp3:$stetho_version",
     ]
     dataTestDependencies = [
             junit: "junit:junit:$junit_version"

@@ -51,6 +51,7 @@ dependencies {
     kapt dependencies.databindingCompiler
     kapt dependencies.ormaProcessor
     compile dependencies.orma
+    compile dependencies.stetho
     debugCompile dependencies.debugLeakCanary
     releaseCompile dependencies.releaseLeakCanary
     testCompile dependencies.testLeakCanary
