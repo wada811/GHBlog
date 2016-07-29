@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wada811.ghblog.R
+import com.wada811.ghblog.view.activity.extensions.addTo
 import com.wada811.ghblog.view.binding.OAuthActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.OAuthViewModel
 import com.wada811.logforest.LogWood
@@ -31,12 +32,11 @@ class OAuthActivity : AppCompatActivity() {
         LogWood.v("intent.data: ${intent.data}")
         LogWood.v("intent.dataString: ${intent.dataString}")
         binding = OAuthActivityBindingAdapter(this, R.layout.activity_oauth)
-        binding.viewModel = OAuthViewModel(intent.dataString)
+        binding.viewModel = OAuthViewModel(intent.dataString).addTo(subscriptions)
     }
 
     override fun onDestroy() {
         subscriptions.unsubscribe()
-        binding.viewModel?.unsubscribe()
         super.onDestroy()
     }
 
@@ -49,6 +49,7 @@ class OAuthActivity : AppCompatActivity() {
 
     class CompleteAction() : Action1<Activity> {
         override fun call(activity: Activity) {
+            activity.startActivity(MainActivity.createIntent(activity))
             activity.finish()
         }
     }

@@ -15,4 +15,6 @@ object GHBlogContext {
         this.userRepository = userRepository
         this.gitHubRepository = gitHubRepository
     }
+
+    var authorized: Boolean = false
 }

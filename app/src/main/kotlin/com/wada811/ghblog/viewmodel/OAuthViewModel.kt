@@ -37,13 +37,14 @@ class OAuthViewModel(authorizedUrl: String?) : RxViewModel() {
                 GHBlogContext.userRepository.getAccessToken(code, GHBlogContext.gitHubApp.state)
                     .subscribeOn(Schedulers.newThread())
                     .subscribe {
-                        loading.value = false
                         GHBlogContext.userRepository.getUser(it)
                             .subscribeOn(Schedulers.newThread())
                             .subscribe {
+                                loading.value = false
                                 GHBlogContext.currentUser = it
+                                GHBlogContext.authorized = true
+                                RxMessenger.send(OAuthActivity.CompleteAction())
                             }
-                        RxMessenger.send(OAuthActivity.CompleteAction())
                     }
             } else {
                 LogWood.e("error: $error")

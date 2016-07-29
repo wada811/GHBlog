@@ -4,6 +4,9 @@ import android.app.Application
 import com.facebook.stetho.Stetho
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
+import com.wada811.ghblog.data.datasource.factory.GitHubDataSourceFactory
+import com.wada811.ghblog.data.datasource.factory.UserDataSourceFactory
+import com.wada811.ghblog.data.entity.data.OrmaDatabase
 import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
 import com.wada811.ghblog.domain.GHBlogContext
@@ -20,7 +23,11 @@ class GHBlogApplication : Application() {
         LeakCanary.install(this)
         AndroidThreeTen.init(this)
         UIThreadScheduler.DefaultScheduler = AndroidSchedulers.mainThread()
-        GHBlogContext.init(GitHubApp(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET), UserDataRepository(), GitHubDataRepository())
+        val gitHubApp = GitHubApp(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
+        val database = OrmaDatabase.builder(this).trace(true).build()
+        val userRepository = UserDataRepository(UserDataSourceFactory(database))
+        val gitHubRepository = GitHubDataRepository(GitHubDataSourceFactory(database))
+        GHBlogContext.init(gitHubApp, userRepository, gitHubRepository)
         LogForest.plant(AndroidLogTree)
     }
 }

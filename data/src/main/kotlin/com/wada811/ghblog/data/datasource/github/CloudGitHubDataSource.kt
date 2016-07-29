@@ -1,4 +1,4 @@
-package com.wada811.ghblog.data.datasource
+package com.wada811.ghblog.data.datasource.github
 
 import com.wada811.ghblog.data.entity.mapper.*
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
@@ -13,7 +13,7 @@ import com.wada811.ghblog.domain.model.*
 import retrofit2.Response
 import rx.Observable
 
-class CloudGitHubDataStore(var user: User) {
+class CloudGitHubDataSource(var user: User) {
     fun getAllRepository(): Observable<List<Repository>> {
         return Observable.defer {
             getAllRepository(GitHubApi(user.accessToken).getRepositoryList())

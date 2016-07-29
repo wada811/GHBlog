@@ -1,44 +1,45 @@
 package com.wada811.ghblog.data.repository
 
-import com.wada811.ghblog.data.datasource.CloudGitHubDataStore
+import com.wada811.ghblog.data.datasource.factory.IGitHubDataSourceFactory
+import com.wada811.ghblog.data.datasource.github.CloudGitHubDataSource
 import com.wada811.ghblog.domain.model.*
 import com.wada811.ghblog.domain.repository.GitHubRepository
 import rx.Observable
 
-class GitHubDataRepository : GitHubRepository {
+class GitHubDataRepository(dataSourceFactory: IGitHubDataSourceFactory) : GitHubRepository {
     override fun getRepositoryList(user: User): Observable<List<Repository>> {
-        return CloudGitHubDataStore(user).getAllRepository()
+        return CloudGitHubDataSource(user).getAllRepository()
     }
 
     override fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
-        return CloudGitHubDataStore(user).getContents(repository, path)
+        return CloudGitHubDataSource(user).getContents(repository, path)
     }
 
     override fun getContent(user: User, repository: Repository, path: String): Observable<RepositoryContent> {
-        return CloudGitHubDataStore(user).getContent(repository, path)
+        return CloudGitHubDataSource(user).getContent(repository, path)
     }
 
     override fun createContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
-        return CloudGitHubDataStore(user).createContent(repository, commit)
+        return CloudGitHubDataSource(user).createContent(repository, commit)
     }
 
     override fun updateContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
-        return CloudGitHubDataStore(user).updateContent(repository, commit)
+        return CloudGitHubDataSource(user).updateContent(repository, commit)
     }
 
     override fun deleteContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
-        return CloudGitHubDataStore(user).deleteContent(repository, commit)
+        return CloudGitHubDataSource(user).deleteContent(repository, commit)
     }
 
     override fun renameContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
-        return CloudGitHubDataStore(user).renameContent(repository, commit)
+        return CloudGitHubDataSource(user).renameContent(repository, commit)
     }
 
     override fun getTree(user: User, repository: Repository): Observable<GitHubTree> {
-        return CloudGitHubDataStore(user).getTree(repository)
+        return CloudGitHubDataSource(user).getTree(repository)
     }
 
     override fun createTree(user: User, repository: Repository, gitTree: GitTree): Observable<GitHubTree> {
-        return CloudGitHubDataStore(user).createGitTree(repository, gitTree)
+        return CloudGitHubDataSource(user).createGitTree(repository, gitTree)
     }
 }
