@@ -13,7 +13,7 @@ import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeRespon
 import com.wada811.ghblog.data.entity.response.github.git.trees.GetTreeResponse
 import com.wada811.ghblog.data.entity.response.github.repos.RepositoryResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.*
-import com.wada811.ghblog.data.entity.response.github.users.UserResponse
+import com.wada811.ghblog.data.entity.response.github.users.GetUserResponse
 import retrofit2.Response
 import retrofit2.http.*
 import rx.Observable
@@ -25,7 +25,7 @@ interface GitHubService {
     }
 
     @GET("user")
-    fun getUser(): Observable<Response<UserResponse>>
+    fun getUser(): Observable<Response<GetUserResponse>>
 
     @GET("user/repos")
     fun getRepositoryList(): Observable<Response<List<RepositoryResponse>>>

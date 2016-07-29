@@ -19,22 +19,26 @@ import org.junit.Test
 import rx.schedulers.Schedulers
 
 class GitHubApiTest {
-    val logTree = object : LogTree(){
+    val logTree = object : LogTree() {
         override fun log(level: LogLevel, tag: String, message: String, t: Throwable?) {
             System.out.println("$tag: $message")
         }
     }
+
     @Before
     fun setUp() {
         LogForest.plant(logTree)
         LogWood.d("GHBlogContext.init")
-        GHBlogContext.init(GitHubApp(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET), UserDataRepository(), GitHubDataRepository())
         UIThreadScheduler.DefaultScheduler = Schedulers.immediate()
+        val gitHubApp = GitHubApp(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
+        val userRepository = UserDataRepository(TestUserDataSourceFactory())
+        val gitHubRepository = GitHubDataRepository(TestGitHubDataSourceFactory())
+        GHBlogContext.init(gitHubApp, userRepository, gitHubRepository)
         GHBlogContext.currentUser.loadRepositories()
     }
 
     @After
-    fun tearDown(){
+    fun tearDown() {
         LogForest.fell(logTree)
     }
 

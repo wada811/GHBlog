@@ -2,7 +2,7 @@ package com.wada811.ghblog.data.entity.response.github.users
 
 import org.threeten.bp.ZonedDateTime
 
-data class UserResponse(
+data class GetUserResponse(
     val login: String,
     val id: Int,
     val avatar_url: String,
