@@ -9,7 +9,11 @@ import com.wada811.ghblog.domain.model.User
 import rx.Observable
 
 class CloudUserDataSource : UserDataSource {
-    fun getAccessToken(code: String, state: String): Observable<String> {
+    override fun getCurrentUser(): Observable<User> {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getAccessToken(code: String, state: String): Observable<String> {
         return Observable.defer {
             val request = AccessTokenRequest(GHBlogContext.gitHubApp.clientId, GHBlogContext.gitHubApp.clientSecret, code, state)
             GitHubOAuthApi().getAccessToken(request).map { it.body().access_token }
@@ -22,4 +26,7 @@ class CloudUserDataSource : UserDataSource {
         }
     }
 
+    override fun saveUser(user: User) {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

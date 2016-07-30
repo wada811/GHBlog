@@ -1,12 +1,11 @@
 package com.wada811.ghblog.data.repository
 
-import com.wada811.ghblog.data.datasource.factory.IGitHubDataSourceFactory
 import com.wada811.ghblog.data.datasource.github.CloudGitHubDataSource
 import com.wada811.ghblog.domain.model.*
 import com.wada811.ghblog.domain.repository.GitHubRepository
 import rx.Observable
 
-class GitHubDataRepository(dataSourceFactory: IGitHubDataSourceFactory) : GitHubRepository {
+class GitHubDataRepository() : GitHubRepository {
     override fun getRepositoryList(user: User): Observable<List<Repository>> {
         return CloudGitHubDataSource(user).getAllRepository()
     }
