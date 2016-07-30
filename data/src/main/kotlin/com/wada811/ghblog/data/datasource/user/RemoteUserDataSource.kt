@@ -8,7 +8,7 @@ import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.domain.model.User
 import rx.Observable
 
-class CloudUserDataSource : UserDataSource {
+class RemoteUserDataSource : UserDataSource {
     override fun getCurrentUser(): Observable<User> {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

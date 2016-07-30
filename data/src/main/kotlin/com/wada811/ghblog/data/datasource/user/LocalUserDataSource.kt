@@ -6,7 +6,7 @@ import com.wada811.ghblog.domain.model.User
 import com.wada811.logforest.LogWood
 import rx.Observable
 
-class DatabaseUserDataSource(private val database: OrmaDatabase) : UserDataSource {
+class LocalUserDataSource(private val database: OrmaDatabase) : UserDataSource {
     override fun getCurrentUser(): Observable<User> {
         return database.selectFromUserEntity()
             .limit(1)

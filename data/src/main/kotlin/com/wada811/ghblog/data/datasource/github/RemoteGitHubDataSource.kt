@@ -13,7 +13,7 @@ import com.wada811.ghblog.domain.model.*
 import retrofit2.Response
 import rx.Observable
 
-class CloudGitHubDataSource(var user: User) {
+class RemoteGitHubDataSource(var user: User) {
     fun getAllRepository(): Observable<List<Repository>> {
         return Observable.defer {
             getAllRepository(GitHubApi(user.accessToken).getRepositoryList())

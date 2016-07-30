@@ -1,6 +1,6 @@
 package com.wada811.ghblog
 
-import com.wada811.ghblog.data.datasource.user.CloudUserDataSource
+import com.wada811.ghblog.data.datasource.user.RemoteUserDataSource
 import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
 import com.wada811.ghblog.domain.GHBlogContext
@@ -32,7 +32,7 @@ class GitHubApiTest {
         LogWood.d("GHBlogContext.init")
         UIThreadScheduler.DefaultScheduler = Schedulers.immediate()
         val gitHubApp = GitHubApp(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
-        val userRepository = UserDataRepository(CloudUserDataSource(), CloudUserDataSource())
+        val userRepository = UserDataRepository(RemoteUserDataSource(), RemoteUserDataSource())
         val gitHubRepository = GitHubDataRepository()
         GHBlogContext.init(gitHubApp, userRepository, gitHubRepository)
         GHBlogContext.currentUser.loadRepositories()
