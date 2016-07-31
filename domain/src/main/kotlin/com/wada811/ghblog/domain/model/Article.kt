@@ -1,5 +1,6 @@
 package com.wada811.ghblog.domain.model
 
+import com.wada811.logforest.LogWood
 import com.wada811.observablemodel.ObservableSynchronizedArrayList
 import com.wada811.observablemodel.events.property.INotifyPropertyChanged
 import com.wada811.observablemodel.events.property.PropertyChangedDelegate
@@ -85,6 +86,7 @@ $body"""
 
         companion object {
             fun repositoryContent(repositoryContent: RepositoryContent): Build {
+                LogWood.v("repositoryContent.content: ${repositoryContent.content}")
                 val publishDateTime = parsePublishDateTime(repositoryContent.content)
                 val isDraft = parseIsDraft(repositoryContent.content)
                 val title = parseTitle(repositoryContent.content)
@@ -134,8 +136,10 @@ $body"""
                     return ObservableSynchronizedArrayList()
                 }
                 val contents = content.split("+++")
-                val metaInfo = contents[1].split(System.getProperty("line.separator"))
-                val tags = Regex("""tags = \[(.+)]""").find(metaInfo.first { it.startsWith("tags") })!!.groupValues.last().trim().split(Regex(",[[:blank:]]*"))
+                val metaInfo = contents[1]
+                val tags = Regex(""".*tags = \[((?:.|\r|\n)+)].*""").find(metaInfo)!!.groupValues.last().trim().split(Regex(",[[:blank:]]*"))
+                LogWood.v("tags: $tags")
+                LogWood.v("tags.size: ${tags.size}")
                 if (tags.size == 1) {
                     return ObservableSynchronizedArrayList()
                 } else {
