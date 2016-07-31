@@ -31,6 +31,7 @@
             android:hint="@string/article_path"
             android:inputType="text"
             android:text="@={viewModel.path}"
+            android:textIsSelectable="true"
             />
         <EditText
             android:layout_width="match_parent"
@@ -38,6 +39,7 @@
             android:hint="@string/article_title"
             android:inputType="text"
             android:text="@={viewModel.title}"
+            android:textIsSelectable="true"
             />
         <EditText
             android:layout_width="match_parent"
@@ -47,6 +49,7 @@
             android:hint="@string/article_body"
             android:inputType="textMultiLine"
             android:text="@={viewModel.body}"
+            android:textIsSelectable="true"
             />
     </LinearLayout>
 </layout>
