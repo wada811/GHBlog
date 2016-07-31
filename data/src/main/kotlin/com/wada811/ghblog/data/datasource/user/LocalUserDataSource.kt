@@ -11,8 +11,11 @@ class LocalUserDataSource(private val database: OrmaDatabase) : UserDataSource {
         return database.selectFromUserEntity()
             .limit(1)
             .executeAsObservable()
+            .doOnNext { LogWood.v("LocalUserDataSource#getCurrentUser#onNext") }
+            .doOnError { LogWood.v("LocalUserDataSource#getCurrentUser#onError", it) }
+            .doOnCompleted { LogWood.v("LocalUserDataSource#getCurrentUser#onCompleted") }
             .map { userEntity ->
-                LogWood.i("DatabaseUserDataSource#getUser#map")
+                LogWood.v("LocalUserDataSource#getCurrentUser#map")
                 UserEntityDataMapper.toUser(userEntity)
             }
     }
@@ -22,27 +25,21 @@ class LocalUserDataSource(private val database: OrmaDatabase) : UserDataSource {
     }
 
     override fun getUser(accessToken: String): Observable<User> {
-        LogWood.i("DatabaseUserDataSource#getUser")
+        LogWood.v("LocalUserDataSource#getUser")
         return database.selectFromUserEntity()
             .access_tokenEq(accessToken)
             .executeAsObservable()
-            .doOnNext {
-                LogWood.i("DatabaseUserDataSource#getUser#onNext")
-            }
-            .doOnError {
-                LogWood.i("DatabaseUserDataSource#getUser#onError")
-            }
-            .doOnCompleted {
-                LogWood.i("DatabaseUserDataSource#getUser#onCompleted")
-            }
+            .doOnNext { LogWood.v("LocalUserDataSource#getUser#onNext") }
+            .doOnError { LogWood.v("LocalUserDataSource#getUser#onError", it) }
+            .doOnCompleted { LogWood.v("LocalUserDataSource#getUser#onCompleted") }
             .map { userEntity ->
-                LogWood.i("DatabaseUserDataSource#getUser#map")
+                LogWood.v("LocalUserDataSource#getUser#map")
                 UserEntityDataMapper.toUser(userEntity)
             }
     }
 
     override fun saveUser(user: User) {
-        LogWood.d("DatabaseUserDataSource#saveUser")
+        LogWood.d("LocalUserDataSource#saveUser")
         database.relationOfUserEntity().upserter().execute(UserEntityDataMapper.fromUser(user))
     }
 
