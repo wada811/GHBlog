@@ -2,7 +2,6 @@ package com.wada811.ghblog.viewmodel
 
 import android.view.View
 import com.wada811.ghblog.domain.GHBlogContext
-import com.wada811.ghblog.domain.model.Article
 import com.wada811.ghblog.view.activity.ArticleEditActivity
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxMessenger
@@ -12,7 +11,7 @@ import com.wada811.rxviewmodel.extensions.toRxProperty
 
 class ArticleEditViewModel() : RxViewModel() {
     var repositoryContent = GHBlogContext.currentUser.currentRepository!!.currentRepositoryContent!!
-    val article = Article.Builder.repositoryContent(repositoryContent).build().asManaged()
+    val article = repositoryContent.article.asManaged()
 
     init {
         repositoryContent.loadContent()

@@ -102,7 +102,7 @@ $body"""
             }
 
             fun parsePublishDateTime(content: String): ZonedDateTime {
-                if(content == ""){
+                if (content == "") {
                     return ZonedDateTime.now()
                 }
                 val contents = content.split("+++")
@@ -114,7 +114,7 @@ $body"""
             }
 
             fun parseIsDraft(content: String): Boolean {
-                if(content == ""){
+                if (content == "") {
                     return false
                 }
                 val contents = content.split("+++")
@@ -123,7 +123,7 @@ $body"""
             }
 
             fun parseTitle(content: String): String {
-                if(content == ""){
+                if (content == "") {
                     return ""
                 }
                 val contents = content.split("+++")
@@ -132,23 +132,19 @@ $body"""
             }
 
             fun parseTags(content: String): ObservableSynchronizedArrayList<String> {
-                if(content == ""){
+                if (content == "") {
                     return ObservableSynchronizedArrayList()
                 }
                 val contents = content.split("+++")
                 val metaInfo = contents[1]
-                val tags = Regex(""".*tags = \[((?:.|\r|\n)+)].*""").find(metaInfo)!!.groupValues.last().trim().split(Regex(",[[:blank:]]*"))
+                val tags = Regex(""".*tags = \[((?:.|\r|\n)+)].*""").find(metaInfo)!!.groupValues.last().split(",")
+                    .map { it.trim().trim { it.equals("\"") } }.filter { it.length != 0 }
                 LogWood.v("tags: $tags")
-                LogWood.v("tags.size: ${tags.size}")
-                if (tags.size == 1) {
-                    return ObservableSynchronizedArrayList()
-                } else {
-                    return ObservableSynchronizedArrayList(tags.map { it.substring(1, it.lastIndex) })
-                }
+                return ObservableSynchronizedArrayList(tags)
             }
 
             fun parseBody(content: String): String {
-                if(content == ""){
+                if (content == "") {
                     return ""
                 }
                 val contents = content.split("+++")
