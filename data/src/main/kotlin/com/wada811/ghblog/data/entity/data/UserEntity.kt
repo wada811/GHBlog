@@ -9,9 +9,9 @@ import org.threeten.bp.ZonedDateTime
 
 @Table("users")
 data class UserEntity(
-    @Setter("access_token") @Column @PrimaryKey val access_token: String,
+    @Setter("access_token") @Column(indexed = true) val access_token: String,
     @Setter("login") @Column val login: String,
-    @Setter("id") @Column val id: Int,
+    @Setter("id") @Column @PrimaryKey val id: Int,
     @Setter("avatar_url") @Column val avatar_url: String,
     @Setter("gravatar_id") @Column val gravatar_id: String,
     @Setter("url") @Column val url: String,
