@@ -34,5 +34,6 @@
         <activity android:name=".view.activity.ArticleEditActivity"
                   android:windowSoftInputMode="stateVisible|adjustPan"
             />
+        <activity android:name=".view.activity.ArticleTagEditActivity" />
     </application>
 </manifest>

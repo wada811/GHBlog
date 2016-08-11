@@ -9,4 +9,9 @@
     <string name="article_path">File Path</string>
     <string name="article_title">Title</string>
     <string name="article_body">Body</string>
+    <string name="edit_tag">Edit tag</string>
+    <string name="new_tag">New tag</string>
+    <string name="save_tag">Save Tag</string>
+    <!-- Tools -->
+    <string name="tag_name">Tag name</string>
 </resources>

@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    android:id="@+id/activity_article_tag_edit"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.wada811.ghblog.view.activity.ArticleTagEditActivity"
     >
     <data>
         <variable
             name="viewModel"
-            type="com.wada811.ghblog.viewmodel.ArticleEditViewModel"
+            type="com.wada811.ghblog.viewmodel.ArticleTagEditViewModel"
             />
     </data>
     <LinearLayout
@@ -18,13 +23,7 @@
                     <TextView style="@style/AppTheme.CardViewToolbar_Title" />
                     <ImageButton
                         style="@style/AppTheme.CardViewToolbar_MenuButton"
-                        android:contentDescription="@string/edit_tag"
-                        android:onClick="@{viewModel.editTag.command}"
-                        android:src="@drawable/ic_tag_black_24dp"
-                        />
-                    <ImageButton
-                        style="@style/AppTheme.CardViewToolbar_MenuButton"
-                        android:contentDescription="@string/save_article"
+                        android:contentDescription="@string/save_tag"
                         android:onClick="@{viewModel.save.command}"
                         android:src="@drawable/ic_check_black_24dp"
                         />
@@ -34,28 +33,22 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/article_path"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/new_tag"
+            android:imeOptions="actionDone"
             android:inputType="text"
-            android:text="@={viewModel.path}"
+            android:text="@={viewModel.tag}"
+            android:textAppearance="?android:attr/textAppearanceListItem"
             android:textIsSelectable="true"
+            app:onEditDone="@{viewModel.done.command}"
             />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/article_title"
-            android:inputType="text"
-            android:text="@={viewModel.title}"
-            android:textIsSelectable="true"
-            />
-        <EditText
+        <ListView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="top|start"
-            android:hint="@string/article_body"
-            android:inputType="textMultiLine"
-            android:text="@={viewModel.body}"
-            android:textIsSelectable="true"
+            app:items="@{viewModel.tags}"
+            app:onItemClick="@{viewModel.check.command}"
             />
     </LinearLayout>
 </layout>

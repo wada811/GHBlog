@@ -2,4 +2,6 @@
 <resources>
     <dimen name="repository_list_item_height">64dp</dimen>
     <dimen name="article_list_item_height">64dp</dimen>
+    <dimen name="tag_list_item_height">32dp</dimen>
+    <dimen name="tag_list_item_padding">8dp</dimen>
 </resources>

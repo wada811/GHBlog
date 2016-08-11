@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+    >
+    <data>
+        <variable
+            name="viewModel"
+            type="com.wada811.ghblog.viewmodel.ArticleTagListItemViewModel"
+            />
+    </data>
+    <CheckedTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="@{viewModel.checked}"
+        android:gravity="center_vertical"
+        android:padding="@dimen/tag_list_item_padding"
+        android:text="@{viewModel.tagName}"
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        tools:text="@string/tag_name"
+        />
+</layout>
