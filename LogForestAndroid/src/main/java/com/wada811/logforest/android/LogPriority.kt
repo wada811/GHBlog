@@ -3,7 +3,7 @@ package com.wada811.logforest.android
 import android.util.Log
 import com.wada811.logforest.LogLevel
 
-enum class LogPriority(level: LogLevel, val priority: Int) {
+enum class LogPriority(@Suppress("UNUSED_PARAMETER") level: LogLevel, val priority: Int) {
     VERBOSE(LogLevel.VERBOSE, Log.VERBOSE),
     DEBUG(LogLevel.DEBUG, Log.DEBUG),
     INFO(LogLevel.INFO, Log.INFO),

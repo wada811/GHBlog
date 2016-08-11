@@ -84,11 +84,12 @@ abstract class LogTree : Tree {
     }
 
     /** Return whether a message at `level` should be logged.  */
-    fun isLoggable(level: LogLevel): Boolean {
+    fun isLoggable(@Suppress("UNUSED_PARAMETER") level: LogLevel): Boolean {
         return true
     }
 
     private fun prepareLog(level: LogLevel, message: String, t: Throwable? = null) {
+        @Suppress("NAME_SHADOWING")
         var message: String = message
         if (!isLoggable(level)) {
             return
