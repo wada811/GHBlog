@@ -7,58 +7,58 @@ import com.wada811.observablemodel.events.property.PropertyChangedDelegate
 import com.wada811.observablemodel.extensions.PropertyChangedAsObservable
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
-import rx.Subscription
-import rx.subscriptions.CompositeSubscription
 
 class Article(
     val user: User,
     val repository: Repository,
-    filePath: String,
+    repositoryContent: RepositoryContent? = null,
+    filePath: String = "",
     publishDateTime: ZonedDateTime = ZonedDateTime.now(),
-    isDraft: Boolean,
-    title: String,
-    tags: ObservableSynchronizedArrayList<String>,
-    body: String,
-    repositoryContent: RepositoryContent? = null
-) : INotifyPropertyChanged, Subscription {
+    isDraft: Boolean = false,
+    title: String = "",
+    tags: ObservableSynchronizedArrayList<String> = ObservableSynchronizedArrayList(),
+    body: String = ""
+) : INotifyPropertyChanged {
+    var repositoryContent: RepositoryContent? by PropertyChangedDelegate(repositoryContent)
     var filePath: String by PropertyChangedDelegate(filePath)
     var publishDateTime: ZonedDateTime by PropertyChangedDelegate(publishDateTime)
     var isDraft: Boolean by PropertyChangedDelegate(isDraft)
     var title: String by PropertyChangedDelegate(title)
     val tags: ObservableSynchronizedArrayList<String> by PropertyChangedDelegate(tags)
     var body: String by PropertyChangedDelegate(body)
-    var repositoryContent: RepositoryContent? by PropertyChangedDelegate(repositoryContent)
-
-    private val subscriptions = CompositeSubscription()
-    override fun isUnsubscribed(): Boolean = subscriptions.isUnsubscribed
-    override fun unsubscribe() {
-        if (!isUnsubscribed) {
-            subscriptions.unsubscribe()
-        }
-    }
 
     init {
         if (repositoryContent != null) {
-            subscriptions.add(
-                repositoryContent.PropertyChangedAsObservable().subscribe {
-                    if (it.PropertyName == "content") {
-                        this.publishDateTime = Article.Builder.parsePublishDateTime(repositoryContent.content)
-                        this.isDraft = Article.Builder.parseIsDraft(repositoryContent.content)
-                        this.title = Article.Builder.parseTitle(repositoryContent.content)
-                        this.tags.clear()
-                        this.tags.addAll(Article.Builder.parseTags(repositoryContent.content))
-                        this.body = Article.Builder.parseBody(repositoryContent.content)
-                    } else if (it.PropertyName == "path") {
-                        this.filePath = repositoryContent.path
-                    }
+            repositoryContent.loadContent()
+            this.filePath = repositoryContent.path
+            this.publishDateTime = Article.parsePublishDateTime(repositoryContent.content)
+            this.isDraft = Article.parseIsDraft(repositoryContent.content)
+            this.title = Article.parseTitle(repositoryContent.content)
+            this.tags.clear()
+            this.tags.addAll(Article.parseTags(repositoryContent.content))
+            this.body = Article.parseBody(repositoryContent.content)
+            repositoryContent.PropertyChangedAsObservable().subscribe {
+                if (it.PropertyName == "content") {
+                    this.publishDateTime = Article.parsePublishDateTime(repositoryContent.content)
+                    this.isDraft = Article.parseIsDraft(repositoryContent.content)
+                    this.title = Article.parseTitle(repositoryContent.content)
+                    this.tags.clear()
+                    this.tags.addAll(Article.parseTags(repositoryContent.content))
+                    this.body = Article.parseBody(repositoryContent.content)
+                } else if (it.PropertyName == "path") {
+                    this.filePath = repositoryContent.path
                 }
-            )
+            }
         }
     }
 
 
-    fun save() {
-        publishDateTime = ZonedDateTime.now()
+    fun save(filePath: String, isDraft: Boolean, title: String, body: String) {
+        this.filePath = filePath
+        this.publishDateTime = ZonedDateTime.now()
+        this.isDraft = isDraft
+        this.title = title
+        this.body = body
         if (repositoryContent != null) {
             repositoryContent!!.update(filePath, "Edit an article: $title", formatArticleContent())
         } else {
@@ -76,136 +76,56 @@ tags = [ ${tags.map { """"$it"""" }.joinToString(", ")} ]
 $body"""
     }
 
-    class Builder(private var user: User, private var repository: Repository, private var repositoryContent: RepositoryContent? = null) {
-        private var filePath: String = ""
-        private var publishDateTime: ZonedDateTime = ZonedDateTime.now()
-        private var isDraft: Boolean = false
-        private var title: String = ""
-        private var tags: ObservableSynchronizedArrayList<String> = ObservableSynchronizedArrayList()
-        private var body: String = ""
+    companion object {
 
-        companion object {
-            fun repositoryContent(repositoryContent: RepositoryContent): Build {
-                LogWood.v("repositoryContent.content: ${repositoryContent.content}")
-                val publishDateTime = parsePublishDateTime(repositoryContent.content)
-                val isDraft = parseIsDraft(repositoryContent.content)
-                val title = parseTitle(repositoryContent.content)
-                val tags = parseTags(repositoryContent.content)
-                val body = parseBody(repositoryContent.content)
-                return Article.Builder(repositoryContent.user, repositoryContent.repository, repositoryContent)
-                    .filePath(repositoryContent.path)
-                    .publishDateTime(publishDateTime)
-                    .isDraft(isDraft)
-                    .title(title)
-                    .tags(tags)
-                    .body(body)
+        private fun parsePublishDateTime(content: String): ZonedDateTime {
+            if (content == "") {
+                return ZonedDateTime.now()
             }
-
-            fun parsePublishDateTime(content: String): ZonedDateTime {
-                if (content == "") {
-                    return ZonedDateTime.now()
-                }
-                val contents = content.split("+++")
-                val metaInfo = contents[1].split(System.getProperty("line.separator"))
-                return ZonedDateTime.parse(
-                    Regex("""date = "(.+)"""").find(metaInfo.first { it.startsWith("date") })!!.groupValues.last(),
-                    DateTimeFormatter.ISO_OFFSET_DATE_TIME
-                )
-            }
-
-            fun parseIsDraft(content: String): Boolean {
-                if (content == "") {
-                    return false
-                }
-                val contents = content.split("+++")
-                val metaInfo = contents[1].split(System.getProperty("line.separator"))
-                return Regex("""draft = (.+)""").find(metaInfo.first { it.startsWith("draft") })!!.groupValues.last().toBoolean()
-            }
-
-            fun parseTitle(content: String): String {
-                if (content == "") {
-                    return ""
-                }
-                val contents = content.split("+++")
-                val metaInfo = contents[1].split(System.getProperty("line.separator"))
-                return Regex("""title = "(.+)"""").find(metaInfo.first { it.startsWith("title") })!!.groupValues.last()
-            }
-
-            fun parseTags(content: String): ObservableSynchronizedArrayList<String> {
-                if (content == "") {
-                    return ObservableSynchronizedArrayList()
-                }
-                val contents = content.split("+++")
-                val metaInfo = contents[1]
-                val tags = Regex(""".*tags = \[((?:.|\r|\n)+)].*""").find(metaInfo)!!.groupValues.last().split(",")
-                    .map { it.trim().trim { it.equals("\"") } }.filter { it.length != 0 }
-                LogWood.v("tags: $tags")
-                return ObservableSynchronizedArrayList(tags)
-            }
-
-            fun parseBody(content: String): String {
-                if (content == "") {
-                    return ""
-                }
-                val contents = content.split("+++")
-                return contents[2].trim()
-            }
+            val contents = content.split("+++")
+            val metaInfo = contents[1].split(System.getProperty("line.separator"))
+            return ZonedDateTime.parse(
+                Regex("""date = "(.+)"""").find(metaInfo.first { it.startsWith("date") })!!.groupValues.last(),
+                DateTimeFormatter.ISO_OFFSET_DATE_TIME
+            )
         }
 
-        fun filePath(filePath: String): FilePath {
-            this.filePath = filePath
-            return FilePath(this)
+        private fun parseIsDraft(content: String): Boolean {
+            if (content == "") {
+                return false
+            }
+            val contents = content.split("+++")
+            val metaInfo = contents[1].split(System.getProperty("line.separator"))
+            return Regex("""draft = (.+)""").find(metaInfo.first { it.startsWith("draft") })!!.groupValues.last().toBoolean()
         }
 
-        class FilePath(private var builder: Builder) {
-            fun publishDateTime(publishDateTime: ZonedDateTime): PublishDateTime {
-                builder.publishDateTime = publishDateTime
-                return PublishDateTime(builder)
+        private fun parseTitle(content: String): String {
+            if (content == "") {
+                return ""
             }
+            val contents = content.split("+++")
+            val metaInfo = contents[1].split(System.getProperty("line.separator"))
+            return Regex("""title = "(.+)"""").find(metaInfo.first { it.startsWith("title") })!!.groupValues.last()
         }
 
-        class PublishDateTime(private var builder: Builder) {
-            fun isDraft(isDraft: Boolean): Title {
-                builder.isDraft = isDraft
-                return Title(builder)
+        private fun parseTags(content: String): ObservableSynchronizedArrayList<String> {
+            if (content == "") {
+                return ObservableSynchronizedArrayList()
             }
+            val contents = content.split("+++")
+            val metaInfo = contents[1]
+            val tags = Regex(""".*tags = \[((?:.|\r|\n)+)].*""").find(metaInfo)!!.groupValues.last().split(",")
+                .map { it.trim().trim { it.equals('"') } }.filter { it.length != 0 }
+            LogWood.v("tags: $tags")
+            return ObservableSynchronizedArrayList(tags)
         }
 
-        class Title(private var builder: Builder) {
-            fun title(title: String): Tags {
-                builder.title = title
-                return Tags(builder)
+        private fun parseBody(content: String): String {
+            if (content == "") {
+                return ""
             }
-        }
-
-        class Tags(private var builder: Builder) {
-            fun tags(tags: ObservableSynchronizedArrayList<String>): Body {
-                builder.tags = tags
-                return Body(builder)
-            }
-        }
-
-        class Body(private var builder: Builder) {
-            fun body(body: String): Build {
-                builder.body = body
-                return Build(builder)
-            }
-        }
-
-        class Build(private var builder: Builder) {
-            fun build(): Article {
-                return Article(
-                    builder.user,
-                    builder.repository,
-                    builder.filePath,
-                    builder.publishDateTime,
-                    builder.isDraft,
-                    builder.title,
-                    builder.tags,
-                    builder.body,
-                    builder.repositoryContent
-                )
-            }
+            val contents = content.split("+++")
+            return contents[2].trim()
         }
     }
 }

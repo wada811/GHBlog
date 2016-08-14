@@ -38,7 +38,6 @@ class RepositoryContent(
     var encoding: String by PropertyChangedDelegate(encoding)
     var encodedContent: String by PropertyChangedDelegate(encodedContent)
     var content: String by PropertyChangedDelegate(String(Base64.decode(encodedContent, Base64.NO_WRAP)))
-    var article = Article.Builder.repositoryContent(this).build()
 
     constructor(repositoryContentInfo: RepositoryContentInfo) : this(
         repositoryContentInfo.user,

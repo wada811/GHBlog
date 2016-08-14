@@ -150,12 +150,13 @@ class Repository(
     var permissions: Permission by PropertyChangedDelegate(permissions)
 
     val repositoryContents: ObservableSynchronizedArrayList<RepositoryContent> = ObservableSynchronizedArrayList()
-    var currentRepositoryContent: RepositoryContent? by PropertyChangedDelegate(null)
+    var currentArticle: Article? by PropertyChangedDelegate(null)
 
     fun loadContents(path: String) {
         GHBlogContext.gitHubRepository.getContents(user, this, path)
             .subscribeOn(Schedulers.newThread())
             .subscribe {
+                repositoryContents.clear()
                 repositoryContents.addAll(it.map { RepositoryContent(it) })
             }
     }

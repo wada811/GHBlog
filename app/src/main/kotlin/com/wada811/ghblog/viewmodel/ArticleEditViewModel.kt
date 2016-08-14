@@ -10,13 +10,7 @@ import com.wada811.rxviewmodel.extensions.ObserveProperty
 import com.wada811.rxviewmodel.extensions.toRxProperty
 
 class ArticleEditViewModel() : RxViewModel() {
-    var repositoryContent = GHBlogContext.currentUser.currentRepository!!.currentRepositoryContent!!
-    val article = repositoryContent.article.asManaged()
-
-    init {
-        repositoryContent.loadContent()
-    }
-
+    var article = GHBlogContext.currentUser.currentRepository!!.currentArticle!!
     var path = article.ObserveProperty("filePath", { it.filePath }).toRxProperty(article.filePath).asManaged()
     val isDraft = article.ObserveProperty("isDraft", { it.isDraft }).toRxProperty(article.isDraft).asManaged()
     var title = article.ObserveProperty("title", { it.title }).toRxProperty(article.title).asManaged()
@@ -25,11 +19,7 @@ class ArticleEditViewModel() : RxViewModel() {
         RxMessenger.send(ArticleEditActivity.TagEditAction())
     }).asManaged()
     var save = RxCommand(View.OnClickListener {
-        article.filePath = path.value!!
-        article.isDraft = isDraft.value!!
-        article.title = title.value!!
-        article.body = body.value!!
-        article.save()
+        article.save(path.value!!, isDraft.value!!, title.value!!, body.value!!)
         RxMessenger.send(ArticleEditActivity.SaveAction())
     }).asManaged()
 }

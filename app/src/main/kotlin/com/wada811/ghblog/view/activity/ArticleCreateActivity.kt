@@ -24,6 +24,7 @@ class ArticleCreateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ArticleCreateActivityBindingAdapter(this, R.layout.activity_article_create)
         binding.viewModel = ArticleCreateViewModel()
+        subscriptions.add(RxMessenger.observe(TagEditAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
         subscriptions.add(RxMessenger.observe(SaveAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
     }
 
@@ -31,6 +32,12 @@ class ArticleCreateActivity : AppCompatActivity() {
         subscriptions.unsubscribe()
         binding.viewModel.unsubscribe()
         super.onDestroy()
+    }
+
+    class TagEditAction : Action1<Activity> {
+        override fun call(activity: Activity) {
+            activity.startActivity(ArticleTagEditActivity.createIntent(activity))
+        }
     }
 
     class SaveAction : Action1<Activity> {

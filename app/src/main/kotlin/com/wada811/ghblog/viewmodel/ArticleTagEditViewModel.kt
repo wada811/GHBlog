@@ -13,12 +13,13 @@ import com.wada811.rxviewmodel.extensions.ToRxArrayList
 import rx.functions.Action0
 
 class ArticleTagEditViewModel : RxViewModel() {
+    var article = GHBlogContext.currentUser.currentRepository!!.currentArticle!!
     val save = RxCommand(View.OnClickListener {
-        LogWood.d("article.tags: ${GHBlogContext.currentUser.currentRepository!!.currentRepositoryContent!!.article.tags.map { it }}")
+        LogWood.d("article.tags: ${article.tags.map { it }}")
         LogWood.d("tags: ${tags.map { "${it.tagName.value}: ${it.checked.value}" }}")
-        GHBlogContext.currentUser.currentRepository!!.currentRepositoryContent!!.article.tags.clear()
+        article.tags.clear()
         val selectedTags = tags.filter { it.checked.value!! }.map { it.tagName.value!! }
-        GHBlogContext.currentUser.currentRepository!!.currentRepositoryContent!!.article.tags.addAll(selectedTags)
+        article.tags.addAll(selectedTags)
         RxMessenger.send(ArticleTagEditActivity.SaveAction())
     }).asManaged()
     val tag = RxProperty("").asManaged()
@@ -26,8 +27,7 @@ class ArticleTagEditViewModel : RxViewModel() {
         tags.add(ArticleTagListItemViewModel(tag.value!!, true))
         tag.value = ""
     }).asManaged()
-    val tags = GHBlogContext.currentUser.currentRepository!!.currentRepositoryContent!!
-        .article.tags.ToRxArrayList { ArticleTagListItemViewModel(it, true) }
+    val tags = article.tags.ToRxArrayList { ArticleTagListItemViewModel(it, true) }
     val check = RxCommand(AdapterView.OnItemClickListener {
         parent: AdapterView<*>, view: View, position: Int, id: Long ->
         tags[position].checked.value = !tags[position].checked.value!!

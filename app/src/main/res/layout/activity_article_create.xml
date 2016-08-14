@@ -18,6 +18,12 @@
                     <TextView style="@style/AppTheme.CardViewToolbar_Title" />
                     <ImageButton
                         style="@style/AppTheme.CardViewToolbar_MenuButton"
+                        android:contentDescription="@string/edit_tag"
+                        android:onClick="@{viewModel.editTag.command}"
+                        android:src="@drawable/ic_tag_black_24dp"
+                        />
+                    <ImageButton
+                        style="@style/AppTheme.CardViewToolbar_MenuButton"
                         android:contentDescription="@string/save_article"
                         android:onClick="@{viewModel.save.command}"
                         android:src="@drawable/ic_check_black_24dp"
