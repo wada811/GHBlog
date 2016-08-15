@@ -1,0 +1,44 @@
+<resources>
+    <style name="AppTheme.CardViewToolbar_CardView">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/toolbar_marginVertical</item>
+        <item name="android:layout_marginBottom">@dimen/toolbar_marginVertical</item>
+        <item name="android:layout_marginStart">@dimen/toolbar_marginHorizontal</item>
+        <item name="android:layout_marginEnd">@dimen/toolbar_marginHorizontal</item>
+        <item name="cardCornerRadius">0dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="contentPadding">0dp</item>
+    </style>
+
+    <style name="AppTheme.CardViewToolbar_Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="theme">@style/AppTheme</item>
+    </style>
+
+    <style name="AppTheme.CardViewToolbar_LinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="AppTheme.CardViewToolbar_Title" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:text">@string/app_name</item>
+    </style>
+
+    <style name="AppTheme.CardViewToolbar_MenuButton" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:background">@drawable/toolbar_menu_button_background</item>
+        <item name="android:layout_width">?attr/actionBarSize</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:tint">?attr/colorAccent</item>
+    </style>
+</resources>
