@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wada811.ghblog.R
+import com.wada811.ghblog.view.activity.extensions.addTo
 import com.wada811.ghblog.view.binding.ArticleCreateActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.ArticleCreateViewModel
 import com.wada811.rxviewmodel.RxMessenger
@@ -23,15 +24,20 @@ class ArticleCreateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ArticleCreateActivityBindingAdapter(this, R.layout.activity_article_create)
-        binding.viewModel = ArticleCreateViewModel()
+        binding.viewModel = ArticleCreateViewModel().addTo(subscriptions)
+        subscriptions.add(RxMessenger.observe(PreviewAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
         subscriptions.add(RxMessenger.observe(TagEditAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
         subscriptions.add(RxMessenger.observe(SaveAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
     }
 
     override fun onDestroy() {
         subscriptions.unsubscribe()
-        binding.viewModel.unsubscribe()
         super.onDestroy()
+    }
+
+    class PreviewAction : Action1<Activity> {
+        override fun call(activity: Activity) {
+        }
     }
 
     class TagEditAction : Action1<Activity> {

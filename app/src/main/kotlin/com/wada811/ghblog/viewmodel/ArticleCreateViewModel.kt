@@ -15,6 +15,9 @@ class ArticleCreateViewModel : RxViewModel() {
     val isDraft = article.ObserveProperty("isDraft", { it.isDraft }).toRxProperty(article.isDraft).asManaged()
     val title = article.ObserveProperty("title", { it.title }).toRxProperty(article.title).asManaged()
     val body = article.ObserveProperty("body", { it.body }).toRxProperty(article.body).asManaged()
+    var preview = RxCommand(View.OnClickListener {
+        RxMessenger.send(ArticleCreateActivity.PreviewAction())
+    }).asManaged()
     var editTag = RxCommand(View.OnClickListener {
         RxMessenger.send(ArticleCreateActivity.TagEditAction())
     }).asManaged()

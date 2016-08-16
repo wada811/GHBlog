@@ -9,7 +9,7 @@
     <string name="article_path">ファイル名</string>
     <string name="article_title">タイトル</string>
     <string name="article_body">本文</string>
-    <string name="tag">タグ</string>
+    <string name="preview_article">プレビュー</string>
     <string name="edit_tag">タグの編集</string>
     <string name="new_tag">新しいタグ</string>
     <string name="save_tag">保存</string>

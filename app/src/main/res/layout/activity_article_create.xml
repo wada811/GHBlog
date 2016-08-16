@@ -61,8 +61,14 @@
                         />
                     <Button
                         style="@style/AppTheme.CardViewToolbar_TextButton"
+                        android:drawableStart="@drawable/ic_preview_black_24dp"
+                        android:text="@string/preview_article"
+                        android:onClick="@{viewModel.preview.command}"
+                        />
+                    <Button
+                        style="@style/AppTheme.CardViewToolbar_TextButton"
                         android:drawableStart="@drawable/ic_tag_black_24dp"
-                        android:text="@string/tag"
+                        android:text="@string/edit_tag"
                         android:onClick="@{viewModel.editTag.command}"
                         />
                 </LinearLayout>
