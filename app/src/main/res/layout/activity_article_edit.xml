@@ -18,12 +18,6 @@
                     <TextView style="@style/AppTheme.CardViewToolbar_Title" />
                     <ImageButton
                         style="@style/AppTheme.CardViewToolbar_MenuButton"
-                        android:contentDescription="@string/edit_tag"
-                        android:onClick="@{viewModel.editTag.command}"
-                        android:src="@drawable/ic_tag_black_24dp"
-                        />
-                    <ImageButton
-                        style="@style/AppTheme.CardViewToolbar_MenuButton"
                         android:contentDescription="@string/save_article"
                         android:onClick="@{viewModel.save.command}"
                         android:src="@drawable/ic_check_black_24dp"
@@ -57,5 +51,22 @@
             android:text="@={viewModel.body}"
             android:textIsSelectable="true"
             />
+        <android.support.v7.widget.CardView style="@style/AppTheme.CardViewToolbar_CardView">
+            <android.support.v7.widget.Toolbar style="@style/AppTheme.CardViewToolbar_Toolbar">
+                <LinearLayout style="@style/AppTheme.CardViewToolbar_LinearLayout">
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        />
+                    <Button
+                        style="@style/AppTheme.CardViewToolbar_TextButton"
+                        android:drawableStart="@drawable/ic_tag_black_24dp"
+                        android:text="@string/tag"
+                        android:onClick="@{viewModel.editTag.command}"
+                        />
+                </LinearLayout>
+            </android.support.v7.widget.Toolbar>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 </layout>
