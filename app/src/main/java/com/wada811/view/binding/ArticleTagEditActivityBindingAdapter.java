@@ -1,8 +1,7 @@
-package com.wada811.ghblog.view.binding;
+package com.wada811.view.binding;
 
 import android.app.Activity;
 import android.databinding.BindingAdapter;
-import android.databinding.DataBindingUtil;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -15,25 +14,18 @@ import com.wada811.ghblog.R;
 import com.wada811.ghblog.databinding.ActivityArticleTagEditBinding;
 import com.wada811.ghblog.util.Keyboard;
 import com.wada811.ghblog.view.adapter.ArticleTagListAdapter;
+import com.wada811.ghblog.view.binding.ActivityBindingAdapter;
 import com.wada811.ghblog.viewmodel.ArticleTagEditViewModel;
 import com.wada811.ghblog.viewmodel.ArticleTagListItemViewModel;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import rx.functions.Action0;
 
-public class ArticleTagEditActivityBindingAdapter {
+public class ArticleTagEditActivityBindingAdapter
+    extends ActivityBindingAdapter<ActivityArticleTagEditBinding, ArticleTagEditViewModel> {
 
-    private final ActivityArticleTagEditBinding binding;
-
-    public ArticleTagEditActivityBindingAdapter(Activity activity, int layoutId){
-        binding = DataBindingUtil.setContentView(activity, layoutId);
-    }
-
-    public void setViewModel(ArticleTagEditViewModel viewModel){
-        binding.setViewModel(viewModel);
-    }
-
-    public ArticleTagEditViewModel getViewModel(){
-        return binding.getViewModel();
+    public ArticleTagEditActivityBindingAdapter(@NotNull Activity activity, int layoutId, @NotNull ArticleTagEditViewModel viewModel){
+        super(activity, layoutId, viewModel);
     }
 
     @BindingAdapter("onEditDone")

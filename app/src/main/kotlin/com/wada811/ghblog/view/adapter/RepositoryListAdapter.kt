@@ -5,22 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import com.wada811.ghblog.view.binding.RepositoryListItemBindingAdapter
 import com.wada811.ghblog.viewmodel.RepositoryListItemViewModel
+import com.wada811.view.binding.RepositoryListItemBindingAdapter
 
 class RepositoryListAdapter(context: Context, var layoutId: Int, items: List<RepositoryListItemViewModel>) :
         ArrayAdapter<RepositoryListItemViewModel>(context, layoutId, items) {
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val binding: RepositoryListItemBindingAdapter
         var view = convertView
-        if (convertView == null) {
+        if (view == null) {
             binding = RepositoryListItemBindingAdapter(LayoutInflater.from(context), layoutId, parent)
-            view = binding.root
+            view = binding.view
             view.tag = binding
         } else {
-            binding = convertView.tag as RepositoryListItemBindingAdapter
+            binding = view.tag as RepositoryListItemBindingAdapter
         }
-        binding.viewModel = getItem(position)
+        binding.setViewModel(getItem(position))
         return view
     }
 }

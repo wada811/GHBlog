@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wada811.ghblog.R
 import com.wada811.ghblog.view.activity.extensions.addTo
-import com.wada811.ghblog.view.binding.OAuthActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.OAuthViewModel
 import com.wada811.logforest.LogWood
 import com.wada811.rxviewmodel.RxMessenger
+import com.wada811.view.binding.OAuthActivityBindingAdapter
 import rx.functions.Action1
 import rx.subscriptions.CompositeSubscription
 
@@ -21,7 +21,6 @@ class OAuthActivity : AppCompatActivity() {
         fun createIntent(context: Context) = Intent(context, OAuthActivity::class.java)
     }
 
-    lateinit var binding: OAuthActivityBindingAdapter
     val subscriptions = CompositeSubscription()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +30,7 @@ class OAuthActivity : AppCompatActivity() {
         LogWood.v("intent.categories: ${intent.categories}")
         LogWood.v("intent.data: ${intent.data}")
         LogWood.v("intent.dataString: ${intent.dataString}")
-        binding = OAuthActivityBindingAdapter(this, R.layout.activity_oauth)
-        binding.viewModel = OAuthViewModel(intent.dataString).addTo(subscriptions)
+        OAuthActivityBindingAdapter(this, R.layout.activity_oauth, OAuthViewModel(intent.dataString)).addTo(subscriptions)
     }
 
     override fun onDestroy() {

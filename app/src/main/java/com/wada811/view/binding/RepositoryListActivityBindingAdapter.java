@@ -1,32 +1,24 @@
-package com.wada811.ghblog.view.binding;
+package com.wada811.view.binding;
 
 import android.app.Activity;
 import android.databinding.BindingAdapter;
-import android.databinding.DataBindingUtil;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.wada811.ghblog.R;
 import com.wada811.ghblog.databinding.ActivityRepositoryListBinding;
 import com.wada811.ghblog.view.adapter.RepositoryListAdapter;
+import com.wada811.ghblog.view.binding.ActivityBindingAdapter;
 import com.wada811.ghblog.viewmodel.RepositoryListItemViewModel;
 import com.wada811.ghblog.viewmodel.RepositoryListViewModel;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
-public class RepositoryListActivityBindingAdapter {
+public class RepositoryListActivityBindingAdapter
+    extends ActivityBindingAdapter<ActivityRepositoryListBinding, RepositoryListViewModel> {
 
-    private final ActivityRepositoryListBinding binding;
-
-    public RepositoryListActivityBindingAdapter(Activity activity, int layoutId){
-        binding = DataBindingUtil.setContentView(activity, layoutId);
-    }
-
-    public void setViewModel(RepositoryListViewModel viewModel){
-        binding.setViewModel(viewModel);
-    }
-
-    public RepositoryListViewModel getViewModel(){
-        return binding.getViewModel();
+    public RepositoryListActivityBindingAdapter(@NotNull Activity activity, int layoutId, @NotNull RepositoryListViewModel viewModel){
+        super(activity, layoutId, viewModel);
     }
 
     @BindingAdapter("items")

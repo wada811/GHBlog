@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wada811.ghblog.R
 import com.wada811.ghblog.view.activity.extensions.addTo
-import com.wada811.ghblog.view.binding.ArticleCreateActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.ArticleCreateViewModel
 import com.wada811.rxviewmodel.RxMessenger
+import com.wada811.view.binding.ArticleCreateActivityBindingAdapter
 import rx.functions.Action1
 import rx.subscriptions.CompositeSubscription
 
@@ -19,12 +19,10 @@ class ArticleCreateActivity : AppCompatActivity() {
         fun createIntent(context: Context) = Intent(context, ArticleCreateActivity::class.java)
     }
 
-    lateinit var binding: ArticleCreateActivityBindingAdapter
     val subscriptions = CompositeSubscription()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ArticleCreateActivityBindingAdapter(this, R.layout.activity_article_create)
-        binding.viewModel = ArticleCreateViewModel().addTo(subscriptions)
+        ArticleCreateActivityBindingAdapter(this, R.layout.activity_article_create, ArticleCreateViewModel()).addTo(subscriptions)
         subscriptions.add(RxMessenger.observe(PreviewAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
         subscriptions.add(RxMessenger.observe(TagEditAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
         subscriptions.add(RxMessenger.observe(SaveAction::class.java).onBackpressureDrop().subscribe { it.call(this) })

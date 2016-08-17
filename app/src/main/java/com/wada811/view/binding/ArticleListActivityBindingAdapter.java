@@ -1,32 +1,23 @@
-package com.wada811.ghblog.view.binding;
+package com.wada811.view.binding;
 
 import android.app.Activity;
 import android.databinding.BindingAdapter;
-import android.databinding.DataBindingUtil;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.wada811.ghblog.R;
 import com.wada811.ghblog.databinding.ActivityArticleListBinding;
 import com.wada811.ghblog.view.adapter.ArticleListAdapter;
+import com.wada811.ghblog.view.binding.ActivityBindingAdapter;
 import com.wada811.ghblog.viewmodel.ArticleListItemViewModel;
 import com.wada811.ghblog.viewmodel.ArticleListViewModel;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
-public class ArticleListActivityBindingAdapter {
+public class ArticleListActivityBindingAdapter extends ActivityBindingAdapter<ActivityArticleListBinding, ArticleListViewModel> {
 
-    private final ActivityArticleListBinding binding;
-
-    public ArticleListActivityBindingAdapter(Activity activity, int layoutId){
-        binding = DataBindingUtil.setContentView(activity, layoutId);
-    }
-
-    public void setViewModel(ArticleListViewModel viewModel){
-        binding.setViewModel(viewModel);
-    }
-
-    public ArticleListViewModel getViewModel(){
-        return binding.getViewModel();
+    public ArticleListActivityBindingAdapter(@NotNull Activity activity, int layoutId, @NotNull ArticleListViewModel viewModel){
+        super(activity, layoutId, viewModel);
     }
 
     @BindingAdapter("items")
