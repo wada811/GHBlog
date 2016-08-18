@@ -61,13 +61,14 @@ dependencies {
     releaseCompile dependencies.releaseLeakCanary
     testCompile dependencies.testLeakCanary
     compile dependencies.appcompat
+    compile dependencies.recyclerview
+    compile dependencies.cardview
+    compile dependencies.design
     compile dependencies.rxjava
     compile dependencies.rxandroid
     compile project(':RxViewModel')
     compile project(':data')
     compile dependencies.threetenabp
     compile dependencies.materialDesignColors
-    compile dependencies.design
-    compile dependencies.cardview
     compile project(':LogForestAndroid')
 }

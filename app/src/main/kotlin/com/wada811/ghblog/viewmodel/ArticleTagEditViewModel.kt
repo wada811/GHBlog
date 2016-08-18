@@ -1,9 +1,9 @@
 package com.wada811.ghblog.viewmodel
 
 import android.view.View
-import android.widget.AdapterView
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.view.activity.ArticleTagEditActivity
+import com.wada811.ghblog.view.helper.RecyclerViewListenerBindingHelper.OnItemClickListener
 import com.wada811.logforest.LogWood
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxMessenger
@@ -28,8 +28,7 @@ class ArticleTagEditViewModel : RxViewModel() {
         tag.value = ""
     }).asManaged()
     val tags = article.tags.ToRxArrayList { ArticleTagListItemViewModel(it, true) }
-    val check = RxCommand(AdapterView.OnItemClickListener {
-        parent: AdapterView<*>, view: View, position: Int, id: Long ->
+    val check = RxCommand(OnItemClickListener { position: Int ->
         tags[position].checked.value = !tags[position].checked.value!!
         LogWood.d("check: ${tags.map { "${it.tagName.value}: ${it.checked.value}" }}")
     }).asManaged()

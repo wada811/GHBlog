@@ -9,7 +9,7 @@ import com.wada811.ghblog.R
 import com.wada811.ghblog.view.activity.extensions.addTo
 import com.wada811.ghblog.viewmodel.ArticleListViewModel
 import com.wada811.rxviewmodel.RxMessenger
-import com.wada811.view.binding.ArticleListActivityBindingAdapter
+import com.wada811.ghblog.view.binding.ArticleListActivityBindingAdapter
 import rx.functions.Action1
 import rx.subscriptions.CompositeSubscription
 

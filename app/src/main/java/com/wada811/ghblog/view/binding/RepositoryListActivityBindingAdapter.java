@@ -1,14 +1,12 @@
-package com.wada811.view.binding;
+package com.wada811.ghblog.view.binding;
 
 import android.app.Activity;
 import android.databinding.BindingAdapter;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import com.wada811.ghblog.R;
 import com.wada811.ghblog.databinding.ActivityRepositoryListBinding;
 import com.wada811.ghblog.view.adapter.RepositoryListAdapter;
-import com.wada811.ghblog.view.binding.ActivityBindingAdapter;
 import com.wada811.ghblog.viewmodel.RepositoryListItemViewModel;
 import com.wada811.ghblog.viewmodel.RepositoryListViewModel;
 import org.jetbrains.annotations.NotNull;
@@ -22,19 +20,16 @@ public class RepositoryListActivityBindingAdapter
     }
 
     @BindingAdapter("items")
-    public static void setItems(ListView listView, List<RepositoryListItemViewModel> items){
-        ArrayAdapter adapter = (ArrayAdapter)listView.getAdapter();
-        int position = listView.getVerticalScrollbarPosition();
+    public static void setItems(RecyclerView recyclerView, List<RepositoryListItemViewModel> items){
+        RepositoryListAdapter adapter = (RepositoryListAdapter)recyclerView.getAdapter();
+        int position = recyclerView.getVerticalScrollbarPosition();
         if(adapter == null){
-            listView.setAdapter(new RepositoryListAdapter(listView.getContext(), R.layout.list_item_repository, items));
+            adapter = new RepositoryListAdapter(recyclerView.getContext(), R.layout.list_item_repository, items);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         }else{
             adapter.notifyDataSetChanged();
-            listView.setVerticalScrollbarPosition(position);
+            recyclerView.setVerticalScrollbarPosition(position);
         }
-    }
-
-    @BindingAdapter("onItemClick")
-    public static void setOnItemClickListener(ListView listView, OnItemClickListener listener){
-        listView.setOnItemClickListener(listener);
     }
 }

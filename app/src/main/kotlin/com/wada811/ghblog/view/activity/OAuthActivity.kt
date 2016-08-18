@@ -11,7 +11,7 @@ import com.wada811.ghblog.view.activity.extensions.addTo
 import com.wada811.ghblog.viewmodel.OAuthViewModel
 import com.wada811.logforest.LogWood
 import com.wada811.rxviewmodel.RxMessenger
-import com.wada811.view.binding.OAuthActivityBindingAdapter
+import com.wada811.ghblog.view.binding.OAuthActivityBindingAdapter
 import rx.functions.Action1
 import rx.subscriptions.CompositeSubscription
 

@@ -1,20 +1,18 @@
-package com.wada811.view.binding;
+package com.wada811.ghblog.view.binding;
 
 import android.app.Activity;
 import android.databinding.BindingAdapter;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import com.wada811.ghblog.R;
 import com.wada811.ghblog.databinding.ActivityArticleTagEditBinding;
 import com.wada811.ghblog.util.Keyboard;
 import com.wada811.ghblog.view.adapter.ArticleTagListAdapter;
-import com.wada811.ghblog.view.binding.ActivityBindingAdapter;
 import com.wada811.ghblog.viewmodel.ArticleTagEditViewModel;
 import com.wada811.ghblog.viewmodel.ArticleTagListItemViewModel;
 import org.jetbrains.annotations.NotNull;
@@ -45,19 +43,16 @@ public class ArticleTagEditActivityBindingAdapter
     }
 
     @BindingAdapter("items")
-    public static void setItems(ListView listView, List<ArticleTagListItemViewModel> items){
-        ArrayAdapter adapter = (ArrayAdapter)listView.getAdapter();
-        int position = listView.getVerticalScrollbarPosition();
+    public static void setItems(RecyclerView recyclerView, List<ArticleTagListItemViewModel> items){
+        ArticleTagListAdapter adapter = (ArticleTagListAdapter)recyclerView.getAdapter();
+        int position = recyclerView.getVerticalScrollbarPosition();
         if(adapter == null){
-            listView.setAdapter(new ArticleTagListAdapter(listView.getContext(), R.layout.list_item_tag, items));
+            adapter = new ArticleTagListAdapter(recyclerView.getContext(), R.layout.list_item_tag, items);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         }else{
             adapter.notifyDataSetChanged();
-            listView.setVerticalScrollbarPosition(position);
+            recyclerView.setVerticalScrollbarPosition(position);
         }
-    }
-
-    @BindingAdapter("onItemClick")
-    public static void setOnItemClickListener(ListView listView, OnItemClickListener listener){
-        listView.setOnItemClickListener(listener);
     }
 }

@@ -1,10 +1,10 @@
 package com.wada811.ghblog.viewmodel
 
 import android.view.View
-import android.widget.AdapterView
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.domain.model.Repository
 import com.wada811.ghblog.view.activity.RepositoryListActivity
+import com.wada811.ghblog.view.helper.RecyclerViewListenerBindingHelper.OnItemClickListener
 import com.wada811.logforest.LogWood
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxMessenger
@@ -20,10 +20,9 @@ class RepositoryListViewModel : RxViewModel() {
 
     var repositoryViewModelList = GHBlogContext.currentUser.repositories.ToRxArrayList { RepositoryListItemViewModel(it) }.asManaged()
     var selectedRepository = RxProperty<Repository?>().asManaged()
-    var select = RxCommand(AdapterView.OnItemClickListener {
-        parent: AdapterView<*>, view: View, position: Int, id: Long ->
-        LogWood.e("${parent.getItemAtPosition(position)}")
-        val viewModel = parent.getItemAtPosition(position) as RepositoryListItemViewModel
+    var select = RxCommand(OnItemClickListener { position: Int ->
+        val viewModel = repositoryViewModelList[position]
+        LogWood.e("$viewModel")
         selectedRepository.value = viewModel.repository
         LogWood.e("selectedRepository: ${viewModel.repositoryName.value}")
     }).asManaged()
