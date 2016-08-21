@@ -31,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            app:dividerDrawable="@{@drawable/divider}"
             app:items="@{viewModel.repositoryViewModelList}"
             app:onItemClick="@{viewModel.select.command}"
             />

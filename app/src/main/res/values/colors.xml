@@ -5,4 +5,5 @@
     <color name="colorAccent">@color/md_indigo_500</color>
     <color name="textColorPrimary">@color/md_grey_900</color>
     <color name="textColorSecondary">@color/md_grey_600</color>
+    <color name="colorDivider">@color/colorPrimaryDark</color>
 </resources>
