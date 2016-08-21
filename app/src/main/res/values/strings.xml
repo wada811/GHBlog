@@ -14,5 +14,8 @@
     <string name="new_tag">New tag</string>
     <string name="save_tag">Save Tag</string>
     <!-- Tools -->
-    <string name="tag_name">Tag name</string>
+    <string name="tools_repository_name">Repository name</string>
+    <string name="tools_tag_name">Tag name</string>
+    <string name="tools_article_name">Article name</string>
+    <string name="tools_article_body">Article body</string>
 </resources>

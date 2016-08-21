@@ -14,5 +14,8 @@
     <string name="new_tag">新しいタグ</string>
     <string name="save_tag">保存</string>
     <!-- Tools -->
-    <string name="tag_name">タグ</string>
+    <string name="tools_repository_name">リポジトリ名</string>
+    <string name="tools_tag_name">タグ名</string>
+    <string name="tools_article_name">記事名</string>
+    <string name="tools_article_body">記事本文</string>
 </resources>
