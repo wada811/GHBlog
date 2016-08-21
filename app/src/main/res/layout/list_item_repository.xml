@@ -7,13 +7,13 @@
             />
     </data>
     <LinearLayout
+        style="@style/AppTheme.RecyclerView_Item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="@dimen/repository_list_item_height"
         >
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/repository_list_item_height"
+            android:layout_height="match_parent"
             android:text="@{viewModel.repositoryName}"
             />
     </LinearLayout>
