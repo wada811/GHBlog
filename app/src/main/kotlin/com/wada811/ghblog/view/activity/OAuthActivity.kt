@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wada811.ghblog.R
 import com.wada811.ghblog.view.activity.extensions.addTo
+import com.wada811.ghblog.view.binding.OAuthActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.OAuthViewModel
 import com.wada811.logforest.LogWood
 import com.wada811.rxviewmodel.RxMessenger
-import com.wada811.ghblog.view.binding.OAuthActivityBindingAdapter
 import rx.functions.Action1
 import rx.subscriptions.CompositeSubscription
 
@@ -21,11 +21,11 @@ class OAuthActivity : AppCompatActivity() {
         fun createIntent(context: Context) = Intent(context, OAuthActivity::class.java)
     }
 
-    val subscriptions = CompositeSubscription()
+    private val subscriptions = CompositeSubscription()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        subscriptions.add(RxMessenger.observe(AuthorizeAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
-        subscriptions.add(RxMessenger.observe(CompleteAction::class.java).onBackpressureDrop().subscribe { it.call(this) })
+        RxMessenger.observe(AuthorizeAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
+        RxMessenger.observe(CompleteAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
         LogWood.v("intent.action: ${intent.action}")
         LogWood.v("intent.categories: ${intent.categories}")
         LogWood.v("intent.data: ${intent.data}")

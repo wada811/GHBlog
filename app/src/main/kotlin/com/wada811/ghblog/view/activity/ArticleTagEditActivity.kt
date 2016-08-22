@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wada811.ghblog.R
 import com.wada811.ghblog.view.activity.extensions.addTo
+import com.wada811.ghblog.view.binding.ArticleTagEditActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.ArticleTagEditViewModel
 import com.wada811.rxviewmodel.RxMessenger
-import com.wada811.ghblog.view.binding.ArticleTagEditActivityBindingAdapter
 import rx.functions.Action1
 import rx.subscriptions.CompositeSubscription
 
@@ -19,7 +19,7 @@ class ArticleTagEditActivity : AppCompatActivity() {
         fun createIntent(context: Context): Intent = Intent(context, ArticleTagEditActivity::class.java)
     }
 
-    val subscriptions = CompositeSubscription()
+    private val subscriptions = CompositeSubscription()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ArticleTagEditActivityBindingAdapter(this, R.layout.activity_article_tag_edit, ArticleTagEditViewModel()).addTo(subscriptions)
