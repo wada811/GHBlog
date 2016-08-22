@@ -1,6 +1,7 @@
 package com.wada811.ghblog.view.binding;
 
 import android.app.Activity;
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +12,8 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import com.wada811.ghblog.R;
 import com.wada811.ghblog.databinding.ActivityArticleTagEditBinding;
+import com.wada811.ghblog.databinding.ListItemTagBinding;
 import com.wada811.ghblog.util.Keyboard;
-import com.wada811.ghblog.view.adapter.ArticleTagListAdapter;
 import com.wada811.ghblog.viewmodel.ArticleTagEditViewModel;
 import com.wada811.ghblog.viewmodel.ArticleTagListItemViewModel;
 import org.jetbrains.annotations.NotNull;
@@ -40,6 +41,14 @@ public class ArticleTagEditActivityBindingAdapter
                 return handled;
             }
         });
+    }
+
+    private static class ArticleTagListAdapter
+        extends RecyclerViewBindingAdapter<ListItemTagBinding, ArticleTagListItemViewModel> {
+
+        ArticleTagListAdapter(@NotNull Context context, int layoutId, @NotNull List<ArticleTagListItemViewModel> items){
+            super(context, layoutId, items);
+        }
     }
 
     @BindingAdapter("items")

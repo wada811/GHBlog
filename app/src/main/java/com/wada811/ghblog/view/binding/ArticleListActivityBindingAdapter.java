@@ -1,12 +1,13 @@
 package com.wada811.ghblog.view.binding;
 
 import android.app.Activity;
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import com.wada811.ghblog.R;
 import com.wada811.ghblog.databinding.ActivityArticleListBinding;
-import com.wada811.ghblog.view.adapter.ArticleListAdapter;
+import com.wada811.ghblog.databinding.ListItemArticleBinding;
 import com.wada811.ghblog.viewmodel.ArticleListItemViewModel;
 import com.wada811.ghblog.viewmodel.ArticleListViewModel;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +18,14 @@ public class ArticleListActivityBindingAdapter
 
     public ArticleListActivityBindingAdapter(@NotNull Activity activity, int layoutId, @NotNull ArticleListViewModel viewModel){
         super(activity, layoutId, viewModel);
+    }
+
+    private static class ArticleListAdapter
+        extends RecyclerViewBindingAdapter<ListItemArticleBinding, ArticleListItemViewModel> {
+
+        ArticleListAdapter(@NotNull Context context, int layoutId, @NotNull List<ArticleListItemViewModel> items){
+            super(context, layoutId, items);
+        }
     }
 
     @BindingAdapter("items")
