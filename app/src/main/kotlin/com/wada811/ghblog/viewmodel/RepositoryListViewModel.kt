@@ -18,6 +18,9 @@ class RepositoryListViewModel : RxViewModel() {
         GHBlogContext.currentUser.loadRepositories()
     }
 
+    var back = RxCommand(View.OnClickListener {
+        RxMessenger.send(RepositoryListActivity.BackAction())
+    }).asManaged()
     var repositoryViewModelList = GHBlogContext.currentUser.repositories.ToRxArrayList { RepositoryListItemViewModel(it) }.asManaged()
     var selectedRepository = RxProperty<Repository?>().asManaged()
     var select = RxCommand(OnItemClickListener { position: Int ->

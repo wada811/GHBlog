@@ -10,6 +10,9 @@ import com.wada811.rxviewmodel.extensions.ObserveProperty
 import com.wada811.rxviewmodel.extensions.toRxProperty
 
 class ArticleEditViewModel() : RxViewModel() {
+    var back = RxCommand(View.OnClickListener {
+        RxMessenger.send(ArticleEditActivity.BackAction())
+    }).asManaged()
     var article = GHBlogContext.currentUser.currentRepository!!.currentArticle!!
     var path = article.ObserveProperty("filePath", { it.filePath }).toRxProperty(article.filePath).asManaged()
     val isDraft = article.ObserveProperty("isDraft", { it.isDraft }).toRxProperty(article.isDraft).asManaged()

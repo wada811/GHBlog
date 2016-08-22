@@ -2,6 +2,7 @@ package com.wada811.ghblog.viewmodel
 
 import android.view.View
 import com.wada811.ghblog.domain.GHBlogContext
+import com.wada811.ghblog.view.activity.ArticleEditActivity
 import com.wada811.ghblog.view.activity.ArticleTagEditActivity
 import com.wada811.ghblog.view.helper.RecyclerViewListenerBindingHelper.OnItemClickListener
 import com.wada811.logforest.LogWood
@@ -13,6 +14,9 @@ import com.wada811.rxviewmodel.extensions.ToRxArrayList
 import rx.functions.Action0
 
 class ArticleTagEditViewModel : RxViewModel() {
+    var back = RxCommand(View.OnClickListener {
+        RxMessenger.send(ArticleTagEditActivity.BackAction())
+    }).asManaged()
     var article = GHBlogContext.currentUser.currentRepository!!.currentArticle!!
     val save = RxCommand(View.OnClickListener {
         LogWood.d("article.tags: ${article.tags.map { it }}")

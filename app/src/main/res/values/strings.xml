@@ -2,7 +2,7 @@
     <string name="app_name">GHBlog</string>
     <string name="authorizing">Authorizing…</string>
     <string name="authorized">Authorized!</string>
-    <string name="next">Next</string>
+    <string name="back">Back</string>
     <string name="save">Save</string>
     <string name="new_article">New</string>
     <string name="save_article">Save Article</string>

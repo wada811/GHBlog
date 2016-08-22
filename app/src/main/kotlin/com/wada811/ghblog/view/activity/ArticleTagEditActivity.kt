@@ -23,12 +23,19 @@ class ArticleTagEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ArticleTagEditActivityBindingAdapter(this, R.layout.activity_article_tag_edit, ArticleTagEditViewModel()).addTo(subscriptions)
+        RxMessenger.observe(BackAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
         RxMessenger.observe(SaveAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
     }
 
     override fun onDestroy() {
         subscriptions.unsubscribe()
         super.onDestroy()
+    }
+
+    class BackAction : Action1<Activity> {
+        override fun call(activity: Activity) {
+            activity.finish()
+        }
     }
 
     class SaveAction : Action1<Activity> {

@@ -2,7 +2,7 @@
     <string name="app_name">GHBlog</string>
     <string name="authorizing">認証中…</string>
     <string name="authorized">認証しました</string>
-    <string name="next">次へ</string>
+    <string name="back">戻る</string>
     <string name="save">保存</string>
     <string name="new_article">新規作成</string>
     <string name="save_article">記事を保存する</string>

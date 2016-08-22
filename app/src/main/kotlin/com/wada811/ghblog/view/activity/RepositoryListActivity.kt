@@ -23,12 +23,19 @@ class RepositoryListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         RepositoryListActivityBindingAdapter(this, R.layout.activity_repository_list, RepositoryListViewModel()).addTo(subscriptions)
+        RxMessenger.observe(BackAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
         RxMessenger.observe(NextAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
     }
 
     override fun onDestroy() {
         subscriptions.unsubscribe()
         super.onDestroy()
+    }
+
+    class BackAction : Action1<Activity> {
+        override fun call(activity: Activity) {
+            activity.finish()
+        }
     }
 
     class NextAction : Action1<Activity> {

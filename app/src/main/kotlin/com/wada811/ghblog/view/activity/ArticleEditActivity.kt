@@ -23,6 +23,7 @@ class ArticleEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ArticleEditActivityBindingAdapter(this, R.layout.activity_article_edit, ArticleEditViewModel()).addTo(subscriptions)
+        RxMessenger.observe(BackAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
         RxMessenger.observe(PreviewAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
         RxMessenger.observe(TagEditAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
         RxMessenger.observe(SaveAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
@@ -31,6 +32,12 @@ class ArticleEditActivity : AppCompatActivity() {
     override fun onDestroy() {
         subscriptions.unsubscribe()
         super.onDestroy()
+    }
+
+    class BackAction : Action1<Activity> {
+        override fun call(activity: Activity) {
+            activity.finish()
+        }
     }
 
     class PreviewAction : Action1<Activity> {

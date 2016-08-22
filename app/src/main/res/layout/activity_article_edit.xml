@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="viewModel"
@@ -15,6 +14,12 @@
         <android.support.v7.widget.CardView style="@style/AppTheme.CardViewToolbar_CardView">
             <android.support.v7.widget.Toolbar style="@style/AppTheme.CardViewToolbar_Toolbar">
                 <LinearLayout style="@style/AppTheme.CardViewToolbar_LinearLayout">
+                    <ImageButton
+                        style="@style/AppTheme.CardViewToolbar_MenuButton"
+                        android:contentDescription="@string/back"
+                        android:onClick="@{viewModel.back.command}"
+                        android:src="@drawable/ic_arrow_back_black_24dp"
+                        />
                     <TextView style="@style/AppTheme.CardViewToolbar_Title" />
                     <ImageButton
                         style="@style/AppTheme.CardViewToolbar_MenuButton"
@@ -62,14 +67,14 @@
                     <Button
                         style="@style/AppTheme.CardViewToolbar_TextButton"
                         android:drawableStart="@drawable/ic_preview_black_24dp"
-                        android:text="@string/preview_article"
                         android:onClick="@{viewModel.preview.command}"
+                        android:text="@string/preview_article"
                         />
                     <Button
                         style="@style/AppTheme.CardViewToolbar_TextButton"
                         android:drawableStart="@drawable/ic_tag_black_24dp"
-                        android:text="@string/edit_tag"
                         android:onClick="@{viewModel.editTag.command}"
+                        android:text="@string/edit_tag"
                         />
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
