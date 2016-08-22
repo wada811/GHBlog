@@ -8,10 +8,10 @@ import com.wada811.rxviewmodel.RxViewModel
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 
-abstract class ActivityBindingAdapter<out TBinding : ViewDataBinding, TViewModel : RxViewModel>
-(activity: Activity, layoutId: Int, viewModel: TViewModel) : Subscription {
+open class ActivityBindingAdapter<TBinding, TViewModel>(activity: Activity, layoutId: Int, viewModel: TViewModel) : Subscription
+where TBinding : ViewDataBinding, TViewModel : RxViewModel {
 
-    protected val binding: TBinding
+    private val binding: TBinding
     private val subscriptions = CompositeSubscription()
 
     init {
