@@ -1,6 +1,6 @@
 package com.wada811.ghblog.data.datasource.github
 
-import com.wada811.ghblog.data.entity.mapper.*
+import com.wada811.ghblog.data.entity.mapper.response.*
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest.CreateTreeBodyRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest.CreateTreeBodyRequest.CreateTreeTreeRequest

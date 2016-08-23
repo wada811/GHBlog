@@ -1,4 +1,4 @@
-package com.wada811.ghblog.data.entity.mapper
+package com.wada811.ghblog.data.entity.mapper.response
 
 import com.wada811.ghblog.data.entity.response.github.repos.contents.DeleteContentResponse
 import com.wada811.ghblog.domain.model.GitHubCommit

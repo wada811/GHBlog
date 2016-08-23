@@ -1,6 +1,6 @@
 package com.wada811.ghblog.data.datasource.user
 
-import com.wada811.ghblog.data.entity.mapper.GetUserResponseDataMapper
+import com.wada811.ghblog.data.entity.mapper.response.GetUserResponseDataMapper
 import com.wada811.ghblog.data.entity.request.github.oauth.AccessTokenRequest
 import com.wada811.ghblog.data.http.GitHubApi
 import com.wada811.ghblog.data.http.GitHubOAuthApi

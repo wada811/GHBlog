@@ -1,7 +1,8 @@
 package com.wada811.ghblog.data.datasource.user
 
 import com.wada811.ghblog.data.entity.data.OrmaDatabase
-import com.wada811.ghblog.data.entity.mapper.UserEntityDataMapper
+import com.wada811.ghblog.data.entity.data.UserEntity
+import com.wada811.ghblog.data.entity.mapper.data.UserEntityDataMapper
 import com.wada811.ghblog.domain.model.User
 import com.wada811.logforest.LogWood
 import rx.Observable
@@ -14,7 +15,7 @@ class LocalUserDataSource(private val database: OrmaDatabase) : UserDataSource {
             .doOnNext { LogWood.v("LocalUserDataSource#getCurrentUser#onNext") }
             .doOnError { LogWood.v("LocalUserDataSource#getCurrentUser#onError", it) }
             .doOnCompleted { LogWood.v("LocalUserDataSource#getCurrentUser#onCompleted") }
-            .map { userEntity ->
+            .map { userEntity: UserEntity ->
                 LogWood.v("LocalUserDataSource#getCurrentUser#map")
                 UserEntityDataMapper.toUser(userEntity)
             }
@@ -32,7 +33,7 @@ class LocalUserDataSource(private val database: OrmaDatabase) : UserDataSource {
             .doOnNext { LogWood.v("LocalUserDataSource#getUser#onNext") }
             .doOnError { LogWood.v("LocalUserDataSource#getUser#onError", it) }
             .doOnCompleted { LogWood.v("LocalUserDataSource#getUser#onCompleted") }
-            .map { userEntity ->
+            .map { userEntity: UserEntity ->
                 LogWood.v("LocalUserDataSource#getUser#map")
                 UserEntityDataMapper.toUser(userEntity)
             }

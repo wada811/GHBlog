@@ -1,4 +1,4 @@
-package com.wada811.ghblog.data.entity.mapper
+package com.wada811.ghblog.data.entity.mapper.response
 
 import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse
 import com.wada811.ghblog.data.entity.response.github.git.trees.CreateTreeResponse.NodeResponse

@@ -1,4 +1,4 @@
-package com.wada811.ghblog.data.entity.mapper
+package com.wada811.ghblog.data.entity.mapper.data
 
 import com.wada811.ghblog.data.entity.data.UserEntity
 import com.wada811.ghblog.domain.model.User

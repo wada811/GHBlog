@@ -1,4 +1,4 @@
-package com.wada811.ghblog.data.entity.mapper
+package com.wada811.ghblog.data.entity.mapper.response
 
 import com.wada811.ghblog.data.entity.response.github.repos.contents.GetContentsResponse
 import com.wada811.ghblog.data.entity.response.github.repos.contents.GetContentsResponse.ContentLinkResponse

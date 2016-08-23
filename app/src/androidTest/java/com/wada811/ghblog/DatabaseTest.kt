@@ -5,8 +5,8 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.squareup.moshi.Moshi
 import com.wada811.ghblog.data.entity.data.OrmaDatabase
-import com.wada811.ghblog.data.entity.mapper.GetUserResponseDataMapper
-import com.wada811.ghblog.data.entity.mapper.UserEntityDataMapper
+import com.wada811.ghblog.data.entity.mapper.data.UserEntityDataMapper
+import com.wada811.ghblog.data.entity.mapper.response.GetUserResponseDataMapper
 import com.wada811.ghblog.data.entity.response.github.users.GetUserResponse
 import com.wada811.ghblog.data.http.adapter.ZonedDateTimeAdapter
 import com.wada811.ghblog.domain.model.User
