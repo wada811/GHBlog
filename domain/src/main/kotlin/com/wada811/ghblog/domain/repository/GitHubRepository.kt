@@ -4,7 +4,7 @@ import com.wada811.ghblog.domain.model.*
 import rx.Observable
 
 interface GitHubRepository {
-    fun getRepositoryList(user: User): Observable<List<Repository>>
+    fun getRepositories(user: User): Observable<Repository>
     fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContentInfo>>
     fun getContent(user: User, repository: Repository, path: String): Observable<RepositoryContent>
     fun createContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit>

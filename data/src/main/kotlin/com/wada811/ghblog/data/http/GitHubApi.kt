@@ -51,8 +51,8 @@ class GitHubApi(var accessToken: String) {
 
     fun getUser() = client.getUser()
 
-    fun getRepositoryList() = client.getRepositoryList()
-    fun getRepositoryList(url: String) = client.getRepositoryList(url)
+    fun getRepositories() = client.getRepositories()
+    fun getRepositories(url: String) = client.getRepositories(url)
 
     fun getContents(request: GetContentsRequest) = client.getContents(request.owner, request.repo, request.path)
     fun getContent(request: GetContentRequest) = client.getContent(request.owner, request.repo, request.path)

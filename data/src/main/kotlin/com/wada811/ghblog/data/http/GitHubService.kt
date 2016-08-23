@@ -28,10 +28,10 @@ interface GitHubService {
     fun getUser(): Observable<Response<GetUserResponse>>
 
     @GET("user/repos")
-    fun getRepositoryList(): Observable<Response<List<RepositoryResponse>>>
+    fun getRepositories(): Observable<Response<List<RepositoryResponse>>>
 
     @GET
-    fun getRepositoryList(@Url url: String): Observable<Response<List<RepositoryResponse>>>
+    fun getRepositories(@Url url: String): Observable<Response<List<RepositoryResponse>>>
 
     @GET("/repos/{owner}/{repo}/contents/{path}")
     fun getContents(@Path("owner") owner: String, @Path("repo") repo: String, @Path("path") path: String): Observable<Response<List<GetContentsResponse>>>

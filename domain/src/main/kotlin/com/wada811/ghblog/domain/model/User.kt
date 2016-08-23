@@ -100,10 +100,10 @@ class User(
     val repositories = ObservableSynchronizedArrayList<Repository>()
 
     fun loadRepositories() {
-        GHBlogContext.gitHubRepository.getRepositoryList(this)
+        GHBlogContext.gitHubRepository.getRepositories(this)
             .subscribeOn(Schedulers.newThread())
             .subscribe({
-                repositories.addAll(it)
+                repositories.add(it)
             }, {
                 LogWood.e("onError: $it", it)
             })

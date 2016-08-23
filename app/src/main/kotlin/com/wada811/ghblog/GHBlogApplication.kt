@@ -4,8 +4,10 @@ import android.app.Application
 import com.facebook.stetho.Stetho
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
-import com.wada811.ghblog.data.datasource.user.RemoteUserDataSource
+import com.wada811.ghblog.data.datasource.github.LocalGitHubDataSource
+import com.wada811.ghblog.data.datasource.github.RemoteGitHubDataSource
 import com.wada811.ghblog.data.datasource.user.LocalUserDataSource
+import com.wada811.ghblog.data.datasource.user.RemoteUserDataSource
 import com.wada811.ghblog.data.entity.data.OrmaDatabase
 import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
@@ -26,7 +28,7 @@ class GHBlogApplication : Application() {
         val gitHubApp = GitHubApp(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
         val database = OrmaDatabase.builder(this).trace(true).build()
         val userRepository = UserDataRepository(LocalUserDataSource(database), RemoteUserDataSource())
-        val gitHubRepository = GitHubDataRepository()
+        val gitHubRepository = GitHubDataRepository(LocalGitHubDataSource(database), RemoteGitHubDataSource())
         GHBlogContext.init(gitHubApp, userRepository, gitHubRepository)
         LogForest.plant(AndroidLogTree)
     }

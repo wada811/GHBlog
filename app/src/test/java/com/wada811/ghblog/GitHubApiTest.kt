@@ -1,5 +1,6 @@
 package com.wada811.ghblog
 
+import com.wada811.ghblog.data.datasource.github.RemoteGitHubDataSource
 import com.wada811.ghblog.data.datasource.user.RemoteUserDataSource
 import com.wada811.ghblog.data.repository.GitHubDataRepository
 import com.wada811.ghblog.data.repository.UserDataRepository
@@ -33,7 +34,7 @@ class GitHubApiTest {
         UIThreadScheduler.DefaultScheduler = Schedulers.immediate()
         val gitHubApp = GitHubApp(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
         val userRepository = UserDataRepository(RemoteUserDataSource(), RemoteUserDataSource())
-        val gitHubRepository = GitHubDataRepository()
+        val gitHubRepository = GitHubDataRepository(RemoteGitHubDataSource(), RemoteGitHubDataSource())
         GHBlogContext.init(gitHubApp, userRepository, gitHubRepository)
         GHBlogContext.currentUser.loadRepositories()
     }
