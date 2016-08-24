@@ -17,12 +17,12 @@ class LocalGitHubDataSource(private val database: OrmaDatabase) : GitHubDataSour
             .doOnCompleted { LogWood.v("LocalUserDataSource#getCurrentUser#onCompleted") }
             .map { repositoryEntity: RepositoryEntity ->
                 LogWood.v("LocalUserDataSource#getCurrentUser#map")
-                RepositoryEntityDataMapper.toRepository(repositoryEntity)
+                RepositoryEntityDataMapper.fromEntity(repositoryEntity)
             }
     }
 
     override fun saveRepository(repository: Repository) {
-        database.relationOfRepositoryEntity().upserter().executeAsObservable(RepositoryEntityDataMapper.fromRepository(repository))
+        database.relationOfRepositoryEntity().upserter().executeAsObservable(RepositoryEntityDataMapper.toEntity(repository))
     }
 
 }

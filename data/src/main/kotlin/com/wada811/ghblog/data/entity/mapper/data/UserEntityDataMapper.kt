@@ -3,8 +3,51 @@ package com.wada811.ghblog.data.entity.mapper.data
 import com.wada811.ghblog.data.entity.data.UserEntity
 import com.wada811.ghblog.domain.model.User
 
-object UserEntityDataMapper {
-    fun toUser(entity: UserEntity) = User(
+object UserEntityDataMapper : EntityDataMapper<UserEntity, User>{
+    override fun toEntity(domain: User): UserEntity = UserEntity(
+        domain.accessToken,
+        domain.login,
+        domain.id,
+        domain.avatarUrl,
+        domain.gravatarId,
+        domain.url,
+        domain.htmlUrl,
+        domain.followersUrl,
+        domain.followingUrl,
+        domain.gistsUrl,
+        domain.starredUrl,
+        domain.subscriptionsUrl,
+        domain.organizationsUrl,
+        domain.reposUrl,
+        domain.eventsUrl,
+        domain.receivedEventsUrl,
+        domain.type,
+        domain.siteAdmin,
+        domain.name,
+        domain.company,
+        domain.blog,
+        domain.location,
+        domain.email,
+        domain.hireable,
+        domain.bio,
+        domain.publicRepos,
+        domain.publicGists,
+        domain.followers,
+        domain.following,
+        domain.createdAt,
+        domain.updatedAt,
+        domain.totalPrivateRepos,
+        domain.ownedPrivateRepos,
+        domain.privateGists,
+        domain.diskUsage,
+        domain.collaborators,
+        domain.plan.name,
+        domain.plan.space,
+        domain.plan.privateRepos,
+        domain.plan.collaborators
+    )
+
+    override fun fromEntity(entity: UserEntity): User = User(
         entity.access_token,
         entity.login,
         entity.id,
@@ -47,48 +90,5 @@ object UserEntityDataMapper {
             entity.plan_private_repos,
             entity.plan_collaborators
         )
-    )
-
-    fun fromUser(user: User) = UserEntity(
-        user.accessToken,
-        user.login,
-        user.id,
-        user.avatarUrl,
-        user.gravatarId,
-        user.url,
-        user.htmlUrl,
-        user.followersUrl,
-        user.followingUrl,
-        user.gistsUrl,
-        user.starredUrl,
-        user.subscriptionsUrl,
-        user.organizationsUrl,
-        user.reposUrl,
-        user.eventsUrl,
-        user.receivedEventsUrl,
-        user.type,
-        user.siteAdmin,
-        user.name,
-        user.company,
-        user.blog,
-        user.location,
-        user.email,
-        user.hireable,
-        user.bio,
-        user.publicRepos,
-        user.publicGists,
-        user.followers,
-        user.following,
-        user.createdAt,
-        user.updatedAt,
-        user.totalPrivateRepos,
-        user.ownedPrivateRepos,
-        user.privateGists,
-        user.diskUsage,
-        user.collaborators,
-        user.plan.name,
-        user.plan.space,
-        user.plan.privateRepos,
-        user.plan.collaborators
     )
 }

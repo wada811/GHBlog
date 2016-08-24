@@ -17,7 +17,7 @@ class LocalUserDataSource(private val database: OrmaDatabase) : UserDataSource {
             .doOnCompleted { LogWood.v("LocalUserDataSource#getCurrentUser#onCompleted") }
             .map { userEntity: UserEntity ->
                 LogWood.v("LocalUserDataSource#getCurrentUser#map")
-                UserEntityDataMapper.toUser(userEntity)
+                UserEntityDataMapper.fromEntity(userEntity)
             }
     }
 
@@ -35,13 +35,13 @@ class LocalUserDataSource(private val database: OrmaDatabase) : UserDataSource {
             .doOnCompleted { LogWood.v("LocalUserDataSource#getUser#onCompleted") }
             .map { userEntity: UserEntity ->
                 LogWood.v("LocalUserDataSource#getUser#map")
-                UserEntityDataMapper.toUser(userEntity)
+                UserEntityDataMapper.fromEntity(userEntity)
             }
     }
 
     override fun saveUser(user: User) {
         LogWood.d("LocalUserDataSource#saveUser")
-        database.relationOfUserEntity().upserter().execute(UserEntityDataMapper.fromUser(user))
+        database.relationOfUserEntity().upserter().execute(UserEntityDataMapper.toEntity(user))
     }
 
 }

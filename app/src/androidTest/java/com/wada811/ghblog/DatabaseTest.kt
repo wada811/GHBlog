@@ -36,9 +36,9 @@ class DatabaseTest {
     fun upsert() {
         val userResponseJson = """{"login":"wada811","id":1378923,"avatar_url":"https://avatars.githubusercontent.com/u/1378923?v=3","gravatar_id":"","url":"https://api.github.com/users/wada811","html_url":"https://github.com/wada811","followers_url":"https://api.github.com/users/wada811/followers","following_url":"https://api.github.com/users/wada811/following{/other_user}","gists_url":"https://api.github.com/users/wada811/gists{/gist_id}","starred_url":"https://api.github.com/users/wada811/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/wada811/subscriptions","organizations_url":"https://api.github.com/users/wada811/orgs","repos_url":"https://api.github.com/users/wada811/repos","events_url":"https://api.github.com/users/wada811/events{/privacy}","received_events_url":"https://api.github.com/users/wada811/received_events","type":"User","site_admin":false,"name":"wada811","company":null,"blog":"https://wada811.com/","location":null,"email":"at.wada811@gmail.com","hireable":true,"bio":null,"public_repos":42,"public_gists":22,"followers":31,"following":53,"created_at":"2012-01-25T12:04:25Z","updated_at":"2016-07-20T12:06:50Z","private_gists":0,"total_private_repos":0,"owned_private_repos":0,"disk_usage":177185,"collaborators":0,"plan":{"name":"free","space":976562499,"collaborators":0,"private_repos":0}}"""
         val user = createUser(userResponseJson)
-        val userEntity1 = UserEntityDataMapper.fromUser(user)
+        val userEntity1 = UserEntityDataMapper.toEntity(user)
         user.login = "update"
-        val userEntity2 = UserEntityDataMapper.fromUser(user)
+        val userEntity2 = UserEntityDataMapper.toEntity(user)
         database.relationOfUserEntity().upserter().execute(userEntity1)
         database.relationOfUserEntity().upserter().execute(userEntity2)
         val userEntities = database.selectFromUserEntity().toList()
