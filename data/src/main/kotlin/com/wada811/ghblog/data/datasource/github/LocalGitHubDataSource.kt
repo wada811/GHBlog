@@ -20,4 +20,9 @@ class LocalGitHubDataSource(private val database: OrmaDatabase) : GitHubDataSour
                 RepositoryEntityDataMapper.toRepository(repositoryEntity)
             }
     }
+
+    override fun saveRepository(repository: Repository) {
+        database.relationOfRepositoryEntity().upserter().executeAsObservable(RepositoryEntityDataMapper.fromRepository(repository))
+    }
+
 }

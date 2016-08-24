@@ -34,6 +34,10 @@ class RemoteGitHubDataSource : GitHubDataSource {
         }
     }
 
+    override fun saveRepository(repository: Repository) {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
         return Observable.defer {
             val request = GetContentsRequest(repository.owner.login, repository.name, path)

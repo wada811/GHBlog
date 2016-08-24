@@ -6,4 +6,5 @@ import rx.Observable
 
 interface GitHubDataSource {
     fun getRepositories(user: User): Observable<Repository>
+    fun saveRepository(repository: Repository)
 }

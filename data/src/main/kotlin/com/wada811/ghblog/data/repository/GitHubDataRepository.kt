@@ -8,7 +8,11 @@ import rx.Observable
 
 class GitHubDataRepository(private val localDataSource: GitHubDataSource, private val remoteDataSource: GitHubDataSource) : GitHubRepository {
     override fun getRepositories(user: User): Observable<Repository> {
-        return Observable.merge(localDataSource.getRepositories(user), remoteDataSource.getRepositories(user)).distinct { it.id }
+        return Observable.merge(
+            localDataSource.getRepositories(user),
+            remoteDataSource.getRepositories(user).doOnNext { localDataSource.saveRepository(it) }
+        )
+            .distinct { it.id }
     }
 
     override fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
