@@ -97,18 +97,27 @@ class User(
         var collaborators: Int by PropertyChangedDelegate(collaborators)
     }
 
-    val repositories = ObservableSynchronizedArrayList<Repository>()
-
-    fun loadRepositories() {
+    val repositories: ObservableSynchronizedArrayList<Repository> by lazy {
         GHBlogContext.gitHubRepository.getRepositories(this)
             .subscribeOn(Schedulers.newThread())
             .subscribe({
                 repositories.add(it)
             }, {
-                LogWood.e("onError: $it", it)
+                LogWood.e("getRepositories#onError: $it", it)
             })
+        ObservableSynchronizedArrayList<Repository>()
     }
 
     var currentRepository: Repository? by PropertyChangedDelegate(null)
-
+    val blogs: ObservableSynchronizedArrayList<Blog> by lazy {
+        GHBlogContext.gitHubRepository.getBlogs(this)
+            .subscribeOn(Schedulers.newThread())
+            .subscribe({
+                blogs.add(it)
+            }, {
+                LogWood.e("getBlogs#onError: $it", it)
+            })
+        ObservableSynchronizedArrayList<Blog>()
+    }
+    var currentBlog: Blog? by PropertyChangedDelegate(null)
 }

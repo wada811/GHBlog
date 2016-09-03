@@ -2,7 +2,9 @@ package com.wada811.ghblog.data.datasource.github
 
 import com.wada811.ghblog.data.entity.data.OrmaDatabase
 import com.wada811.ghblog.data.entity.data.RepositoryEntity
+import com.wada811.ghblog.data.entity.mapper.data.BlogEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.data.RepositoryEntityDataMapper
+import com.wada811.ghblog.domain.model.Blog
 import com.wada811.ghblog.domain.model.Repository
 import com.wada811.ghblog.domain.model.User
 import com.wada811.logforest.LogWood
@@ -25,4 +27,13 @@ class LocalGitHubDataSource(private val database: OrmaDatabase) : GitHubDataSour
         database.relationOfRepositoryEntity().upserter().executeAsObservable(RepositoryEntityDataMapper.toEntity(repository))
     }
 
+    override fun getBlogs(user: User): Observable<Blog> {
+        return database.selectFromBlogEntity().userEq(user.id)
+            .executeAsObservable()
+            .map { BlogEntityDataMapper.fromEntity(it) }
+    }
+
+    override fun saveBlog(blog: Blog) {
+        database.relationOfBlogEntity().upserter().executeAsObservable(BlogEntityDataMapper.toEntity(blog))
+    }
 }

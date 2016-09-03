@@ -15,6 +15,14 @@ class GitHubDataRepository(private val localDataSource: GitHubDataSource, privat
             .distinct { it.id }
     }
 
+    override fun getBlogs(user: User): Observable<Blog> {
+        return localDataSource.getBlogs(user)
+    }
+
+    override fun saveBlog(blog: Blog) {
+        localDataSource.saveBlog(blog)
+    }
+
     override fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
         return RemoteGitHubDataSource().getContents(user, repository, path)
     }

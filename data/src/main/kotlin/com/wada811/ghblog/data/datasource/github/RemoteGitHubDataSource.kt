@@ -38,6 +38,14 @@ class RemoteGitHubDataSource : GitHubDataSource {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun getBlogs(user: User): Observable<Blog> {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun saveBlog(blog: Blog) {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
         return Observable.defer {
             val request = GetContentsRequest(repository.owner.login, repository.name, path)

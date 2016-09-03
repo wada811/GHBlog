@@ -5,6 +5,8 @@ import rx.Observable
 
 interface GitHubRepository {
     fun getRepositories(user: User): Observable<Repository>
+    fun getBlogs(user: User): Observable<Blog>
+    fun saveBlog(blog: Blog)
     fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContentInfo>>
     fun getContent(user: User, repository: Repository, path: String): Observable<RepositoryContent>
     fun createContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit>
