@@ -36,7 +36,6 @@ class GitHubApiTest {
         val userRepository = UserDataRepository(RemoteUserDataSource(), RemoteUserDataSource())
         val gitHubRepository = GitHubDataRepository(RemoteGitHubDataSource(), RemoteGitHubDataSource())
         GHBlogContext.init(gitHubApp, userRepository, gitHubRepository)
-        GHBlogContext.currentUser.loadRepositories()
     }
 
     @After
