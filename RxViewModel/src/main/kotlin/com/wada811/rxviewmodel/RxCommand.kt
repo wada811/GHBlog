@@ -4,37 +4,43 @@ import android.databinding.ObservableBoolean
 import rx.Observable
 import rx.Subscription
 import rx.subjects.PublishSubject
+import rx.subjects.Subject
+import rx.subscriptions.CompositeSubscription
 
-class RxCommand<T>(source: Observable<Boolean>? = null, initialValue: Boolean = true, var command: T? = null) : Subscription {
+class RxCommand<in T>(action: (T) -> Unit, canExecuteSource: Observable<Boolean>? = null, canExecuteInitially: Boolean = true) : Subscription {
 
+    private val trigger: Subject<T, T> = PublishSubject.create()
     var canExecute: ObservableBoolean
-    var sourceSubscription: Subscription?
-    var errorNotifier = PublishSubject.create<Throwable>()
-
-    constructor(command: T) : this(null, command) {
-    }
-
-    constructor(source: Observable<Boolean>?, command: T) : this(source, true, command) {
-    }
+        get
+        private set
+    private var canExecuteSourceSubscription: Subscription?
+    private val subscriptions = CompositeSubscription()
 
     init {
-        canExecute = ObservableBoolean(initialValue)
-        if (source == null) {
-            sourceSubscription = null
-        } else {
-            sourceSubscription = source.distinctUntilChanged()
-                    .subscribe({ canExecute.set(it) }, { errorNotifier.onNext(it) }, { errorNotifier.onCompleted() })
-        }
+        canExecute = ObservableBoolean(canExecuteInitially)
+        canExecuteSourceSubscription = canExecuteSource?.distinctUntilChanged()?.subscribe({ canExecute.set(it) })
+        subscriptions.add(trigger.subscribe(action))
     }
 
-    fun observeErrors(): Observable<Throwable> = errorNotifier.asObservable()
+    fun execute(parameter: T) = trigger.onNext(parameter)
 
-    override fun isUnsubscribed(): Boolean = sourceSubscription == null || sourceSubscription!!.isUnsubscribed
+    override fun isUnsubscribed(): Boolean = subscriptions.isUnsubscribed
 
     override fun unsubscribe() {
-        if (sourceSubscription != null && !isUnsubscribed) {
-            sourceSubscription!!.unsubscribe()
+        if (isUnsubscribed) {
+            trigger.onCompleted()
+            subscriptions.unsubscribe()
+            canExecute.set(false)
+            canExecuteSourceSubscription?.unsubscribe()
         }
-        sourceSubscription = null
     }
+
+    internal fun bind(subscription: Subscription) {
+        subscriptions.add(subscription)
+    }
+}
+
+fun <T> Observable<Boolean>.toRxCommand(action: (T) -> Unit, canExecuteInitially: Boolean = true) = RxCommand(action, this, canExecuteInitially)
+fun <T> Observable<T>.bind(command: RxCommand<T>) {
+    command.bind(this.filter { command.canExecute.get() }.subscribe { command.execute(it) })
 }

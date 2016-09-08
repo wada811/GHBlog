@@ -19,16 +19,16 @@
                     <ImageButton
                         style="@style/AppTheme.CardViewToolbar_MenuButton"
                         android:contentDescription="@string/back"
-                        android:onClick="@{viewModel.back.command}"
                         android:src="@drawable/ic_arrow_back_black_24dp"
+                        app:click="@{viewModel.back}"
                         />
                     <TextView style="@style/AppTheme.CardViewToolbar_Title" />
                     <ImageButton
                         style="@style/AppTheme.CardViewToolbar_MenuButton"
                         android:contentDescription="@string/save"
                         android:enabled="@{viewModel.save.canExecute}"
-                        android:onClick="@{viewModel.save.command}"
                         android:src="@drawable/ic_check_black_24dp"
+                        app:click="@{viewModel.save}"
                         />
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
@@ -39,7 +39,7 @@
             android:layout_weight="1"
             app:dividerDrawable="@{@drawable/divider}"
             app:items="@{viewModel.repositoryViewModelList}"
-            app:onItemClick="@{viewModel.select.command}"
+            app:onItemClick="@{viewModel.select}"
             />
     </LinearLayout>
 </layout>

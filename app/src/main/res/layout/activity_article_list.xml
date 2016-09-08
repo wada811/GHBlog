@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 app:dividerDrawable="@{@drawable/divider}"
                 app:items="@{viewModel.articleViewModelList}"
-                app:onItemClick="@{viewModel.edit.command}"
+                app:onItemClick="@{viewModel.edit}"
                 />
         </LinearLayout>
         <android.support.design.widget.FloatingActionButton
@@ -39,11 +39,11 @@
             android:layout_gravity="bottom|end"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
-            android:onClick="@{viewModel.new.command}"
             android:src="@drawable/ic_add_black_24dp"
             android:text="@string/new_article"
             android:tint="@color/colorAccent"
             app:backgroundTint="@color/colorPrimary"
+            app:click="@{viewModel.new}"
             />
     </FrameLayout>
 </layout>

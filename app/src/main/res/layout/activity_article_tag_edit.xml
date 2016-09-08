@@ -23,15 +23,15 @@
                     <ImageButton
                         style="@style/AppTheme.CardViewToolbar_MenuButton"
                         android:contentDescription="@string/back"
-                        android:onClick="@{viewModel.back.command}"
                         android:src="@drawable/ic_arrow_back_black_24dp"
+                        app:click="@{viewModel.back}"
                         />
                     <TextView style="@style/AppTheme.CardViewToolbar_Title" />
                     <ImageButton
                         style="@style/AppTheme.CardViewToolbar_MenuButton"
                         android:contentDescription="@string/save_tag"
-                        android:onClick="@{viewModel.save.command}"
                         android:src="@drawable/ic_check_black_24dp"
+                        app:click="@{viewModel.save}"
                         />
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
@@ -47,7 +47,7 @@
             android:text="@={viewModel.tag}"
             android:textAppearance="?android:attr/textAppearanceListItem"
             android:textIsSelectable="true"
-            app:onEditDone="@{viewModel.done.command}"
+            app:onEditDone="@{viewModel.done}"
             />
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
@@ -55,7 +55,7 @@
             android:layout_weight="1"
             app:dividerDrawable="@{@drawable/divider}"
             app:items="@{viewModel.tags}"
-            app:onItemClick="@{viewModel.check.command}"
+            app:onItemClick="@{viewModel.check}"
             />
     </LinearLayout>
 </layout>

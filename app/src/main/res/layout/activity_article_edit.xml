@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
     <data>
         <variable
             name="viewModel"
@@ -17,15 +19,15 @@
                     <ImageButton
                         style="@style/AppTheme.CardViewToolbar_MenuButton"
                         android:contentDescription="@string/back"
-                        android:onClick="@{viewModel.back.command}"
                         android:src="@drawable/ic_arrow_back_black_24dp"
+                        app:click="@{viewModel.back}"
                         />
                     <TextView style="@style/AppTheme.CardViewToolbar_Title" />
                     <ImageButton
                         style="@style/AppTheme.CardViewToolbar_MenuButton"
                         android:contentDescription="@string/save_article"
-                        android:onClick="@{viewModel.save.command}"
                         android:src="@drawable/ic_check_black_24dp"
+                        app:click="@{viewModel.save}"
                         />
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
@@ -67,14 +69,14 @@
                     <Button
                         style="@style/AppTheme.CardViewToolbar_TextButton"
                         android:drawableStart="@drawable/ic_preview_black_24dp"
-                        android:onClick="@{viewModel.preview.command}"
                         android:text="@string/preview_article"
+                        app:click="@{viewModel.preview}"
                         />
                     <Button
                         style="@style/AppTheme.CardViewToolbar_TextButton"
                         android:drawableStart="@drawable/ic_tag_black_24dp"
-                        android:onClick="@{viewModel.editTag.command}"
                         android:text="@string/edit_tag"
+                        app:click="@{viewModel.editTag}"
                         />
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>

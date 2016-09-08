@@ -64,6 +64,8 @@ dependencies {
     compile dependencies.recyclerview
     compile dependencies.cardview
     compile dependencies.design
+    compile dependencies.rxbinding
+    compile dependencies.rxbindingKotlin
     compile dependencies.rxjava
     compile dependencies.rxandroid
     compile project(':RxViewModel')

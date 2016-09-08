@@ -21,6 +21,7 @@ ext {
     android_support_version = "24.2.0" // https://developer.android.com/topic/libraries/support-library/revisions.html
     rxjava_version = "1.1.9" // https://github.com/ReactiveX/rxjava
     rxandroid_version = "1.2.1" // https://github.com/ReactiveX/RxAndroid
+    rxbinding_version = "0.4.0" // https://github.com/JakeWharton/RxBinding
     okhttp_version = "3.4.1" // https://github.com/square/okhttp
     retrofit_version = "2.1.0" // https://github.com/square/retrofit
     threetenabp_version = "1.0.3" // https://github.com/JakeWharton/ThreeTenABP
@@ -48,6 +49,8 @@ ext {
             design              : "com.android.support:design:$android_support_version",
             rxjava              : "io.reactivex:rxjava:$rxjava_version",
             rxandroid           : "io.reactivex:rxandroid:$rxandroid_version",
+            rxbinding           : "com.jakewharton.rxbinding:rxbinding:$rxbinding_version",
+            rxbindingKotlin     : "com.jakewharton.rxbinding:rxbinding-kotlin:$rxbinding_version",
             threetenabp         : "com.jakewharton.threetenabp:threetenabp:$threetenabp_version",
             materialDesignColors: "com.wada811:android-material-design-colors:$material_design_colors_version",
             ormaProcessor       : "com.github.gfx.android.orma:orma-processor:$orma_version",
