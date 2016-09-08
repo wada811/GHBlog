@@ -42,7 +42,5 @@ where TBinding : ViewDataBinding, TViewModel : RxViewModel {
         }
     }
 
-    class BindingViewHolder<TBinding>(var binding: TBinding) : RecyclerView.ViewHolder(binding.root) where TBinding : ViewDataBinding {
-
-    }
+    class BindingViewHolder<TBinding>(var binding: TBinding) : RecyclerView.ViewHolder(binding.root) where TBinding : ViewDataBinding
 }
