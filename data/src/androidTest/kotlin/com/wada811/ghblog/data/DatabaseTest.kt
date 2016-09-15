@@ -1,4 +1,4 @@
-package com.wada811.ghblog
+package com.wada811.ghblog.data
 
 import android.content.Context
 import android.support.test.InstrumentationRegistry
