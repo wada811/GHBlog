@@ -66,3 +66,7 @@ dependencies {
     compile dependencies.materialDesignColors
     compile project(':LogForestAndroid')
 }
+
+task appStart(type: Exec, dependsOn: ['clean', 'installDebug']) {
+    commandLine 'adb', 'shell', 'am', 'start', '-n', 'com.wada811.ghblog/.view.activity.MainActivity'
+}
