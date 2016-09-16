@@ -1,5 +1,6 @@
 package com.wada811.ghblog.data.datasource.user
 
+import android.content.Context
 import com.wada811.ghblog.data.entity.data.OrmaDatabase
 import com.wada811.ghblog.data.entity.data.UserEntity
 import com.wada811.ghblog.data.entity.mapper.data.UserEntityDataMapper
@@ -7,7 +8,8 @@ import com.wada811.ghblog.domain.model.User
 import com.wada811.logforest.LogWood
 import rx.Observable
 
-class LocalUserDataSource(private val database: OrmaDatabase) : UserDataSource {
+class LocalUserDataSource(context: Context) : UserDataSource {
+    private val database: OrmaDatabase = OrmaDatabase.builder(context).trace(true).build()
     override fun getCurrentUser(): Observable<User> {
         return database.selectFromUserEntity()
             .limit(1)
