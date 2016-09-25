@@ -30,6 +30,7 @@
                 android:layout_weight="1"
                 app:dividerDrawable="@{@drawable/divider}"
                 app:items="@{viewModel.articleViewModelList}"
+                app:itemLayout="@{@layout/list_item_article}"
                 app:onItemClick="@{viewModel.edit}"
                 />
         </LinearLayout>

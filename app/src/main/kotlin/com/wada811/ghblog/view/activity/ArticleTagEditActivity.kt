@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wada811.ghblog.R
+import com.wada811.ghblog.util.Keyboard
 import com.wada811.ghblog.view.activity.extensions.addTo
 import com.wada811.ghblog.view.binding.ArticleTagEditActivityBindingAdapter
 import com.wada811.ghblog.viewmodel.ArticleTagEditViewModel
@@ -23,6 +24,7 @@ class ArticleTagEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ArticleTagEditActivityBindingAdapter(this, R.layout.activity_article_tag_edit, ArticleTagEditViewModel()).addTo(subscriptions)
+        RxMessenger.observe(DoneAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
         RxMessenger.observe(BackAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
         RxMessenger.observe(SaveAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
     }
@@ -30,6 +32,12 @@ class ArticleTagEditActivity : AppCompatActivity() {
     override fun onDestroy() {
         subscriptions.unsubscribe()
         super.onDestroy()
+    }
+
+    class DoneAction : Action1<Activity> {
+        override fun call(activity: Activity) {
+            Keyboard.close(activity.window.decorView)
+        }
     }
 
     class BackAction : Action1<Activity> {

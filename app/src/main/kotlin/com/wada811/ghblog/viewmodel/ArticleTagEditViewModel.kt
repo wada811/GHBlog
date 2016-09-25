@@ -1,5 +1,6 @@
 package com.wada811.ghblog.viewmodel
 
+import android.view.inputmethod.EditorInfo
 import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.ghblog.view.activity.ArticleTagEditActivity
 import com.wada811.logforest.LogWood
@@ -24,8 +25,11 @@ class ArticleTagEditViewModel : RxViewModel() {
     }).asManaged()
     val tag = RxProperty("").asManaged()
     val done = RxCommand<Int>({
-        tags.add(ArticleTagListItemViewModel(tag.value!!, true))
-        tag.value = ""
+        if (it == EditorInfo.IME_ACTION_DONE) {
+            tags.add(ArticleTagListItemViewModel(tag.value!!, true))
+            tag.value = ""
+            RxMessenger.send(ArticleTagEditActivity.DoneAction())
+        }
     }).asManaged()
     val tags = article.tags.ToRxArrayList { ArticleTagListItemViewModel(it, true) }
     val check = RxCommand({ position: Int ->

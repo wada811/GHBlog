@@ -39,6 +39,7 @@
             android:layout_weight="1"
             app:dividerDrawable="@{@drawable/divider}"
             app:items="@{viewModel.repositoryViewModelList}"
+            app:itemLayout="@{@layout/list_item_repository}"
             app:onItemClick="@{viewModel.select}"
             />
     </LinearLayout>

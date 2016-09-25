@@ -47,13 +47,14 @@
             android:text="@={viewModel.tag}"
             android:textAppearance="?android:attr/textAppearanceListItem"
             android:textIsSelectable="true"
-            app:onEditDone="@{viewModel.done}"
+            app:editorActions="@{viewModel.done}"
             />
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             app:dividerDrawable="@{@drawable/divider}"
+            app:itemLayout="@{@layout/list_item_tag}"
             app:items="@{viewModel.tags}"
             app:onItemClick="@{viewModel.check}"
             />
