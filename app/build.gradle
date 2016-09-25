@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     def globalConfiguration = rootProject.extensions.getByName("ext")
@@ -30,6 +31,10 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
     }
+    compileOptions {
+        targetCompatibility = JavaVersion.VERSION_1_7
+        sourceCompatibility = JavaVersion.VERSION_1_7
+    }
     dataBinding {
         enabled = true
     }
@@ -37,10 +42,6 @@ android {
 
 repositories {
     maven { url 'http://github.com/wada811/Android-Material-Design-Colors/raw/master/repository/' }
-}
-
-kapt {
-    generateStubs = true
 }
 
 dependencies {
