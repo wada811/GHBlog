@@ -7,7 +7,9 @@ import rx.Observable
 
 interface GitHubDataSource {
     fun getRepositories(user: User): Observable<Repository>
-    fun saveRepository(repository: Repository)
+    fun saveRepository(repository: Repository): Observable<Boolean>
+    fun saveRepositories(repositories: MutableList<Repository>): Observable<Boolean>
     fun getBlogs(user: User): Observable<Blog>
-    fun saveBlog(blog: Blog)
+    fun saveBlog(blog: Blog): Observable<Boolean>
+
 }

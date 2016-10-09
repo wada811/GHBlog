@@ -14,13 +14,10 @@ class LocalUserDataSource(context: Context) : UserDataSource {
         return database.selectFromUserEntity()
             .limit(1)
             .executeAsObservable()
-            .doOnNext { LogWood.v("LocalUserDataSource#getCurrentUser#onNext") }
+            .doOnNext { LogWood.v("LocalUserDataSource#getCurrentUser#onNext: ${it.name}") }
             .doOnError { LogWood.v("LocalUserDataSource#getCurrentUser#onError", it) }
             .doOnCompleted { LogWood.v("LocalUserDataSource#getCurrentUser#onCompleted") }
-            .map { userEntity: UserEntity ->
-                LogWood.v("LocalUserDataSource#getCurrentUser#map")
-                UserEntityDataMapper.fromEntity(userEntity)
-            }
+            .map { UserEntityDataMapper.fromEntity(it) }
     }
 
     override fun getAccessToken(code: String, state: String): Observable<String> {
@@ -32,7 +29,7 @@ class LocalUserDataSource(context: Context) : UserDataSource {
         return database.selectFromUserEntity()
             .access_tokenEq(accessToken)
             .executeAsObservable()
-            .doOnNext { LogWood.v("LocalUserDataSource#getUser#onNext") }
+            .doOnNext { LogWood.v("LocalUserDataSource#getUser#onNext: ${it.name}") }
             .doOnError { LogWood.v("LocalUserDataSource#getUser#onError", it) }
             .doOnCompleted { LogWood.v("LocalUserDataSource#getUser#onCompleted") }
             .map { userEntity: UserEntity ->

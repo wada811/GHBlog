@@ -15,10 +15,8 @@ import rx.Observable
 
 class RemoteGitHubDataSource : GitHubDataSource {
     override fun getRepositories(user: User): Observable<Repository> {
-        return Observable.defer {
-            getRepositories(user, GitHubApi(user.accessToken).getRepositories())
-                .map { RepositoryResponseDataMapper.transform(user, it) }
-        }
+        return getRepositories(user, GitHubApi(user.accessToken).getRepositories())
+            .map { RepositoryResponseDataMapper.transform(user, it) }
     }
 
     private fun getRepositories(user: User, observable: Observable<Response<List<RepositoryResponse>>>): Observable<RepositoryResponse> {
@@ -34,7 +32,11 @@ class RemoteGitHubDataSource : GitHubDataSource {
         }
     }
 
-    override fun saveRepository(repository: Repository) {
+    override fun saveRepository(repository: Repository): Observable<Boolean> {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun saveRepositories(repositories: MutableList<Repository>): Observable<Boolean> {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -42,53 +44,43 @@ class RemoteGitHubDataSource : GitHubDataSource {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun saveBlog(blog: Blog) {
+    override fun saveBlog(blog: Blog): Observable<Boolean> {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
-        return Observable.defer {
-            val request = GetContentsRequest(repository.owner.login, repository.name, path)
-            GitHubApi(user.accessToken).getContents(request)
-                .map { it.body().map { GetContentsResponseDataMapper.transform(user, repository, it) } }
-        }
+        val request = GetContentsRequest(repository.owner.login, repository.name, path)
+        return GitHubApi(user.accessToken).getContents(request)
+            .map { it.body().map { GetContentsResponseDataMapper.transform(user, repository, it) } }
     }
 
     fun getContent(user: User, repository: Repository, path: String): Observable<RepositoryContent> {
-        return Observable.defer {
-            val request = GetContentRequest(repository.owner.login, repository.name, path)
-            GitHubApi(user.accessToken).getContent(request)
-                .map { GetContentResponseDataMapper.transform(user, repository, it.body()) }
-        }
+        val request = GetContentRequest(repository.owner.login, repository.name, path)
+        return GitHubApi(user.accessToken).getContent(request)
+            .map { GetContentResponseDataMapper.transform(user, repository, it.body()) }
     }
 
     fun createContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
-        return Observable.defer {
-            val request = CreateContentRequest(repository.owner.login, repository.name, commit.path,
-                CreateContentRequest.CreateContentCommitRequest(commit.path, commit.message, commit.encodedContent())
-            )
-            GitHubApi(user.accessToken).createContent(request)
-                .map { CreateContentResponseDataMapper.transform(user, repository, it.body()) }
-        }
+        val request = CreateContentRequest(repository.owner.login, repository.name, commit.path,
+            CreateContentRequest.CreateContentCommitRequest(commit.path, commit.message, commit.encodedContent())
+        )
+        return GitHubApi(user.accessToken).createContent(request)
+            .map { CreateContentResponseDataMapper.transform(user, repository, it.body()) }
     }
 
     fun updateContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
-        return Observable.defer {
-            val request = UpdateContentRequest(repository.owner.login, repository.name, commit.path,
-                UpdateContentRequest.UpdateContentCommitRequest(commit.path, commit.message, commit.encodedContent(), commit.sha!!)
-            )
-            GitHubApi(user.accessToken).updateContent(request)
-                .map { UpdateContentResponseDataMapper.transform(user, repository, it.body()) }
-        }
+        val request = UpdateContentRequest(repository.owner.login, repository.name, commit.path,
+            UpdateContentRequest.UpdateContentCommitRequest(commit.path, commit.message, commit.encodedContent(), commit.sha!!)
+        )
+        return GitHubApi(user.accessToken).updateContent(request)
+            .map { UpdateContentResponseDataMapper.transform(user, repository, it.body()) }
     }
 
     fun deleteContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
-        return Observable.defer {
-            val request = DeleteContentRequest(repository.owner.login, repository.name, commit.path,
-                DeleteContentRequest.DeleteContentCommitRequest(commit.path, commit.message, commit.sha!!)
-            )
-            GitHubApi(user.accessToken).deleteContent(request).map { DeleteContentResponseDataMapper.transform(it.body()) }
-        }
+        val request = DeleteContentRequest(repository.owner.login, repository.name, commit.path,
+            DeleteContentRequest.DeleteContentCommitRequest(commit.path, commit.message, commit.sha!!)
+        )
+        return GitHubApi(user.accessToken).deleteContent(request).map { DeleteContentResponseDataMapper.transform(it.body()) }
     }
 
     fun renameContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit> {
@@ -101,21 +93,17 @@ class RemoteGitHubDataSource : GitHubDataSource {
     }
 
     fun getTree(user: User, repository: Repository): Observable<GitHubTree> {
-        return Observable.defer {
-            val request = GetTreeRequest(repository.owner.login, repository.name, "heads/" + repository.defaultBranch)
-            GitHubApi(user.accessToken).getTree(request).map { GetTreeResponseDataMapper.transform(it.body()) }
-        }
+        val request = GetTreeRequest(repository.owner.login, repository.name, "heads/" + repository.defaultBranch)
+        return GitHubApi(user.accessToken).getTree(request).map { GetTreeResponseDataMapper.transform(it.body()) }
     }
 
     fun createGitTree(user: User, repository: Repository, tree: GitTree): Observable<GitHubTree> {
-        return Observable.defer {
-            val request = CreateTreeRequest(repository.owner.login, repository.name,
-                CreateTreeBodyRequest(
-                    tree.nodes.map { CreateTreeTreeRequest(it.path, it.mode, it.type, it.sha, it.content) },
-                    tree.baseTree
-                )
+        val request = CreateTreeRequest(repository.owner.login, repository.name,
+            CreateTreeBodyRequest(
+                tree.nodes.map { CreateTreeTreeRequest(it.path, it.mode, it.type, it.sha, it.content) },
+                tree.baseTree
             )
-            GitHubApi(user.accessToken).createGitTree(request).map { CreateTreeResponseDataMapper.transform(it.body()) }
-        }
+        )
+        return GitHubApi(user.accessToken).createGitTree(request).map { CreateTreeResponseDataMapper.transform(it.body()) }
     }
 }

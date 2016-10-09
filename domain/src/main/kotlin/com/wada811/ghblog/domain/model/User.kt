@@ -98,26 +98,41 @@ class User(
     }
 
     val repositories: ObservableSynchronizedArrayList<Repository> by lazy {
+        LogWood.d("getRepositories")
         GHBlogContext.gitHubRepository.getRepositories(this)
-            .subscribeOn(Schedulers.newThread())
+            .subscribeOn(Schedulers.io())
             .subscribe({
                 repositories.add(it)
+                LogWood.v("getRepositories#onNext: ${it.fullName}")
             }, {
                 LogWood.e("getRepositories#onError: $it", it)
+            }, {
+                LogWood.v("getRepositories#onCompleted")
             })
         ObservableSynchronizedArrayList<Repository>()
     }
 
     var currentRepository: Repository? by PropertyChangedDelegate(null)
     val blogs: ObservableSynchronizedArrayList<Blog> by lazy {
+        LogWood.v("getBlogs")
         GHBlogContext.gitHubRepository.getBlogs(this)
-            .subscribeOn(Schedulers.newThread())
+            .subscribeOn(Schedulers.io())
             .subscribe({
                 blogs.add(it)
+                currentBlog = it
+                LogWood.v("getBlogs#onNext: $it")
             }, {
                 LogWood.e("getBlogs#onError: $it", it)
+            }, {
+                LogWood.v("getBlogs#onCompleted")
+                initialized = true
             })
         ObservableSynchronizedArrayList<Blog>()
     }
     var currentBlog: Blog? by PropertyChangedDelegate(null)
+    var initialized: Boolean  by PropertyChangedDelegate(false)
+    fun initialize() {
+        blogs
+    }
+
 }

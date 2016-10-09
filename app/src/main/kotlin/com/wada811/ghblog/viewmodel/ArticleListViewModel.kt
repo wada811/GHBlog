@@ -10,7 +10,7 @@ import com.wada811.rxviewmodel.RxViewModel
 import com.wada811.rxviewmodel.extensions.ToRxArrayList
 
 class ArticleListViewModel : RxViewModel() {
-    val repository = GHBlogContext.currentUser.currentRepository!!
+    val repository = GHBlogContext.currentUser.currentBlog!!.repository
 
     init {
         repository.loadContents("content/blog")

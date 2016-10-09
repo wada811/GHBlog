@@ -4,6 +4,7 @@
     <string name="authorized">Authorized!</string>
     <string name="back">Back</string>
     <string name="save">Save</string>
+    <string name="blog_url">Blog URL</string>
     <string name="new_article">New</string>
     <string name="save_article">Save Article</string>
     <string name="article_path">File Path</string>

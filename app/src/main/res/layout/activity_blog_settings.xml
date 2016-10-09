@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+        <variable
+            name="viewModel"
+            type="com.wada811.ghblog.viewmodel.BlogSettingsViewModel"
+            />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <android.support.v7.widget.CardView style="@style/AppTheme.CardViewToolbar_CardView">
+            <android.support.v7.widget.Toolbar style="@style/AppTheme.CardViewToolbar_Toolbar">
+                <LinearLayout style="@style/AppTheme.CardViewToolbar_LinearLayout">
+                    <ImageButton
+                        style="@style/AppTheme.CardViewToolbar_MenuButton"
+                        android:contentDescription="@string/back"
+                        android:src="@drawable/ic_arrow_back_black_24dp"
+                        app:click="@{viewModel.back}"
+                        />
+                    <TextView style="@style/AppTheme.CardViewToolbar_Title" />
+                    <ImageButton
+                        style="@style/AppTheme.CardViewToolbar_MenuButton"
+                        android:contentDescription="@string/save_tag"
+                        android:enabled="@{viewModel.save.canExecute}"
+                        android:src="@drawable/ic_check_black_24dp"
+                        app:click="@{viewModel.save}"
+                        />
+                </LinearLayout>
+            </android.support.v7.widget.Toolbar>
+        </android.support.v7.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/blog_url"
+                />
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:items="@{viewModel.repositoryViewModels}"
+                app:onItemSelected="@{viewModel.select}"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/blog_url"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textUri"
+                android:text="@={viewModel.url}"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

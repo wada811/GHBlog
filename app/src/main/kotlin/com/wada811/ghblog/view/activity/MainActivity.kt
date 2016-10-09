@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         RxMessenger.observe(OAuthAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
-        RxMessenger.observe(NextAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
+        RxMessenger.observe(SelectRepositoryAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
+        RxMessenger.observe(ShowArticleListAction::class.java).onBackpressureDrop().subscribe { it.call(this) }.addTo(subscriptions)
         MainActivityBindingAdapter(this, R.layout.activity_main, MainViewModel()).addTo(subscriptions)
     }
 
@@ -39,9 +40,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    class NextAction : Action1<Activity> {
+    class SelectRepositoryAction : Action1<Activity> {
         override fun call(activity: Activity) {
-            activity.startActivity(RepositoryListActivity.createIntent(activity))
+            activity.startActivity(BlogSettingsActivity.createIntent(activity))
+            activity.finish()
+        }
+    }
+
+    class ShowArticleListAction : Action1<Activity> {
+        override fun call(activity: Activity) {
+            activity.startActivity(ArticleListActivity.createIntent(activity))
             activity.finish()
         }
     }

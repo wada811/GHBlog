@@ -9,7 +9,6 @@
             />
     </data>
     <LinearLayout
-        style="@style/AppTheme.RecyclerView_Item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/repository_list_item_height"
         >

@@ -14,28 +14,44 @@ import rx.Observable
 class LocalGitHubDataSource(context: Context) : GitHubDataSource {
     private val database: OrmaDatabase = OrmaDatabase.builder(context).trace(true).build()
     override fun getRepositories(user: User): Observable<Repository> {
-        return database.selectFromRepositoryEntity().userEq(user.id)
+        return database.selectFromRepositoryEntity()
             .executeAsObservable()
-            .doOnNext { LogWood.v("LocalUserDataSource#getCurrentUser#onNext") }
-            .doOnError { LogWood.v("LocalUserDataSource#getCurrentUser#onError", it) }
-            .doOnCompleted { LogWood.v("LocalUserDataSource#getCurrentUser#onCompleted") }
+            .filter { it.user.id == user.id }
             .map { repositoryEntity: RepositoryEntity ->
                 LogWood.v("LocalUserDataSource#getCurrentUser#map")
                 RepositoryEntityDataMapper.fromEntity(repositoryEntity)
             }
     }
 
-    override fun saveRepository(repository: Repository) {
-        database.relationOfRepositoryEntity().upserter().executeAsObservable(RepositoryEntityDataMapper.toEntity(repository))
+    override fun saveRepository(repository: Repository): Observable<Boolean> {
+        LogWood.d("LocalGitHubDataSource.saveRepository")
+        return database.relationOfRepositoryEntity()
+            .upserter()
+            .executeAsObservable(RepositoryEntityDataMapper.toEntity(repository))
+            .map { !it.equals(-1) }
+            .toObservable()
+    }
+
+    override fun saveRepositories(repositories: MutableList<Repository>): Observable<Boolean> {
+        LogWood.d("LocalGitHubDataSource.saveRepositories")
+        return database.relationOfRepositoryEntity()
+            .upserter()
+            .executeAllAsObservable(repositories.map { RepositoryEntityDataMapper.toEntity(it) })
+            .map { !it.equals(-1) }
     }
 
     override fun getBlogs(user: User): Observable<Blog> {
-        return database.selectFromBlogEntity().userEq(user.id)
+        return database.selectFromBlogEntity()
             .executeAsObservable()
+//            .filter { it.repository.user.id == user.id }
             .map { BlogEntityDataMapper.fromEntity(it) }
     }
 
-    override fun saveBlog(blog: Blog) {
-        database.relationOfBlogEntity().upserter().executeAsObservable(BlogEntityDataMapper.toEntity(blog))
+    override fun saveBlog(blog: Blog): Observable<Boolean> {
+        return database.relationOfBlogEntity()
+            .upserter()
+            .executeAsObservable(BlogEntityDataMapper.toEntity(blog))
+            .map { !it.equals(-1) }
+            .toObservable()
     }
 }
