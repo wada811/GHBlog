@@ -10,21 +10,21 @@ import com.wada811.rxviewmodel.RxViewModel
 import com.wada811.rxviewmodel.extensions.ToRxArrayList
 
 class ArticleListViewModel : RxViewModel() {
-    val repository = GHBlogContext.currentUser.currentBlog!!.repository
+    val blog = GHBlogContext.currentUser.currentBlog!!
 
     init {
-        repository.loadContents("content/blog")
+        blog.loadArticles()
     }
 
-    val articleViewModelList = repository.repositoryContents.ToRxArrayList { ArticleListItemViewModel(it) }.asManaged()
+    val articleViewModelList = blog.articles.ToRxArrayList { ArticleListItemViewModel(it) }.asManaged()
     val edit = RxCommand({ position: Int ->
         LogWood.e("edit: " + articleViewModelList[position])
         val viewModel = articleViewModelList[position]
-        repository.currentArticle = Article(GHBlogContext.currentUser, repository, viewModel.repositoryContentInfo)
+        blog.currentArticle = viewModel.article
         RxMessenger.send(ArticleListActivity.EditAction())
     }).asManaged()
     var new = RxCommand<Unit>({
-        repository.currentArticle = Article(GHBlogContext.currentUser, repository)
+        blog.currentArticle = Article(blog)
         RxMessenger.send(ArticleListActivity.CreateAction())
     }).asManaged()
 

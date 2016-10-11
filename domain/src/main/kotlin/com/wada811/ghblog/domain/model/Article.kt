@@ -9,8 +9,7 @@ import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
 class Article(
-    val user: User,
-    val repository: Repository,
+    val blog: Blog,
     repositoryContent: RepositoryContent? = null,
     filePath: String = "",
     publishDateTime: ZonedDateTime = ZonedDateTime.now(),
@@ -62,7 +61,7 @@ class Article(
         if (repositoryContent != null) {
             repositoryContent!!.update(filePath, "Edit an article: $title", formatArticleContent())
         } else {
-            repository.createContent(filePath, "Write an article: $title", formatArticleContent())
+            blog.createArticle(filePath, "Write an article: $title", formatArticleContent())
         }
     }
 

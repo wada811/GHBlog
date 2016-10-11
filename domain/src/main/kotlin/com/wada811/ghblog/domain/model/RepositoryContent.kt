@@ -56,7 +56,7 @@ class RepositoryContent(
 
     fun loadContent() {
         GHBlogContext.gitHubRepository.getContent(user, repository, path)
-            .subscribeOn(Schedulers.newThread())
+            .subscribeOn(Schedulers.io())
             .subscribe {
                 this.name = it.name
                 this.path = it.path
@@ -83,7 +83,7 @@ class RepositoryContent(
         } else {
             GHBlogContext.gitHubRepository.renameContent(user, repository, commit)
         }
-        observable.subscribeOn(Schedulers.newThread())
+        observable.subscribeOn(Schedulers.io())
             .subscribe {
                 this.name = it.content!!.name
                 this.path = it.content!!.path
@@ -104,7 +104,7 @@ class RepositoryContent(
     fun delete(message: String, content: String) {
         val commit = GitCommit(path, message, content, sha)
         GHBlogContext.gitHubRepository.deleteContent(user, repository, commit)
-            .subscribeOn(Schedulers.newThread())
+            .subscribeOn(Schedulers.io())
             .subscribe {
                 this.name = it.content!!.name
                 this.path = it.content!!.path

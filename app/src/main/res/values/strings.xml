@@ -17,6 +17,6 @@
     <!-- Tools -->
     <string name="tools_repository_name">Repository name</string>
     <string name="tools_tag_name">Tag name</string>
-    <string name="tools_article_name">Article name</string>
+    <string name="tools_article_title">Article title</string>
     <string name="tools_article_body">Article body</string>
 </resources>

@@ -17,6 +17,6 @@
     <!-- Tools -->
     <string name="tools_repository_name">リポジトリ名</string>
     <string name="tools_tag_name">タグ名</string>
-    <string name="tools_article_name">記事名</string>
+    <string name="tools_article_title">記事タイトル</string>
     <string name="tools_article_body">記事本文</string>
 </resources>

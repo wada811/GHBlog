@@ -14,7 +14,7 @@ class ArticleTagEditViewModel : RxViewModel() {
     var back = RxCommand<Unit>({
         RxMessenger.send(ArticleTagEditActivity.BackAction())
     }).asManaged()
-    var article = GHBlogContext.currentUser.currentRepository!!.currentArticle!!
+    var article = GHBlogContext.currentUser.currentBlog!!.currentArticle!!
     val save = RxCommand<Unit>({
         LogWood.d("article.tags: ${article.tags.map { it }}")
         LogWood.d("tags: ${tags.map { "${it.tagName.value}: ${it.checked.value}" }}")

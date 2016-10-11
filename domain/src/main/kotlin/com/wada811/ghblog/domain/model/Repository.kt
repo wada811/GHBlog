@@ -1,12 +1,11 @@
 package com.wada811.ghblog.domain.model
 
 import com.wada811.ghblog.domain.GHBlogContext
-import com.wada811.logforest.LogWood
 import com.wada811.observablemodel.ObservableSynchronizedArrayList
 import com.wada811.observablemodel.events.property.INotifyPropertyChanged
 import com.wada811.observablemodel.events.property.PropertyChangedDelegate
 import org.threeten.bp.ZonedDateTime
-import rx.schedulers.Schedulers
+import rx.Observable
 
 class Repository(
     val user: User,
@@ -151,34 +150,14 @@ class Repository(
     var permissions: Permission by PropertyChangedDelegate(permissions)
 
     val repositoryContents: ObservableSynchronizedArrayList<RepositoryContent> = ObservableSynchronizedArrayList()
-    var currentArticle: Article? by PropertyChangedDelegate(null)
 
-    fun loadContents(path: String) {
-        GHBlogContext.gitHubRepository.getContents(user, this, path)
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                LogWood.v("GHBlogContext.gitHubRepository.getContents(user, this, path)#onNext: $it")
-                repositoryContents.clear()
-                repositoryContents.addAll(it.map { RepositoryContent(it) })
-            }, {
-                LogWood.e("GHBlogContext.gitHubRepository.getContents(user, this, path)#onError: $it", it)
-            }, {
-                LogWood.v("GHBlogContext.gitHubRepository.getContents(user, this, path)#onCompleted")
-            })
+    fun loadContents(path: String): Observable<List<RepositoryContentInfo>> {
+        return GHBlogContext.gitHubRepository.getContents(user, this, path)
     }
 
-    fun createContent(path: String, message: String, content: String) {
+    fun createContent(path: String, message: String, content: String): Observable<GitHubCommit> {
         val commit = GitCommit(path, message, content)
-        GHBlogContext.gitHubRepository.createContent(user, this, commit)
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                LogWood.v("GHBlogContext.gitHubRepository.createContent(user, this, commit)#onNext: $it")
-                repositoryContents.add(RepositoryContent(it.content!!))
-            }, {
-                LogWood.e("GHBlogContext.gitHubRepository.createContent(user, this, commit)#onError: $it", it)
-            }, {
-                LogWood.v("GHBlogContext.gitHubRepository.createContent(user, this, commit)#onCompleted")
-            })
+        return GHBlogContext.gitHubRepository.createContent(user, this, commit)
     }
 
     fun getTree() = GHBlogContext.gitHubRepository.getTree(user, this)

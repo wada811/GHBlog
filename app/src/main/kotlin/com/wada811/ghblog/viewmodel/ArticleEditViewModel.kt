@@ -12,7 +12,7 @@ class ArticleEditViewModel() : RxViewModel() {
     var back = RxCommand<Unit>({
         RxMessenger.send(ArticleEditActivity.BackAction())
     }).asManaged()
-    var article = GHBlogContext.currentUser.currentRepository!!.currentArticle!!
+    var article = GHBlogContext.currentUser.currentBlog!!.currentArticle!!
     var path = article.ObserveProperty("filePath", { it.filePath }).toRxProperty(article.filePath).asManaged()
     val isDraft = article.ObserveProperty("isDraft", { it.isDraft }).toRxProperty(article.isDraft).asManaged()
     var title = article.ObserveProperty("title", { it.title }).toRxProperty(article.title).asManaged()
