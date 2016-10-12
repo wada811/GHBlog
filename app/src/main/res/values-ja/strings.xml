@@ -18,5 +18,5 @@
     <string name="tools_repository_name">リポジトリ名</string>
     <string name="tools_tag_name">タグ名</string>
     <string name="tools_article_title">記事タイトル</string>
-    <string name="tools_article_body">記事本文</string>
+    <string name="tools_article_publish_date">公開日</string>
 </resources>

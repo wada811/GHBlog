@@ -18,5 +18,5 @@
     <string name="tools_repository_name">Repository name</string>
     <string name="tools_tag_name">Tag name</string>
     <string name="tools_article_title">Article title</string>
-    <string name="tools_article_body">Article body</string>
+    <string name="tools_article_publish_date">Article PublishDate</string>
 </resources>
