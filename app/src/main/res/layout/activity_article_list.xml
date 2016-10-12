@@ -20,7 +20,10 @@
             <android.support.v7.widget.CardView style="@style/AppTheme.CardViewToolbar_CardView">
                 <android.support.v7.widget.Toolbar style="@style/AppTheme.CardViewToolbar_Toolbar">
                     <LinearLayout style="@style/AppTheme.CardViewToolbar_LinearLayout">
-                        <TextView style="@style/AppTheme.CardViewToolbar_Title" />
+                        <TextView
+                            style="@style/AppTheme.CardViewToolbar_Title"
+                            android:text="@{viewModel.blogTitle}"
+                            />
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
             </android.support.v7.widget.CardView>

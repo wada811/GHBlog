@@ -7,7 +7,9 @@ import com.wada811.logforest.LogWood
 import com.wada811.rxviewmodel.RxCommand
 import com.wada811.rxviewmodel.RxMessenger
 import com.wada811.rxviewmodel.RxViewModel
+import com.wada811.rxviewmodel.extensions.ObserveProperty
 import com.wada811.rxviewmodel.extensions.ToRxArrayList
+import com.wada811.rxviewmodel.extensions.toRxProperty
 
 class ArticleListViewModel : RxViewModel() {
     val blog = GHBlogContext.currentUser.currentBlog!!
@@ -16,6 +18,7 @@ class ArticleListViewModel : RxViewModel() {
         blog.loadArticles()
     }
 
+    val blogTitle = blog.ObserveProperty("title", { it.title }).toRxProperty(blog.title).asManaged()
     val articleViewModelList = blog.articles.ToRxArrayList { ArticleListItemViewModel(it) }.asManaged()
     val edit = RxCommand({ position: Int ->
         LogWood.e("edit: " + articleViewModelList[position])

@@ -10,8 +10,10 @@ import rx.schedulers.Schedulers
 class Blog(
     val user: User,
     val repository: Repository,
+    title: String,
     url: String
 ) : INotifyPropertyChanged {
+    var title: String by PropertyChangedDelegate(title)
     var url: String by PropertyChangedDelegate(url)
     val articles: ObservableSynchronizedArrayList<Article> = ObservableSynchronizedArrayList()
     var currentArticle: Article? by PropertyChangedDelegate(null)

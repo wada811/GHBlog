@@ -8,5 +8,6 @@ import com.github.gfx.android.orma.annotation.Table
 @Table("blog")
 data class BlogEntity(
     @Setter("repository") @PrimaryKey @Column(indexed = true) val repository: RepositoryEntity,
+    @Setter("title") @Column val title: String,
     @Setter("url") @Column val url: String
 )
