@@ -11,10 +11,10 @@ import com.wada811.rxviewmodel.RxViewModel
 import com.wada811.rxviewmodel.extensions.ToRxArrayList
 
 class ArticleTagEditViewModel : RxViewModel() {
-    var back = RxCommand<Unit>({
+    val back = RxCommand<Unit>({
         RxMessenger.send(ArticleTagEditActivity.BackAction())
     }).asManaged()
-    var article = GHBlogContext.currentUser.currentBlog!!.currentArticle!!
+    val article = GHBlogContext.currentUser.currentBlog!!.currentArticle!!
     val save = RxCommand<Unit>({
         LogWood.d("article.tags: ${article.tags.map { it }}")
         LogWood.d("tags: ${tags.map { "${it.tagName.value}: ${it.checked.value}" }}")

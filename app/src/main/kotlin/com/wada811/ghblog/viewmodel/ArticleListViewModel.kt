@@ -26,7 +26,7 @@ class ArticleListViewModel : RxViewModel() {
         blog.currentArticle = viewModel.article
         RxMessenger.send(ArticleListActivity.EditAction())
     }).asManaged()
-    var new = RxCommand<Unit>({
+    val new = RxCommand<Unit>({
         blog.currentArticle = Article(blog)
         RxMessenger.send(ArticleListActivity.CreateAction())
     }).asManaged()

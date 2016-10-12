@@ -9,21 +9,21 @@ import com.wada811.rxviewmodel.extensions.ObserveProperty
 import com.wada811.rxviewmodel.extensions.toRxProperty
 
 class ArticleEditViewModel() : RxViewModel() {
-    var back = RxCommand<Unit>({
+    val back = RxCommand<Unit>({
         RxMessenger.send(ArticleEditActivity.BackAction())
     }).asManaged()
-    var article = GHBlogContext.currentUser.currentBlog!!.currentArticle!!
-    var path = article.ObserveProperty("filePath", { it.filePath }).toRxProperty(article.filePath).asManaged()
+    val article = GHBlogContext.currentUser.currentBlog!!.currentArticle!!
+    val path = article.ObserveProperty("filePath", { it.filePath }).toRxProperty(article.filePath).asManaged()
     val isDraft = article.ObserveProperty("isDraft", { it.isDraft }).toRxProperty(article.isDraft).asManaged()
-    var title = article.ObserveProperty("title", { it.title }).toRxProperty(article.title).asManaged()
-    var body = article.ObserveProperty("body", { it.body }).toRxProperty(article.body).asManaged()
-    var preview = RxCommand<Unit>({
+    val title = article.ObserveProperty("title", { it.title }).toRxProperty(article.title).asManaged()
+    val body = article.ObserveProperty("body", { it.body }).toRxProperty(article.body).asManaged()
+    val preview = RxCommand<Unit>({
         RxMessenger.send(ArticleEditActivity.PreviewAction())
     }).asManaged()
-    var editTag = RxCommand<Unit>({
+    val editTag = RxCommand<Unit>({
         RxMessenger.send(ArticleEditActivity.TagEditAction())
     }).asManaged()
-    var save = RxCommand<Unit>({
+    val save = RxCommand<Unit>({
         article.save(path.value!!, isDraft.value!!, title.value!!, body.value!!)
         RxMessenger.send(ArticleEditActivity.SaveAction())
     }).asManaged()
