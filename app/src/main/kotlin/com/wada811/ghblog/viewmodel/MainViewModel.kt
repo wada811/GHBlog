@@ -32,7 +32,6 @@ class MainViewModel : RxViewModel() {
     private fun goNext() {
         LogWood.d("goNext")
         GHBlogContext.currentUser.ObserveProperty("initialized", { it.initialized })
-            .filter { it }
             .subscribe({
                 LogWood.d("initialized: GHBlogContext.currentUser.blogs: ${GHBlogContext.currentUser.blogs.size}")
                 if (GHBlogContext.currentUser.blogs.isEmpty()) {
