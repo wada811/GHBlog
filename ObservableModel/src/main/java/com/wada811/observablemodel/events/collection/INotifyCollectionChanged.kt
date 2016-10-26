@@ -12,7 +12,11 @@ interface INotifyCollectionChanged {
 
     fun NotifyAdd(index: Int, item: Any?) = CollectionChanged(this, CollectionChangedEventArgs.Add(index, item))
 
+    fun NotifyAddRange(startIndex: Int, items: Collection<Any?>) = CollectionChanged(this, CollectionChangedEventArgs.AddRange(startIndex, items))
+
     fun NotifyRemove(index: Int, item: Any?) = CollectionChanged(this, CollectionChangedEventArgs.Remove(index, item))
+
+    fun NotifyRemoveRange(items: Collection<Any?>) = CollectionChanged(this, CollectionChangedEventArgs.RemoveRange(items))
 
     fun NotifyReplace(index: Int, oldItem: Any?, newItem: Any?) = CollectionChanged(this, CollectionChangedEventArgs.Replace(index, oldItem, newItem))
 

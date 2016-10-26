@@ -43,7 +43,6 @@ class OAuthViewModel(authorizedUrl: String?) : RxViewModel() {
                                 loading.value = false
                                 GHBlogContext.currentUser = it
                                 GHBlogContext.authorized = true
-                                GHBlogContext.currentUser.initialize()
                                 RxMessenger.send(OAuthActivity.CompleteAction())
                             }
                     }

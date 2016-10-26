@@ -72,7 +72,7 @@ class ObservableSynchronizedArrayList<T>(source: Collection<T>) : IObservableSyn
             if (result) {
                 NotifyPropertyChanged(PropertyChangedEventArg.Count)
                 NotifyPropertyChanged(PropertyChangedEventArg.Item)
-                elements.forEachIndexed { index, element -> NotifyAdd(size + index, element) }
+                NotifyAddRange(size, elements)
             }
         })
         return result
@@ -86,7 +86,7 @@ class ObservableSynchronizedArrayList<T>(source: Collection<T>) : IObservableSyn
             if (result) {
                 NotifyPropertyChanged(PropertyChangedEventArg.Count)
                 NotifyPropertyChanged(PropertyChangedEventArg.Item)
-                elements.forEachIndexed { i, element -> NotifyAdd(index + i, element) }
+                NotifyAddRange(index, elements)
             }
         })
         return result
@@ -156,7 +156,7 @@ class ObservableSynchronizedArrayList<T>(source: Collection<T>) : IObservableSyn
             if (result) {
                 NotifyPropertyChanged(PropertyChangedEventArg.Count)
                 NotifyPropertyChanged(PropertyChangedEventArg.Item)
-                pairs.forEach { pair -> NotifyRemove(pair.first, pair.second) }
+                NotifyRemoveRange(elements)
             }
         })
         return result
@@ -188,7 +188,7 @@ class ObservableSynchronizedArrayList<T>(source: Collection<T>) : IObservableSyn
             if (result) {
                 NotifyPropertyChanged(PropertyChangedEventArg.Count)
                 NotifyPropertyChanged(PropertyChangedEventArg.Item)
-                pairs.forEach { pair -> NotifyRemove(pair.first, pair.second) }
+                NotifyRemoveRange(elements)
             }
         })
         return true

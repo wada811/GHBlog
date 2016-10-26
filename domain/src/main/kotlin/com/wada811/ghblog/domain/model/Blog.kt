@@ -15,7 +15,10 @@ class Blog(
 ) : INotifyPropertyChanged {
     var title: String by PropertyChangedDelegate(title)
     var url: String by PropertyChangedDelegate(url)
-    val articles: ObservableSynchronizedArrayList<Article> = ObservableSynchronizedArrayList()
+    val articles: ObservableSynchronizedArrayList<Article> by lazy {
+        loadArticles()
+        ObservableSynchronizedArrayList<Article>()
+    }
     var currentArticle: Article? by PropertyChangedDelegate(null)
 
     fun save() {
@@ -31,12 +34,11 @@ class Blog(
     }
 
     fun loadArticles() {
-        repository.loadContents("content/blog")
+        GHBlogContext.gitHubRepository.getArticles(user, this)
             .subscribeOn(Schedulers.io())
             .subscribe({
                 LogWood.v("loadArticles#onNext: $it")
-                articles.clear()
-                articles.addAll(it.map { Article(this, RepositoryContent(it)) })
+                articles.add(it)
             }, {
                 LogWood.e("loadArticles#onError: $it", it)
             }, {
@@ -49,7 +51,7 @@ class Blog(
             .subscribeOn(Schedulers.io())
             .subscribe({
                 LogWood.v("createArticle#onNext: $it")
-                articles.add(Article(this, RepositoryContent((it.content!!))))
+                articles.add(Article(this, it.content!!.asRepositoryContent()))
             }, {
                 LogWood.e("createArticle#onError: $it", it)
             }, {

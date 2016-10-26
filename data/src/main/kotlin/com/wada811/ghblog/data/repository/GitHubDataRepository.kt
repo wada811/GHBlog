@@ -57,7 +57,16 @@ class GitHubDataRepository(private val localDataSource: GitHubDataSource, privat
         }
     }
 
-    override fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
+    override fun getArticles(user: User, blog: Blog): Observable<Article> {
+        return Observable.defer {
+            RemoteGitHubDataSource().getContents(user, blog.repository, "content/blog")
+                .flatMap { Observable.from(it) }
+                .flatMap { it.loadContent() }
+                .map { Article(blog, it) }
+        }
+    }
+
+    override fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContent>> {
         return Observable.defer {
             RemoteGitHubDataSource().getContents(user, repository, path)
         }

@@ -48,7 +48,7 @@ class RemoteGitHubDataSource : GitHubDataSource {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContentInfo>> {
+    fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContent>> {
         val request = GetContentsRequest(repository.owner.login, repository.name, path)
         return GitHubApi(user.accessToken).getContents(request)
             .map { it.body().map { GetContentsResponseDataMapper.transform(user, repository, it) } }

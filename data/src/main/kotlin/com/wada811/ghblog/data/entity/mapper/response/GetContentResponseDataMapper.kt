@@ -4,7 +4,6 @@ import com.wada811.ghblog.data.entity.response.github.repos.contents.GetContentR
 import com.wada811.ghblog.data.entity.response.github.repos.contents.GetContentResponse.ContentLinkResponse
 import com.wada811.ghblog.domain.model.Repository
 import com.wada811.ghblog.domain.model.RepositoryContent
-import com.wada811.ghblog.domain.model.RepositoryContentInfo
 import com.wada811.ghblog.domain.model.User
 
 object GetContentResponseDataMapper {
@@ -26,7 +25,7 @@ object GetContentResponseDataMapper {
     )
 
     object ContentLinkResponseDataMapper {
-        fun transform(response: ContentLinkResponse) = RepositoryContentInfo.ContentLink(
+        fun transform(response: ContentLinkResponse) = RepositoryContent.ContentLink(
             response.self,
             response.git,
             response.html

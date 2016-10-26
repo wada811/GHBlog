@@ -3,7 +3,7 @@ package com.wada811.ghblog.domain.model
 import com.wada811.observablemodel.events.property.INotifyPropertyChanged
 import com.wada811.observablemodel.events.property.PropertyChangedDelegate
 
-open class RepositoryContentInfo(
+class RepositoryContentInfo(
     val user: User,
     val repository: Repository,
     name: String,
@@ -37,4 +37,19 @@ open class RepositoryContentInfo(
         var git: String by PropertyChangedDelegate(git)
         var html: String by PropertyChangedDelegate(html)
     }
+
+    fun asRepositoryContent() = RepositoryContent(
+        user,
+        repository,
+        name,
+        path,
+        sha,
+        size,
+        url,
+        htmlUrl,
+        gitUrl,
+        downloadUrl,
+        type,
+        RepositoryContent.ContentLink(contentLink.self, contentLink.git, contentLink.html)
+    )
 }

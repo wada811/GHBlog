@@ -115,7 +115,7 @@ class GitHubApiTest {
             repository.loadContents("content/blog")
             repository.repositoryContents.ObserveCollection().subscribe {
                 val content = repository.repositoryContents.first { it.name == "test.md" }
-                content.delete("delete test message", content.content)
+                content.delete("delete test message", content.content!!)
                 content.ObserveProperty("sha", { it.sha }).toRxProperty(content.sha).asObservable().subscribe {
                     assertNotNull(it)
                 }

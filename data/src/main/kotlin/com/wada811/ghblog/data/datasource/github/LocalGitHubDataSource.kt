@@ -7,6 +7,7 @@ import com.wada811.ghblog.data.entity.mapper.data.BlogEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.data.RepositoryEntityDataMapper
 import com.wada811.ghblog.domain.model.Blog
 import com.wada811.ghblog.domain.model.Repository
+import com.wada811.ghblog.domain.model.RepositoryContent
 import com.wada811.ghblog.domain.model.User
 import com.wada811.logforest.LogWood
 import rx.Observable

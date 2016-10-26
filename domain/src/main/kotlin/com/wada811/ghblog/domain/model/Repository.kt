@@ -151,7 +151,7 @@ class Repository(
 
     val repositoryContents: ObservableSynchronizedArrayList<RepositoryContent> = ObservableSynchronizedArrayList()
 
-    fun loadContents(path: String): Observable<List<RepositoryContentInfo>> {
+    fun loadContents(path: String): Observable<List<RepositoryContent>> {
         return GHBlogContext.gitHubRepository.getContents(user, this, path)
     }
 

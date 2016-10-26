@@ -77,8 +77,8 @@ $body"""
 
     companion object {
 
-        private fun parsePublishDateTime(content: String): ZonedDateTime {
-            if (content == "") {
+        private fun parsePublishDateTime(content: String?): ZonedDateTime {
+            if (content == null) {
                 return ZonedDateTime.now()
             }
             val contents = content.split("+++")
@@ -89,8 +89,8 @@ $body"""
             )
         }
 
-        private fun parseIsDraft(content: String): Boolean {
-            if (content == "") {
+        private fun parseIsDraft(content: String?): Boolean {
+            if (content == null) {
                 return false
             }
             val contents = content.split("+++")
@@ -98,8 +98,8 @@ $body"""
             return Regex("""draft = (.+)""").find(metaInfo.first { it.startsWith("draft") })!!.groupValues.last().toBoolean()
         }
 
-        private fun parseTitle(content: String): String {
-            if (content == "") {
+        private fun parseTitle(content: String?): String {
+            if (content == null) {
                 return ""
             }
             val contents = content.split("+++")
@@ -107,8 +107,8 @@ $body"""
             return Regex("""title = "(.+)"""").find(metaInfo.first { it.startsWith("title") })!!.groupValues.last()
         }
 
-        private fun parseTags(content: String): ObservableSynchronizedArrayList<String> {
-            if (content == "") {
+        private fun parseTags(content: String?): ObservableSynchronizedArrayList<String> {
+            if (content == null) {
                 return ObservableSynchronizedArrayList()
             }
             val contents = content.split("+++")
@@ -119,8 +119,8 @@ $body"""
             return ObservableSynchronizedArrayList(tags)
         }
 
-        private fun parseBody(content: String): String {
-            if (content == "") {
+        private fun parseBody(content: String?): String {
+            if (content == null) {
                 return ""
             }
             val contents = content.split("+++")

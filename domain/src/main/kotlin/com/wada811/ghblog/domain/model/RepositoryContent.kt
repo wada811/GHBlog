@@ -1,14 +1,15 @@
 package com.wada811.ghblog.domain.model
 
 import com.wada811.ghblog.domain.GHBlogContext
-import com.wada811.ghblog.domain.util.Base64
+import com.wada811.ghblog.domain.util.decodeBase64
 import com.wada811.observablemodel.events.property.INotifyPropertyChanged
 import com.wada811.observablemodel.events.property.PropertyChangedDelegate
+import rx.Observable
 import rx.schedulers.Schedulers
 
 class RepositoryContent(
-    user: User,
-    repository: Repository,
+    val user: User,
+    val repository: Repository,
     name: String,
     path: String,
     sha: String,
@@ -19,61 +20,58 @@ class RepositoryContent(
     downloadUrl: String,
     type: String,
     contentLink: ContentLink,
-    encoding: String = "",
-    encodedContent: String = ""
-) : RepositoryContentInfo(
-    user,
-    repository,
-    name,
-    path,
-    sha,
-    size,
-    url,
-    htmlUrl,
-    gitUrl,
-    downloadUrl,
-    type,
-    contentLink
-), INotifyPropertyChanged {
-    var encoding: String by PropertyChangedDelegate(encoding)
-    var encodedContent: String by PropertyChangedDelegate(encodedContent)
-    var content: String by PropertyChangedDelegate(String(Base64.decode(encodedContent, Base64.NO_WRAP)))
+    encoding: String? = null,
+    encodedContent: String? = null
+) : INotifyPropertyChanged {
+    var name: String by PropertyChangedDelegate(name)
+    var path: String  by PropertyChangedDelegate(path)
+    var sha: String  by PropertyChangedDelegate(sha)
+    var size: Int  by PropertyChangedDelegate(size)
+    var url: String  by PropertyChangedDelegate(url)
+    var htmlUrl: String  by PropertyChangedDelegate(htmlUrl)
+    var gitUrl: String  by PropertyChangedDelegate(gitUrl)
+    var downloadUrl: String  by PropertyChangedDelegate(downloadUrl)
+    var type: String by PropertyChangedDelegate(type)
+    var contentLink: ContentLink by PropertyChangedDelegate(contentLink)
+    var isLoaded: Boolean by PropertyChangedDelegate(false)
+    var encoding: String? by PropertyChangedDelegate(encoding)
+    var encodedContent: String? by PropertyChangedDelegate(encodedContent)
+    var content: String? by PropertyChangedDelegate(encodedContent?.decodeBase64())
 
-    constructor(repositoryContentInfo: RepositoryContentInfo) : this(
-        repositoryContentInfo.user,
-        repositoryContentInfo.repository,
-        repositoryContentInfo.name,
-        repositoryContentInfo.path,
-        repositoryContentInfo.sha,
-        repositoryContentInfo.size,
-        repositoryContentInfo.url,
-        repositoryContentInfo.htmlUrl,
-        repositoryContentInfo.gitUrl,
-        repositoryContentInfo.downloadUrl,
-        repositoryContentInfo.type,
-        repositoryContentInfo.contentLink
-    )
+    class ContentLink(
+        self: String,
+        git: String,
+        html: String
+    ) : INotifyPropertyChanged {
+        var self: String by PropertyChangedDelegate(self)
+        var git: String by PropertyChangedDelegate(git)
+        var html: String by PropertyChangedDelegate(html)
+    }
 
-    fun loadContent() {
-        GHBlogContext.gitHubRepository.getContent(user, repository, path)
-            .subscribeOn(Schedulers.io())
-            .subscribe {
-                this.name = it.name
-                this.path = it.path
-                this.sha = it.sha
-                this.size = it.size
-                this.url = it.url
-                this.htmlUrl = it.htmlUrl
-                this.gitUrl = it.gitUrl
-                this.downloadUrl = it.downloadUrl
-                this.type = it.type
-                this.contentLink.self = it.contentLink.self
-                this.contentLink.git = it.contentLink.git
-                this.contentLink.html = it.contentLink.html
-                this.encoding = it.encoding
-                this.encodedContent = it.encodedContent
-                this.content = it.content
-            }
+    fun loadContent(): Observable<RepositoryContent> {
+        if (isLoaded) {
+            return Observable.just(this)
+        } else {
+            return GHBlogContext.gitHubRepository.getContent(user, repository, path)
+                .subscribeOn(Schedulers.io())
+                .doOnNext {
+                    this.name = it.name
+                    this.path = it.path
+                    this.sha = it.sha
+                    this.size = it.size
+                    this.url = it.url
+                    this.htmlUrl = it.htmlUrl
+                    this.gitUrl = it.gitUrl
+                    this.downloadUrl = it.downloadUrl
+                    this.type = it.type
+                    this.contentLink.self = it.contentLink.self
+                    this.contentLink.git = it.contentLink.git
+                    this.contentLink.html = it.contentLink.html
+                    this.encoding = it.encoding
+                    this.encodedContent = it.encodedContent
+                    this.content = it.content
+                }
+        }
     }
 
     fun update(newPath: String, message: String, content: String) {

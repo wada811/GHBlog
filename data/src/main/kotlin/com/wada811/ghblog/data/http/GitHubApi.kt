@@ -33,10 +33,10 @@ class GitHubApi(var accessToken: String) {
                         .newBuilder()
                         .addHeader("Authorization", "token $accessToken")
                         .build()
-                    LogWood.i("URL: ${request.url().toString()}")
+                    LogWood.v("URL: ${request.url().toString()}")
                     val response = chain.proceed(request)
                     val responseBodyText = response.body().string()
-                    LogWood.i("response:  $responseBodyText")
+                    LogWood.v("response:  $responseBodyText")
                     return@addInterceptor response.newBuilder().body(ResponseBody.create(response.body().contentType(), responseBodyText)).build()
                 }
                 .build()
