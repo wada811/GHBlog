@@ -28,10 +28,10 @@ class BlogSettingsViewModel : RxViewModel() {
     val save: RxCommand<Unit>
         = selectedRepository.asObservable().map { it != null }
         .toRxCommand<Unit>({
-            GHBlogContext.currentUser.currentRepository = selectedRepository.value!!
+            val repository = selectedRepository.value!!
             LogWood.d("GHBlogContext.currentUser.blogs: ${GHBlogContext.currentUser.blogs.size}")
-            val blogTitle = selectedRepository.value!!.description ?: selectedRepository.value!!.fullName
-            val blog = Blog(GHBlogContext.currentUser, selectedRepository.value!!, blogTitle, url.value!!)
+            val blogTitle = repository.description ?: repository.fullName
+            val blog = Blog(GHBlogContext.currentUser, repository, blogTitle, url.value!!)
             blog.save()
             GHBlogContext.currentUser.blogs.add(blog)
             GHBlogContext.currentUser.currentBlog = blog

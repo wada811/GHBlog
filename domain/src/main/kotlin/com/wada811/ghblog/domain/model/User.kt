@@ -112,7 +112,6 @@ class User(
         ObservableSynchronizedArrayList<Repository>()
     }
 
-    var currentRepository: Repository? by PropertyChangedDelegate(null)
     val blogs: ObservableSynchronizedArrayList<Blog> by lazy {
         LogWood.v("getBlogs")
         GHBlogContext.gitHubRepository.getBlogs(this)

@@ -57,7 +57,6 @@ class GitHubApiTest {
                 LogWood.d("repository.name: ${repository.name}")
                 repository.name.equals("blogtest")
             }
-            GHBlogContext.currentUser.currentRepository = repository
             repository.loadContents("content/blog")
             repository.repositoryContents.ObserveCollection().subscribe {
                 assertNotNull(it)
@@ -70,7 +69,6 @@ class GitHubApiTest {
     fun getContent() {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
-            GHBlogContext.currentUser.currentRepository = repository
             repository.loadContents("content/blog")
             repository.repositoryContents.ObserveCollection().subscribe {
                 val repositoryContent = repository.repositoryContents.first()
@@ -86,7 +84,6 @@ class GitHubApiTest {
     fun createContent() {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
-            GHBlogContext.currentUser.currentRepository = repository
             repository.createContent("content/blog/test.md", "create test message", "create content body")
         }
     }
@@ -95,7 +92,6 @@ class GitHubApiTest {
     fun updateContent() {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
-            GHBlogContext.currentUser.currentRepository = repository
             repository.loadContents("content/blog")
             repository.repositoryContents.ObserveCollection().subscribe {
                 val content = repository.repositoryContents.first { it.name == "test.md" }
@@ -111,7 +107,6 @@ class GitHubApiTest {
     fun deleteContent() {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
-            GHBlogContext.currentUser.currentRepository = repository
             repository.loadContents("content/blog")
             repository.repositoryContents.ObserveCollection().subscribe {
                 val content = repository.repositoryContents.first { it.name == "test.md" }
@@ -127,7 +122,6 @@ class GitHubApiTest {
     fun renameContent() {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
-            GHBlogContext.currentUser.currentRepository = repository
             repository.loadContents("content/blog")
             repository.repositoryContents.ObserveCollection().subscribe {
                 val content = repository.repositoryContents.first { it.name == "rename.md" || it.name == "renamed.md" }
@@ -146,7 +140,6 @@ class GitHubApiTest {
     fun getTree() {
         GHBlogContext.currentUser.repositories.ObserveCollection().subscribe {
             val repository = GHBlogContext.currentUser.repositories.first { it.name.equals("blogtest") }
-            GHBlogContext.currentUser.currentRepository = repository
             repository.getTree().subscribe {
                 assertNotNull(it)
             }
