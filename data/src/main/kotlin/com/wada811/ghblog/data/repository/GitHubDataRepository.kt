@@ -2,10 +2,13 @@ package com.wada811.ghblog.data.repository
 
 import com.wada811.ghblog.data.datasource.github.GitHubDataSource
 import com.wada811.ghblog.data.datasource.github.RemoteGitHubDataSource
+import com.wada811.ghblog.data.entity.data.CommitEntity
 import com.wada811.ghblog.domain.model.*
 import com.wada811.ghblog.domain.repository.GitHubRepository
 import com.wada811.logforest.LogWood
 import com.wada811.observablemodel.ObservableSynchronizedArrayList
+import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import rx.Observable
 import rx.schedulers.Schedulers
 
@@ -59,10 +62,27 @@ class GitHubDataRepository(private val localDataSource: GitHubDataSource, privat
 
     override fun getArticles(user: User, blog: Blog): Observable<Article> {
         return Observable.defer {
-            RemoteGitHubDataSource().getContents(user, blog.repository, "content/blog")
-                .flatMap { Observable.from(it) }
-                .flatMap { it.loadContent() }
-                .map { Article(blog, it) }
+            val articles = ObservableSynchronizedArrayList<Article>()
+            remoteDataSource.getArticles(blog)
+                .doOnNext { articles.add(it) }
+                .doOnCompleted { localDataSource.saveArticles(articles) }
+                .onErrorResumeNext { localDataSource.getArticles(blog) }
+        }
+    }
+
+    override fun saveArticle(article: Article): Observable<Boolean> {
+        return Observable.defer {
+            remoteDataSource.saveArticle(article)
+                .doOnNext {
+                    if (it) {
+                        localDataSource.saveArticle(article)
+                    } else {
+                        val created = ZonedDateTime.now()
+                        val message = created.format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
+                        localDataSource.saveCommit(CommitEntity(article.filePath, message, article.formatArticleContent(), created))
+                    }
+                }
+            localDataSource.saveArticle(article)
         }
     }
 

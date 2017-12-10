@@ -1,5 +1,6 @@
 package com.wada811.ghblog.domain.model
 
+import com.wada811.ghblog.domain.GHBlogContext
 import com.wada811.logforest.LogWood
 import com.wada811.observablemodel.ObservableSynchronizedArrayList
 import com.wada811.observablemodel.events.property.INotifyPropertyChanged
@@ -62,6 +63,10 @@ class Article(
             repositoryContent!!.update(filePath, "Edit an article: $title", formatArticleContent())
         } else {
             blog.createArticle(filePath, "Write an article: $title", formatArticleContent())
+            GHBlogContext.gitHubRepository.saveArticle(this)
+                .subscribe({
+                    blog.articles.add(this)
+                })
         }
     }
 

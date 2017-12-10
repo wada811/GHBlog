@@ -25,7 +25,6 @@ class RxCommand<in T>(action: (T) -> Unit, canExecuteSource: Observable<Boolean>
     fun execute(parameter: T) = trigger.onNext(parameter)
 
     override fun isUnsubscribed(): Boolean = subscriptions.isUnsubscribed
-
     override fun unsubscribe() {
         if (isUnsubscribed) {
             trigger.onCompleted()

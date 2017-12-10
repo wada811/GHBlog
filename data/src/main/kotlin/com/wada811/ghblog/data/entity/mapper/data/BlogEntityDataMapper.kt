@@ -5,6 +5,7 @@ import com.wada811.ghblog.domain.model.Blog
 
 object BlogEntityDataMapper : EntityDataMapper<BlogEntity, Blog> {
     override fun toEntity(domain: Blog): BlogEntity = BlogEntity(
+        domain.repository.id,
         RepositoryEntityDataMapper.toEntity(domain.repository),
         domain.title,
         domain.url

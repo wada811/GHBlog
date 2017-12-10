@@ -9,6 +9,7 @@ interface GitHubRepository {
     fun getBlogs(user: User): Observable<Blog>
     fun saveBlog(blog: Blog): Observable<Boolean>
     fun getArticles(user: User, blog: Blog): Observable<Article>
+    fun saveArticle(article: Article): Observable<Boolean>
     fun getContents(user: User, repository: Repository, path: String): Observable<List<RepositoryContent>>
     fun getContent(user: User, repository: Repository, path: String): Observable<RepositoryContent>
     fun createContent(user: User, repository: Repository, commit: GitCommit): Observable<GitHubCommit>

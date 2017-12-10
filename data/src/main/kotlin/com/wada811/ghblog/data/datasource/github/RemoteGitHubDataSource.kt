@@ -1,5 +1,6 @@
 package com.wada811.ghblog.data.datasource.github
 
+import com.wada811.ghblog.data.entity.data.CommitEntity
 import com.wada811.ghblog.data.entity.mapper.response.*
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest
 import com.wada811.ghblog.data.entity.request.github.git.trees.CreateTreeRequest.CreateTreeBodyRequest
@@ -45,6 +46,27 @@ class RemoteGitHubDataSource : GitHubDataSource {
     }
 
     override fun saveBlog(blog: Blog): Observable<Boolean> {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getArticles(blog: Blog): Observable<Article> {
+        val request = GetContentsRequest(blog.repository.owner.login, blog.repository.name, "content/blog")
+        return GitHubApi(blog.user.accessToken).getContents(request)
+            .map { it.body().map { GetContentsResponseDataMapper.transform(blog.user, blog.repository, it) } }
+            .flatMap { Observable.from(it) }
+            .flatMap { it.loadContent() }
+            .map { Article(blog, it) }
+    }
+
+    override fun saveArticle(article: Article): Observable<Boolean> {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun saveArticles(articles: MutableList<Article>): Observable<Boolean> {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun saveCommit(commit: CommitEntity): Observable<Boolean> {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

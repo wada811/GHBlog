@@ -26,7 +26,6 @@
                 <data android:host="oauth.ghblog.com" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.RepositoryListActivity" />
         <activity android:name=".view.activity.BlogSettingsActivity" />
         <activity android:name=".view.activity.ArticleListActivity" />
         <activity android:name=".view.activity.ArticleCreateActivity"

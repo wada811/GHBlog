@@ -1,13 +1,15 @@
 package com.wada811.ghblog.data.datasource.github
 
 import android.content.Context
+import com.wada811.ghblog.data.entity.data.CommitEntity
 import com.wada811.ghblog.data.entity.data.OrmaDatabase
 import com.wada811.ghblog.data.entity.data.RepositoryEntity
+import com.wada811.ghblog.data.entity.mapper.data.ArticleEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.data.BlogEntityDataMapper
 import com.wada811.ghblog.data.entity.mapper.data.RepositoryEntityDataMapper
+import com.wada811.ghblog.domain.model.Article
 import com.wada811.ghblog.domain.model.Blog
 import com.wada811.ghblog.domain.model.Repository
-import com.wada811.ghblog.domain.model.RepositoryContent
 import com.wada811.ghblog.domain.model.User
 import com.wada811.logforest.LogWood
 import rx.Observable
@@ -44,7 +46,7 @@ class LocalGitHubDataSource(context: Context) : GitHubDataSource {
     override fun getBlogs(user: User): Observable<Blog> {
         return database.selectFromBlogEntity()
             .executeAsObservable()
-//            .filter { it.repository.user.id == user.id }
+            .filter { it.repository.user.id == user.id }
             .map { BlogEntityDataMapper.fromEntity(it) }
     }
 
@@ -52,6 +54,36 @@ class LocalGitHubDataSource(context: Context) : GitHubDataSource {
         return database.relationOfBlogEntity()
             .upserter()
             .executeAsObservable(BlogEntityDataMapper.toEntity(blog))
+            .map { !it.equals(-1) }
+            .toObservable()
+    }
+
+    override fun getArticles(blog: Blog): Observable<Article> {
+        return database.selectFromArticleEntity()
+            .executeAsObservable()
+            .filter { it.blog.repositoryId == blog.repository.id }
+            .map { ArticleEntityDataMapper.fromEntity(it) }
+    }
+
+    override fun saveArticle(article: Article): Observable<Boolean> {
+        return database.relationOfArticleEntity()
+            .upserter()
+            .executeAsObservable(ArticleEntityDataMapper.toEntity(article))
+            .map { !it.equals(-1) }
+            .toObservable()
+    }
+
+    override fun saveArticles(articles: MutableList<Article>): Observable<Boolean> {
+        return database.relationOfArticleEntity()
+            .upserter()
+            .executeAllAsObservable(articles.map { ArticleEntityDataMapper.toEntity(it) })
+            .map { !it.equals(-1) }
+    }
+
+    override fun saveCommit(commit: CommitEntity): Observable<Boolean> {
+        return database.relationOfCommitEntity()
+            .inserter()
+            .executeAsObservable(commit)
             .map { !it.equals(-1) }
             .toObservable()
     }
