@@ -39,7 +39,7 @@ ext {
     junit_version = '4.12' // https://github.com/junit-team/junit4
 
     appDependencies = [
-            kotlin              : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            kotlin              : "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
             debugLeakCanary     : "com.squareup.leakcanary:leakcanary-android:$leakcanary_version",
             releaseLeakCanary   : "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version",
             testLeakCanary      : "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version",
@@ -62,7 +62,7 @@ ext {
             junit: "junit:junit:$junit_version"
     ]
     dataDependencies = [
-            kotlin                : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            kotlin                : "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
             appcompat             : "com.android.support:appcompat-v7:$android_support_version",
             rxjava                : "io.reactivex:rxjava:$rxjava_version",
             okhttp                : "com.squareup.okhttp3:okhttp:$okhttp_version",
@@ -80,7 +80,7 @@ ext {
             junit: "junit:junit:$junit_version"
     ]
     domainDependencies = [
-            kotlin       : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            kotlin       : "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
             rxjava       : "io.reactivex:rxjava:$rxjava_version",
             threetenbp   : "org.threeten:threetenbp:$threetenbp_version:no-tzdb",
             ormaProcessor: "com.github.gfx.android.orma:orma-processor:$orma_version",
@@ -90,7 +90,7 @@ ext {
             junit: "junit:junit:$junit_version"
     ]
     RxViewModelDependencies = [
-            kotlin   : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            kotlin   : "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
             appcompat: "com.android.support:appcompat-v7:$android_support_version",
             rxjava   : "io.reactivex:rxjava:$rxjava_version"
     ]
@@ -98,7 +98,7 @@ ext {
             junit: "junit:junit:$junit_version"
     ]
     ObservableModelDependencies = [
-            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
             locks : "com.googlecode.concurrent-locks:concurrent-locks:$concurrent_locks_version",
             rxjava: "io.reactivex:rxjava:$rxjava_version",
     ]
@@ -106,13 +106,13 @@ ext {
             junit: "junit:junit:$junit_version"
     ]
     LogForestDependencies = [
-            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
     ]
     LogForestTestDependencies = [
             junit: "junit:junit:$junit_version"
     ]
     LogForestAndroidDependencies = [
-            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
     ]
     LogForestAndroidTestDependencies = [
             junit: "junit:junit:$junit_version"
