@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply from: 'buildsystem/dependencies.gradle'
-apply from: 'buildsystem/secure.gradle'
+apply from: "$rootDir/buildsystem/dependencies.gradle"
+apply from: "$rootDir/buildsystem/secure.gradle"
 
 buildscript {
     ext.kotlin_version = '1.2.21'
